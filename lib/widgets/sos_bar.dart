@@ -1,7 +1,4 @@
-import 'package:app_portaria/repositories/alert_sound.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SosBar extends StatefulWidget {
   const SosBar({super.key});
@@ -32,8 +29,7 @@ class _SosBarState extends State<SosBar> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     Color colorFundo = Colors.red;
     var size = MediaQuery.of(context).size;
-    return
-        Container(
+    return Container(
       height: size.height * 0.1,
       width: size.width * 0.98,
       decoration: BoxDecoration(
