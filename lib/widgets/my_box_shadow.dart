@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
-
 class MyBoxShadow extends StatefulWidget {
   final dynamic child;
   const MyBoxShadow({required this.child, super.key});

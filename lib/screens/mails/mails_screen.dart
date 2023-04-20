@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
 
 class MailScreen extends StatefulWidget {

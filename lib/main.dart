@@ -1,11 +1,9 @@
 import 'package:app_portaria/itens_bottom.dart';
 import 'package:app_portaria/repositories/theme_provider.dart';
-import 'package:app_portaria/screens/mails/mails_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'repositories/themes_model.dart';
-import 'screens/splash_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
