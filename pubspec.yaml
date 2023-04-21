@@ -15,6 +15,14 @@ dependencies:
   shared_preferences: ^2.0.15
   local_auth: ^2.1.6
   flutter_platform_alert: ^0.3.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  image_path: "assets/portaria.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launch_icon"
+  adaptive_icon_foreground: "assets/portaria.png"
 
 dev_dependencies:
   flutter_test:
@@ -24,5 +32,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-#   assets:
-#    - assets/
+  assets:
+   - assets/
