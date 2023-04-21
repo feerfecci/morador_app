@@ -47,7 +47,7 @@ Widget buildHeaderPage(
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.15,
+              top: size.height * 0.14,
               right: size.width * 0.01,
               left: size.width * 0.01,
             ),
