@@ -31,7 +31,9 @@ class _ItensBottomState extends State<ItensBottom> {
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.only(left: 8.0),
-          child: Image.asset('assets/portaria_icon.png'),
+          child: Image.network(
+            'https://www.portariaapp.com/wp-content/uploads/2023/03/portria.png',
+          ),
         ),
         elevation: 0,
         leadingWidth: 40,

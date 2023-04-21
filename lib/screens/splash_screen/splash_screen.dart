@@ -59,7 +59,8 @@ class _SplashScreenState extends State<SplashScreen> {
           SizedBox(
             height: size.height * 0.3,
             width: size.width * 0.6,
-            child: Image.asset('assets/portaria_icon.png'),
+            child: Image.network(
+                'https://www.portariaapp.com/wp-content/uploads/2023/03/portria.png'),
           ),
           Spacer(),
           Padding(
