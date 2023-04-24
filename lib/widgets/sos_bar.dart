@@ -39,8 +39,8 @@ class _SosBarState extends State<SosBar> with SingleTickerProviderStateMixin {
         boxShadow: [
           BoxShadow(
               color: Theme.of(context).shadowColor,
+              spreadRadius: 2,
               blurRadius: 5,
-              spreadRadius: 10,
               offset: Offset(5, 5))
         ],
         color: colorFundo,

@@ -31,16 +31,17 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Theme.of(context).shadowColor,
-                spreadRadius: 5,
+                spreadRadius: 1,
                 blurRadius: 10,
                 offset: Offset(5, 5), // changes position of shadow
               ),
-            ], shape: BoxShape.circle, color: Colors.white),
+            ], shape: BoxShape.circle, color: Theme.of(context).cardColor),
             child: IconButton(
                 onPressed: () {},
                 icon: Icon(
                   icon,
                   size: size.height * 0.04,
+                  color: Theme.of(context).iconTheme.color,
                 )),
           ),
           SizedBox(

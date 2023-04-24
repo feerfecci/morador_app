@@ -20,9 +20,9 @@ class MyBoxShadowState extends State<MyBoxShadow> {
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).shadowColor,
-                spreadRadius: 5,
-                blurRadius: 10,
-                offset: Offset(5, 5), // changes position of shadow
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(2, 2), // changes position of shadow
               ),
             ],
             // border: Border.all(color: Theme.of(context).colorScheme.primary),
