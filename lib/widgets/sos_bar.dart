@@ -35,17 +35,15 @@ class _SosBarState extends State<SosBar> with SingleTickerProviderStateMixin {
       // padding: EdgeInsets.only(top: 10),
       height: size.height * 0.13,
       width: size.width * 0.98,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-              color: Theme.of(context).shadowColor,
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(5, 5))
-        ],
-        color: colorFundo,
-        borderRadius: BorderRadius.circular(Consts.borderButton),
-      ),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+            color: Theme.of(context).shadowColor,
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(5, 5))
+      ], color: colorFundo, borderRadius: BorderRadius.circular(16)
+          // borderRadius: BorderRadius.circular(Consts.borderButton),
+          ),
       alignment: Alignment.bottomCenter,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,9 +53,9 @@ class _SosBarState extends State<SosBar> with SingleTickerProviderStateMixin {
               icon: Icons.emergency_outlined),
           buildEmergencyCalls(context, 'Polícia', 1,
               icon: Icons.local_police_outlined),
-          buildEmergencyCalls(context, 'Samu', 2,
+          buildEmergencyCalls(context, 'Bombeiros', 2,
               icon: Icons.emergency_outlined),
-          buildEmergencyCalls(context, 'Polícia', 3,
+          buildEmergencyCalls(context, 'SOS Portaria', 3,
               icon: Icons.local_police_outlined),
         ],
       ),
@@ -70,14 +68,14 @@ Widget buildEmergencyCalls(BuildContext context, String title, int orden,
     {required IconData icon}) {
   var size = MediaQuery.of(context).size;
   double? circleSize = size.height * 0.07;
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      GestureDetector(
-        onTap: () {
-          print(orden);
-        },
-        child: Container(
+  return GestureDetector(
+    onTap: () {
+      print(orden);
+    },
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
           decoration:
               BoxDecoration(shape: BoxShape.circle, color: Colors.white),
           width: circleSize,
@@ -89,14 +87,18 @@ Widget buildEmergencyCalls(BuildContext context, String title, int orden,
             size: size.height * 0.06,
           ),
         ),
-      ),
-      Text(
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
-        title,
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
-    ],
+        SizedBox(
+          width: size.width * 0.2,
+          child: Text(
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            title,
+            maxLines: 2,
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+      ],
+    ),
   );
 }

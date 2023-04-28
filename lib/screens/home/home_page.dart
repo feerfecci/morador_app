@@ -62,27 +62,28 @@ class _HomePageState extends State<HomePage> {
         widget: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildTopShortCuts(
-                    icon: Icons.person_add_alt_rounded, title: 'Novo Perfil'),
-                buildTopShortCuts(
-                    icon: Icons.person_add_alt_rounded, title: 'Editar'),
-                buildTopShortCuts(
-                    icon: Icons.person_add_alt_rounded, title: 'Ssdas'),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     buildTopShortCuts(
+            //         icon: Icons.person_add_alt_rounded, title: 'Novo Perfil'),
+            //     buildTopShortCuts(
+            //         icon: Icons.person_add_alt_rounded, title: 'Editar'),
+            //     buildTopShortCuts(
+            //         icon: Icons.person_add_alt_rounded, title: 'Ssdas'),
+            //   ],
+            // ),
             SizedBox(
               height: size.height * 0.025,
             ),
+
             GridView.count(
                 physics: ClampingScrollPhysics(),
                 crossAxisCount: 2,
                 shrinkWrap: true,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
+                childAspectRatio: 1.6,
+                crossAxisSpacing: 1,
+                mainAxisSpacing: 0.5,
                 children: [
                   buildCardHome(
                     context,
@@ -92,24 +93,97 @@ class _HomePageState extends State<HomePage> {
                   ),
                   buildCardHome(
                     context,
-                    title: 'Perfil',
+                    title: 'Delivery',
                     iconApi: 'perfil.png',
                     pageRoute: MyProfileScreen(),
                   ),
                   buildCardHome(
                     context,
-                    title: 'Notificações',
+                    title: 'Mercadorias',
                     iconApi: 'notificacoes.png',
                     pageRoute: MailScreen(),
                   ),
                   buildCardHome(
                     context,
-                    title: 'Faturas',
+                    title: 'Visitantes',
                     iconApi: 'financeiro.png',
                     pageRoute: MyProfileScreen(),
                   ),
+                  buildCardHome(
+                    context,
+                    title: 'Cadastros',
+                    iconApi: 'correspondencias.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Ligar Portaria',
+                    iconApi: 'perfil.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Quadro de avisos',
+                    iconApi: 'notificacoes.png',
+                    pageRoute: MailScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Reserva de Espaços',
+                    iconApi: 'financeiro.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Samu',
+                    iconApi: 'correspondencias.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Sos Portaria',
+                    iconApi: 'perfil.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Polícia',
+                    iconApi: 'notificacoes.png',
+                    pageRoute: MailScreen(),
+                  ),
+                  buildCardHome(
+                    context,
+                    title: 'Bombeiros',
+                    iconApi: 'financeiro.png',
+                    pageRoute: MyProfileScreen(),
+                  ),
+                  //////
+                  // buildCardHome(
+                  //   context,
+                  //   title: 'Enquete',
+                  //   iconApi: 'financeiro.png',
+                  //   pageRoute: MyProfileScreen(),
+                  // ),
+                  // buildCardHome(
+                  //   context,
+                  //   title: 'Classificados',
+                  //   iconApi: 'financeiro.png',
+                  //   pageRoute: MyProfileScreen(),
+                  // ),
+                  // buildCardHome(
+                  //   context,
+                  //   title: 'Sequestro',
+                  //   iconApi: 'financeiro.png',
+                  //   pageRoute: MyProfileScreen(),
+                  // ),
+                  // buildCardHome(
+                  //   context,
+                  //   title: 'Propaganda',
+                  //   iconApi: 'financeiro.png',
+                  //   pageRoute: MyProfileScreen(),
+                  // ),
                 ]),
-            SosBar()
+            // SosBar()
           ],
         ),
       ),

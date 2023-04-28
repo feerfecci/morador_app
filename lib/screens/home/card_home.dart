@@ -18,14 +18,14 @@ Widget buildCardHome(BuildContext context,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: size.width * 0.15,
+            width: size.width * 0.12,
             height: size.height * 0.075,
             child: Image.network(
               '${Consts.iconApi}$iconApi',
             ),
           ),
           SizedBox(
-            height: size.height * 0.015,
+            height: size.height * 0.01,
           ),
           Consts.buildTextTitle(title),
         ],
