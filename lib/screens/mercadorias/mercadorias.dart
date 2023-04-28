@@ -1,19 +1,17 @@
-// ignore_for_file: prefer_final_fields
-
-import 'package:app_portaria/widgets/header.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts.dart';
+import '../../widgets/header.dart';
+import '../../widgets/my_box_shadow.dart';
 
-class MailScreen extends StatefulWidget {
-  const MailScreen({super.key});
+class MercadoriaScreen extends StatefulWidget {
+  const MercadoriaScreen({super.key});
 
   @override
-  State<MailScreen> createState() => _MailScreenState();
+  State<MercadoriaScreen> createState() => _MercadoriaScreenState();
 }
 
-class _MailScreenState extends State<MailScreen> {
+class _MercadoriaScreenState extends State<MercadoriaScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -65,8 +63,8 @@ class _MailScreenState extends State<MailScreen> {
         ),
         body: buildHeaderPage(
           context,
-          titulo: 'Correspondências',
-          subTitulo: 'Confira suas cartas',
+          titulo: 'Mercadorias',
+          subTitulo: 'Confira suas mercadorias',
           widget: ListView.builder(
             shrinkWrap: true,
             physics: ClampingScrollPhysics(),
@@ -83,12 +81,12 @@ class _MailScreenState extends State<MailScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        buildCircleStage('2', 'Aguardando Retirada', 2, 2),
+                        buildCircleStage('2', 'Aguardando Retirada', 1, 2),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(size.width * 0.02),
+                    padding: EdgeInsets.all(size.width * 0.05),
                     child: Row(
                       children: [
                         Consts.buildTextSubTitle('Informe o Protocolo: '),

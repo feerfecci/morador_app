@@ -6,6 +6,9 @@ import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
 import '../../consts.dart';
 import '../../widgets/sos_bar.dart';
+import '../delivery/delivery_screen.dart';
+import '../mercadorias/mercadorias.dart';
+import '../visitantes/visitantes_screen.dart';
 import 'card_home.dart';
 
 class HomePage extends StatefulWidget {
@@ -95,19 +98,19 @@ class _HomePageState extends State<HomePage> {
                     context,
                     title: 'Delivery',
                     iconApi: 'perfil.png',
-                    pageRoute: MyProfileScreen(),
+                    pageRoute: DeliveryScreen(),
                   ),
                   buildCardHome(
                     context,
                     title: 'Mercadorias',
                     iconApi: 'notificacoes.png',
-                    pageRoute: MailScreen(),
+                    pageRoute: MercadoriaScreen(),
                   ),
                   buildCardHome(
                     context,
                     title: 'Visitantes',
                     iconApi: 'financeiro.png',
-                    pageRoute: MyProfileScreen(),
+                    pageRoute: VisitantesScreen(),
                   ),
                   buildCardHome(
                     context,

@@ -9,6 +9,7 @@ Widget buildCardHome(BuildContext context,
     required String iconApi}) {
   var size = MediaQuery.of(context).size;
   return MyBoxShadow(
+    paddingAll: 0.0,
     child: InkWell(
       onTap: () {
         Consts.navigatorPageRoute(context, pageRoute);

@@ -31,7 +31,7 @@ Widget buildHeaderPage(
                   Text(
                     titulo,
                     style: TextStyle(
-                        fontSize: 50,
+                        fontSize: 40,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary),
                   ),
