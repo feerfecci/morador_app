@@ -13,6 +13,7 @@ import '../../widgets/sos_bar.dart';
 import '../delivery/delivery_screen.dart';
 import '../mercadorias/mercadorias.dart';
 import '../quadro_avisos/quadro_avisos_screen.dart';
+import '../reserva_espaco/reserva_espaco.dart';
 import '../visitantes/visitantes_screen.dart';
 import 'card_home.dart';
 import '../correspondencia/correspondencia_screen.dart';
@@ -28,9 +29,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String telefonePortaria = '(11) 942169968';
+  launchNumber(number) async {
+    Uri telefone = Uri.parse('tel:$number');
+    await launchUrl(telefone);
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    Widget buildCardCall(
+        {required String title,
+        required String iconApi,
+        required String numberCall}) {
+      return MyBoxShadow(
+        paddingAll: 0.0,
+        child: InkWell(
+          onTap: () {
+            launchNumber(numberCall);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: size.width * 0.12,
+                height: size.height * 0.075,
+                child: Image.network(
+                  '${Consts.iconApi}$iconApi',
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Consts.buildTextTitle(title),
+            ],
+          ),
+        ),
+      );
+    }
+
     return buildHeaderPage(
       context,
       titulo: 'Fernando',
@@ -79,32 +117,10 @@ class _HomePageState extends State<HomePage> {
                   iconApi: 'correspondencias.png',
                   pageRoute: CadastroScreen(),
                 ),
-                MyBoxShadow(
-                  paddingAll: 0.0,
-                  child: InkWell(
-                    onTap: () async {
-                      Uri telefone = Uri.parse('tel:$telefonePortaria');
-                      await launchUrl(telefone);
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.12,
-                          height: size.height * 0.075,
-                          child: Image.network(
-                            '${Consts.iconApi}perfil.png',
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        Consts.buildTextTitle('Ligar Portaria'),
-                      ],
-                    ),
-                  ),
-                ),
+                buildCardCall(
+                    title: 'Ligar Portaria',
+                    iconApi: 'perfil.png',
+                    numberCall: telefonePortaria),
                 buildCardHome(
                   context,
                   title: 'Quadro de avisos',
@@ -115,13 +131,12 @@ class _HomePageState extends State<HomePage> {
                   context,
                   title: 'Reserva de Espaços',
                   iconApi: 'financeiro.png',
-                  pageRoute: MyProfileScreen(),
+                  pageRoute: ReservaEspacos(),
                 ),
-                buildCardHome(
-                  context,
+                buildCardCall(
                   title: 'Samu',
                   iconApi: 'correspondencias.png',
-                  pageRoute: MyProfileScreen(),
+                  numberCall: '192',
                 ),
                 buildCardHome(
                   context,
@@ -129,17 +144,15 @@ class _HomePageState extends State<HomePage> {
                   iconApi: 'perfil.png',
                   pageRoute: MyProfileScreen(),
                 ),
-                buildCardHome(
-                  context,
+                buildCardCall(
                   title: 'Polícia',
                   iconApi: 'notificacoes.png',
-                  pageRoute: CorrespondenciaScreen(),
+                  numberCall: '190',
                 ),
-                buildCardHome(
-                  context,
+                buildCardCall(
                   title: 'Bombeiros',
                   iconApi: 'financeiro.png',
-                  pageRoute: MyProfileScreen(),
+                  numberCall: '193',
                 ),
                 //////
                 // buildCardHome(
