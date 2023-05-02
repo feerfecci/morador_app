@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String number = '11 942169968';
+  String telefonePortaria = '(11) 942169968';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -82,13 +82,8 @@ class _HomePageState extends State<HomePage> {
                   paddingAll: 0.0,
                   child: InkWell(
                     onTap: () async {
-                      Uri telefone = Uri.parse('https://flutter.dev');
-                      if (await launchUrl(telefone)) {
-                        print('ligou');
-                      } else {
-                        print('não ligou');
-                      }
-                      ;
+                      Uri telefone = Uri.parse('tel:$telefonePortaria');
+                      await launchUrl(telefone);
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
