@@ -3,6 +3,7 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 
+import '../../consts.dart';
 import '../../widgets/my_text_form_field.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -23,9 +24,14 @@ class _CadastroScreenState extends State<CadastroScreen> {
         widget: MyBoxShadow(
           child: Column(
             children: [
-              buildMyTextFormField(context),
-              buildMyTextFormField(context),
-              buildMyTextFormField(context),
+              buildMyTextFormField(context, 'Nome'),
+              buildMyTextFormField(context, 'Sobrenome'),
+              buildMyTextFormField(context, 'Username'),
+              Consts.buildCustomButton(
+                context,
+                'Salvar',
+                onPressed: () {},
+              )
             ],
           ),
         ),

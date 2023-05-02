@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget buildMyTextFormField(BuildContext context,) {
+Widget buildMyTextFormField(BuildContext context, String title) {
   var size = MediaQuery.of(context).size;
   return Padding(
     padding: EdgeInsets.symmetric(vertical: size.height * 0.005),
@@ -13,7 +13,7 @@ Widget buildMyTextFormField(BuildContext context,) {
         contentPadding: EdgeInsets.only(left: size.width * 0.04),
         filled: true,
         fillColor: Theme.of(context).canvasColor,
-        label: Text('data'),
+        label: Text(title),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(
