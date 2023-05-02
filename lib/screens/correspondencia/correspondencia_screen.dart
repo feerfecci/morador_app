@@ -1,18 +1,20 @@
+// ignore_for_file: prefer_final_fields
+
+import 'package:app_portaria/widgets/header.dart';
+import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts.dart';
-import '../../widgets/header.dart';
-import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
 
-class MercadoriaScreen extends StatefulWidget {
-  const MercadoriaScreen({super.key});
+class CorrespondenciaScreen extends StatefulWidget {
+  const CorrespondenciaScreen({super.key});
 
   @override
-  State<MercadoriaScreen> createState() => _MercadoriaScreenState();
+  State<CorrespondenciaScreen> createState() => _CorrespondenciaScreenState();
 }
 
-class _MercadoriaScreenState extends State<MercadoriaScreen> {
+class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -60,8 +62,8 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
     return buildScaffoldAll(
         body: buildHeaderPage(
       context,
-      titulo: 'Mercadorias',
-      subTitulo: 'Confira suas mercadorias',
+      titulo: 'Correspondências',
+      subTitulo: 'Confira suas cartas',
       widget: ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
@@ -78,12 +80,12 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildCircleStage('2', 'Aguardando Retirada', 1, 2),
+                    buildCircleStage('2', 'Aguardando Retirada', 2, 2),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(size.width * 0.05),
+                padding: EdgeInsets.all(size.width * 0.02),
                 child: Row(
                   children: [
                     Consts.buildTextSubTitle('Informe o Protocolo: '),
