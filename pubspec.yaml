@@ -6,6 +6,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.19.0-255.0.dev <3.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
@@ -16,6 +17,7 @@ dependencies:
   local_auth: ^2.1.6
   flutter_platform_alert: ^0.3.0
   flutter_launcher_icons: ^0.13.1
+  url_launcher: ^6.1.5
 
 flutter_icons:
   image_path: "assets/portaria.png"
@@ -27,7 +29,6 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
 
 flutter:

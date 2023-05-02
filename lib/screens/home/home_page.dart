@@ -4,7 +4,10 @@ import 'package:app_portaria/screens/cadastro/cadastro_screen.dart';
 import 'package:app_portaria/screens/profile/my_profile.dart';
 import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../consts.dart';
+import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
 import '../../widgets/sos_bar.dart';
 import '../delivery/delivery_screen.dart';
@@ -23,6 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String number = '11 942169968';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -74,11 +78,36 @@ class _HomePageState extends State<HomePage> {
                   iconApi: 'correspondencias.png',
                   pageRoute: CadastroScreen(),
                 ),
-                buildCardHome(
-                  context,
-                  title: 'Ligar Portaria',
-                  iconApi: 'perfil.png',
-                  pageRoute: MyProfileScreen(),
+                MyBoxShadow(
+                  paddingAll: 0.0,
+                  child: InkWell(
+                    onTap: () async {
+                      Uri telefone = Uri.parse('https://flutter.dev');
+                      if (await launchUrl(telefone)) {
+                        print('ligou');
+                      } else {
+                        print('não ligou');
+                      }
+                      ;
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.12,
+                          height: size.height * 0.075,
+                          child: Image.network(
+                            '${Consts.iconApi}perfil.png',
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                        Consts.buildTextTitle('Ligar Portaria'),
+                      ],
+                    ),
+                  ),
                 ),
                 buildCardHome(
                   context,
