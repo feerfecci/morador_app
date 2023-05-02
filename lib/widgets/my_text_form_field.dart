@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-Widget buildMyTextFormField(BuildContext context, String title) {
+Widget buildMyTextFormField(
+  BuildContext context,
+  String title, {
+  List<TextInputFormatter>? inputFormatters,
+}) {
   var size = MediaQuery.of(context).size;
   return Padding(
-    padding: EdgeInsets.symmetric(vertical: size.height * 0.005),
+    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
     child: TextFormField(
       textAlign: TextAlign.start,
       textInputAction: TextInputAction.next,
       maxLines: 5,
       minLines: 1,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: size.width * 0.04),
         filled: true,

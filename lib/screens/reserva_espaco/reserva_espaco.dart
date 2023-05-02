@@ -3,6 +3,8 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../consts.dart';
 
@@ -26,6 +28,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
             physics: ClampingScrollPhysics(),
             itemCount: 5,
             itemBuilder: (context, index) {
+              var year = DateTime.now().year.toString();
               return MyBoxShadow(
                 child: Column(
                   children: [
@@ -35,15 +38,44 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                       children: [
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data Início'),
+                          child: buildMyTextFormField(context, 'Data Início',
+                              inputFormatters: [
+                                MaskTextInputFormatter(mask: '##/##'),
+                              ]),
                         ),
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data Fim'),
+                          child: buildMyTextFormField(context, 'Horario Início',
+                              inputFormatters: [
+                                MaskTextInputFormatter(mask: '##:##'),
+                              ]),
                         ),
                       ],
                     ),
-                    buildMyTextFormField(context, 'Quantidade de Pessoas'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.42,
+                          child: buildMyTextFormField(context, 'Data Término',
+                              inputFormatters: [
+                                MaskTextInputFormatter(mask: '##/##'),
+                              ]),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.42,
+                          child: buildMyTextFormField(
+                              context, 'Horario Término',
+                              inputFormatters: [
+                                MaskTextInputFormatter(mask: '##:##'),
+                              ]),
+                        ),
+                      ],
+                    ),
+                    buildMyTextFormField(
+                      context,
+                      'Quantidade de Pessoas',
+                    ),
                     SizedBox(
                       height: size.height * 0.005,
                     ),
