@@ -12,6 +12,7 @@ import '../../widgets/scaffold_all.dart';
 import '../../widgets/sos_bar.dart';
 import '../delivery/delivery_screen.dart';
 import '../mercadorias/mercadorias.dart';
+import '../quadro_avisos/quadro_avisos_screen.dart';
 import '../visitantes/visitantes_screen.dart';
 import 'card_home.dart';
 import '../correspondencia/correspondencia_screen.dart';
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   title: 'Quadro de avisos',
                   iconApi: 'notificacoes.png',
-                  pageRoute: CorrespondenciaScreen(),
+                  pageRoute: QuadroAvisosScreen(),
                 ),
                 buildCardHome(
                   context,
