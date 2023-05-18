@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 
 class ReservaEspacos extends StatefulWidget {
   const ReservaEspacos({super.key});
@@ -31,41 +31,47 @@ class ReservaEspacosState extends State<ReservaEspacos> {
               var year = DateTime.now().year.toString();
               return MyBoxShadow(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Consts.buildTextTitle('Salão de Festa'),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: ConstsWidget.buildTextTitle('Salão de Festa'),
+                    ),
+                    ConstsWidget.buildTextSubTitle('Início:'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data Início',
+                          child: buildMyTextFormField(context, 'Data',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##/##'),
                               ]),
                         ),
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Horario Início',
+                          child: buildMyTextFormField(context, 'Horario',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##:##'),
                               ]),
                         ),
                       ],
                     ),
+                    ConstsWidget.buildTextSubTitle('Término:'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data Término',
+                          child: buildMyTextFormField(context, 'Data',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##/##'),
                               ]),
                         ),
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(
-                              context, 'Horario Término',
+                          child: buildMyTextFormField(context, 'Horario',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##:##'),
                               ]),
@@ -79,7 +85,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                     SizedBox(
                       height: size.height * 0.005,
                     ),
-                    Consts.buildCustomButton(
+                    ConstsWidget.buildCustomButton(
                       context,
                       'Solicitar',
                       onPressed: () {},

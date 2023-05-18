@@ -5,8 +5,8 @@ import 'package:app_portaria/screens/profile/my_profile.dart';
 import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import '../../consts.dart';
+import '../../consts/consts.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
 import '../../widgets/sos_bar.dart';
@@ -29,9 +29,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String telefonePortaria = '(11) 942169968';
+
   launchNumber(number) async {
-    Uri telefone = Uri.parse('tel:$number');
-    await launchUrl(telefone);
+    await launchUrl(Uri.parse('tel:$number'));
   }
 
   @override
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: size.height * 0.01,
               ),
-              Consts.buildTextTitle(title),
+              ConstsWidget.buildTextTitle(title),
             ],
           ),
         ),
@@ -180,7 +180,6 @@ class _HomePageState extends State<HomePage> {
                 //   pageRoute: MyProfileScreen(),
                 // ),
               ]),
-          // SosBar()
         ],
       ),
     );

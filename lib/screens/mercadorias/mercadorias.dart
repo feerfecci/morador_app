@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/header.dart';
 import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
@@ -71,8 +71,8 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consts.buildTextTitle('Remetente'),
-              Consts.buildTextSubTitle('Envelope - 26/04/2023'),
+              ConstsWidget.buildTextTitle('Remetente'),
+              ConstsWidget.buildTextSubTitle('Envelope - 26/04/2023'),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Row(
@@ -86,8 +86,8 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
                 padding: EdgeInsets.all(size.width * 0.05),
                 child: Row(
                   children: [
-                    Consts.buildTextSubTitle('Informe o Protocolo: '),
-                    Consts.buildTextTitle('12346'),
+                    ConstsWidget.buildTextSubTitle('Informe o Protocolo: '),
+                    ConstsWidget.buildTextTitle('12346'),
                   ],
                 ),
               )

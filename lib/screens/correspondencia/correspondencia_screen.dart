@@ -4,7 +4,8 @@ import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/scaffold_all.dart';
 
 class CorrespondenciaScreen extends StatefulWidget {
@@ -73,8 +74,8 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consts.buildTextTitle('Remetente'),
-              Consts.buildTextSubTitle('Envelope - 26/04/2023'),
+              ConstsWidget.buildTextTitle('Remetente'),
+              ConstsWidget.buildTextSubTitle('Envelope - 26/04/2023'),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Row(
@@ -88,8 +89,8 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                 padding: EdgeInsets.all(size.width * 0.02),
                 child: Row(
                   children: [
-                    Consts.buildTextSubTitle('Informe o Protocolo: '),
-                    Consts.buildTextTitle('12346'),
+                    ConstsWidget.buildTextSubTitle('Informe o Protocolo: '),
+                    ConstsWidget.buildTextTitle('12346'),
                   ],
                 ),
               )

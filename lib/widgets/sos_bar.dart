@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../consts.dart';
-
 class SosBar extends StatefulWidget {
   const SosBar({super.key});
 
@@ -42,7 +40,7 @@ class _SosBarState extends State<SosBar> with SingleTickerProviderStateMixin {
             blurRadius: 5,
             offset: Offset(5, 5))
       ], color: colorFundo, borderRadius: BorderRadius.circular(16)
-          // borderRadius: BorderRadius.circular(Consts.borderButton),
+          // borderRadius: BorderRadius.circular(ConstsWidget.borderButton),
           ),
       alignment: Alignment.bottomCenter,
       child: Row(

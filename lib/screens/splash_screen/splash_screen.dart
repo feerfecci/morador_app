@@ -7,7 +7,9 @@ import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
+import '../../consts/consts_future.dart';
+import '../../consts/consts_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,23 +21,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   startLoginApp() async {
     LocalPreferences.getUserLogin().then((value) async {
-      Map<String, dynamic> cache = value;
-      if (cache.values.first == null || cache.values.last == null) {
-        Consts.navigatorPageRoute(context, LoginScreen());
-      } else if ((cache.values.first != null || cache.values.last != null) &&
-          cache.values.last == UserLogin.password) {
-        Future authentic() async {
-          final auth = await LocalBiometrics.authenticate();
-          final hasBiometrics = await LocalBiometrics.hasBiometric();
-          if (auth && hasBiometrics) {
-            return UserLogin.efetuaLogin(
-                context, cache.values.first, cache.values.last);
-          }
+      List cache = value;
+      if (cache.first == null || cache.last == null) {
+        ConstsFuture.navigatorPopAndPush(context, LoginScreen());
+      } else if (cache.first != null || cache.last != null) {
+        final auth = await LocalBiometrics.authenticate();
+        final hasBiometrics = await LocalBiometrics.hasBiometric();
+        if (auth && hasBiometrics) {
+          return ConstsFuture.efetuaLogin(context, cache.first, cache.last);
         }
-
-        return authentic();
       } else {
-        return Consts.navigatorPageRoute(context, LoginScreen());
+        return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
       }
     });
   }
@@ -66,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Padding(
             padding: EdgeInsets.symmetric(
                 vertical: size.height * 0.03, horizontal: size.width * 0.03),
-            child: Consts.buildCustomButton(
+            child: ConstsWidget.buildCustomButton(
               context,
               'Autenticar Biometria',
               icon: Icons.lock_open_outlined,

@@ -3,7 +3,7 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/my_text_form_field.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
               buildMyTextFormField(context, 'Nome'),
               buildMyTextFormField(context, 'Sobrenome'),
               buildMyTextFormField(context, 'Username'),
-              Consts.buildCustomButton(
+              ConstsWidget.buildCustomButton(
                 context,
                 'Salvar',
                 onPressed: () {},

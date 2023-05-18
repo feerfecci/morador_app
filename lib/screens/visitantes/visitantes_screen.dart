@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/header.dart';
 import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
@@ -30,8 +30,8 @@ class _VisitantesScreenState extends State<VisitantesScreen> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consts.buildTextTitle('Fernando Amorim Fecci'),
-              Consts.buildTextSubTitle('RG: - 50.900.454-5'),
+              ConstsWidget.buildTextTitle('Fernando Amorim Fecci'),
+              ConstsWidget.buildTextSubTitle('RG: - 50.900.454-5'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [],

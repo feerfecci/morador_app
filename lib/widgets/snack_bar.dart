@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../consts.dart';
+import '../consts/consts_widget.dart';
 
 buildCustomSnackBar(BuildContext context, String titulo, String texto) {
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -18,11 +18,11 @@ buildCustomSnackBar(BuildContext context, String titulo, String texto) {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Consts.buildTextTitle(
+        ConstsWidget.buildTextTitle(
           titulo,
           // color: Theme.of(context).snackBarTheme.actionTextColor,
         ),
-        Consts.buildTextSubTitle(
+        ConstsWidget.buildTextSubTitle(
           texto,
           // color: Theme.of(context).snackBarTheme.actionTextColor,
         ),

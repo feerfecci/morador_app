@@ -1,24 +1,7 @@
-import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'itens_bottom.dart';
+import 'consts.dart';
 
-class Consts {
-  static double fontTitulo = 16;
-  static double fontSubTitulo = 14;
-  static double borderButton = 60;
-
-  static const kBackPageColor = Color.fromARGB(255, 245, 245, 255);
-  static const kButtonColor = Color.fromARGB(255, 0, 134, 252);
-
-  static const String iconApi = 'https://escritorioapp.com/img/ico-';
-
-  static Future navigatorPageRoute(BuildContext context, Widget route) {
-    return Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => route,
-    ));
-  }
-
+class ConstsWidget {
   static Widget buildTextTitle(String title,
       {textAlign, color, double size = 16}) {
     return Text(
@@ -39,7 +22,7 @@ class Consts {
       maxLines: 20,
       style: TextStyle(
         color: color,
-        fontSize: fontSubTitulo,
+        fontSize: Consts.fontSubTitulo,
         fontWeight: FontWeight.normal,
       ),
     );
@@ -48,14 +31,14 @@ class Consts {
   static Widget buildCustomButton(BuildContext context, String title,
       {IconData? icon,
       double? altura,
-      Color? color = kButtonColor,
+      Color? color = Consts.kButtonColor,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderButton))),
+              borderRadius: BorderRadius.circular(Consts.borderButton))),
       onPressed: onPressed,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: size.height * 0.023),
@@ -82,29 +65,5 @@ class Consts {
         ),
       ),
     );
-  }
-}
-
-class UserLogin {
-  static String email = "fernandofecci@hotmail.com";
-  static String password = '123mudar';
-
-  static efetuaLogin(context, String emailUser, String passwordUser) {
-    if (emailUser == email && passwordUser == password) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ItensBottom(
-            currentTab: 0,
-          ),
-        ),
-      );
-    } else {
-      buildCustomSnackBar(
-        context,
-        'Login Errado',
-        'Tente Verificar os dados preenchidos',
-      );
-      LocalPreferences.removeUserLogin();
-    }
   }
 }

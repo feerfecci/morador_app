@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../consts.dart';
+import '../../consts/consts.dart';
+import '../../consts/consts_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(/*text: UserLogin.email*/);
-  final passWordCtrl = TextEditingController(/*text: UserLogin.password*/);
+  final emailCtrl = TextEditingController(text: 'feeh');
+  final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
     setState(() {
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Timer(Duration(seconds: 3), () async {
       setState(() {
-        UserLogin.efetuaLogin(context, emailCtrl.text, passWordCtrl.text);
+        ConstsFuture.efetuaLogin(context, emailCtrl.text, passWordCtrl.text);
         isLoading = !isLoading;
       });
     });
@@ -46,7 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
         validator: Validatorless.multiple([
           Validatorless.required('Email é obrigatório'),
-          Validatorless.email('Preencha com um email Válido')
         ]),
         // autofillHints: [AutofillHints.email],
         decoration: InputDecoration(
@@ -126,10 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 await LocalPreferences.setUserLogin(
                     emailCtrl.text, passWordCtrl.text);
                 _startLoading();
+              } else {
+                _startLoading();
               }
-              _startLoading();
             } else {
-      buildCustomSnackBar(context, 'Login Errado', 'Tente Verificar os dados preenchidos');
+              buildCustomSnackBar(context, 'Login Errado',
+                  'Tente Verificar os dados preenchidos');
             }
           },
           child: isLoading == false

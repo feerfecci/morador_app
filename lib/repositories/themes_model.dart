@@ -1,5 +1,6 @@
-import 'package:app_portaria/consts.dart';
 import 'package:flutter/material.dart';
+
+import '../consts/consts.dart';
 
 ThemeData themeLight(BuildContext context) {
   return ThemeData(

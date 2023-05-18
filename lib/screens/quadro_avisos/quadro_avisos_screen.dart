@@ -3,7 +3,8 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
+import '../../consts/consts_widget.dart';
 
 class QuadroAvisosScreen extends StatefulWidget {
   const QuadroAvisosScreen({super.key});
@@ -28,11 +29,11 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
               return MyBoxShadow(
                 child: Column(
                   children: [
-                    Consts.buildTextTitle('Asdasf asdasd'),
+                    ConstsWidget.buildTextTitle('Asdasf asdasd'),
                     SizedBox(
                       height: size.height * 0.01,
                     ),
-                    Consts.buildTextSubTitle(
+                    ConstsWidget.buildTextSubTitle(
                         'Adaosdasd asdoaisjd asodkbdqwor ryeryoidsldnff. Safsbfb abasud, ashdwem m, aosjda hfpake jfaijs qpkeiin jadnhdpa\nKasf jahfi keoqou, foqye. Afjqnubf ashuel jouhe e, ashasf huahf ja hfpqhrias.\n\nAdaosdasd asdoaisjd asodkbdqwor ryeryoidsldnff. Safsbfb abasud, ashdwem m, aosjda hfpake jfaijs qpkeiin jadnhdpa\nKasf jahfi keoqou, foqye. Afjqnubf ashuel jouhe e, ashasf huahf ja hfpqhrias.\nAdaosdasd asdoaisjd asodkbdqwor ryeryoidsldnff. Safsbfb abasud, ashdwem m, aosjda hfpake jfaijs qpkeiin jadnhdpa\nKasf jahfi keoqou, foqye. Afjqnubf ashuel jouhe e, ashasf huahf ja hfpqhrias.')
                   ],
                 ),

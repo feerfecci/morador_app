@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import '../../widgets/header.dart';
 import '../../widgets/my_box_shadow.dart';
 import '../../widgets/scaffold_all.dart';
@@ -30,8 +30,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consts.buildTextTitle('Ifood'),
-              Consts.buildTextSubTitle('Retirada - 26/04/2023'),
+              ConstsWidget.buildTextTitle('Ifood'),
+              ConstsWidget.buildTextSubTitle('Retirada - 26/04/2023'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [],

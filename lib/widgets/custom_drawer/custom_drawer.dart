@@ -3,7 +3,7 @@
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import 'change_theme_button.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -30,7 +30,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             leading,
             size: 25,
           ),
-          title: Consts.buildTextTitle(title),
+          title: ConstsWidget.buildTextTitle(title),
           trailing: Icon(
             size: 30,
             trailing,
@@ -89,7 +89,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               Spacer(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Consts.buildCustomButton(
+                child: ConstsWidget.buildCustomButton(
                   context,
                   'Sair',
                   onPressed: () {
