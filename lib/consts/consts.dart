@@ -29,4 +29,5 @@ class Consts {
   static const kButtonColor = Color.fromARGB(255, 0, 134, 252);
 
   static const String iconApi = 'https://escritorioapp.com/img/ico-';
+  static const String iconApiPort = 'https://a.portariaapp.com/img/ico-';
 }

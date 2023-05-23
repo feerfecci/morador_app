@@ -2,6 +2,7 @@ import 'package:app_portaria/screens/carrinho/pagina1_screen.dart';
 import 'package:app_portaria/screens/duvidas/pagina2_screen.dart';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'widgets/custom_drawer/custom_drawer.dart';
 
@@ -21,6 +22,15 @@ class _ItensBottomState extends State<ItensBottom> {
   void initState() {
     super.initState();
     _pageController = PageController();
+  }
+
+  static const String oneSignalAppId = "cb886dc8-9dc9-4297-9730-7de404a89716";
+
+  Future initPlatFormState() async {
+    OneSignal.shared.setAppId(oneSignalAppId);
+    OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
+      OneSignal.shared.setExternalUserId('26');
+    });
   }
 
   @override

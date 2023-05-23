@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app_portaria/itens_bottom.dart';
+import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +51,7 @@ class ConstsFuture {
             apiBody['login'][0]['datahora_ultima_atualizacao'];
         ConstsFuture.navigatorPopAndPush(context, ItensBottom(currentTab: 0));
       } else {
+        ConstsFuture.navigatorPopAndPush(context, LoginScreen());
         buildCustomSnackBar(context, "Algo deu errado!!", apiBody['mensagem']);
       }
     }

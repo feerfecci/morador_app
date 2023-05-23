@@ -25,7 +25,7 @@ Widget buildCardHome(BuildContext context,
             width: size.width * 0.12,
             height: size.height * 0.075,
             child: Image.network(
-              '${Consts.iconApi}$iconApi',
+              iconApi,
             ),
           ),
           SizedBox(
