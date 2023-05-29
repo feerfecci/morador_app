@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:app_portaria/consts/consts_future.dart';
+import 'package:app_portaria/notifications/notifi_service_corresp.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(text: 'feeh');
+  final emailCtrl = TextEditingController(text: 'lucasdasilva');
   final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
@@ -131,8 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 _startLoading();
               }
             } else {
-              buildCustomSnackBar(context, 'Login Errado',
-                  'Tente Verificar os dados preenchidos');
+              buildCustomSnackBar(context,
+                  titulo: 'Login Errado',
+                  texto: 'Tente Verificar os dados preenchidos');
             }
           },
           child: isLoading == false

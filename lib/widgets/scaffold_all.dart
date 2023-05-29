@@ -1,9 +1,15 @@
 import 'package:app_portaria/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
-Widget buildScaffoldAll({required Widget? body}) {
+Widget buildScaffoldAll(context,
+    {required Widget? body, Widget? floatingActionButton}) {
   return Scaffold(
-    appBar: AppBar(),
+    floatingActionButton: floatingActionButton,
+    appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
+    ),
     endDrawer: CustomDrawer(),
     body: body,
   );

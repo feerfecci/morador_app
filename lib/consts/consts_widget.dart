@@ -31,7 +31,7 @@ class ConstsWidget {
   static Widget buildCustomButton(BuildContext context, String title,
       {IconData? icon,
       double? altura,
-      Color? color = Consts.kButtonColor,
+      Color? color = Consts.kColorApp,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
     return ElevatedButton(
@@ -65,5 +65,51 @@ class ConstsWidget {
         ),
       ),
     );
+  }
+
+  static Widget buildLoadingButton(BuildContext context,
+      {required void Function()? onPressed,
+      required bool isLoading,
+      required String title,
+      Color color = Consts.kColorApp}) {
+    var size = MediaQuery.of(context).size;
+
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+            backgroundColor: color,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Consts.borderButton))),
+        onPressed: onPressed,
+        child: isLoading == false
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.020,
+                    width: size.width * 0.05,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ));
   }
 }

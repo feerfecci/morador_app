@@ -30,7 +30,7 @@ Widget buildHeaderPage(
                       opacity: value,
                       child: Padding(
                         padding:
-                            EdgeInsets.only(top: value * size.height * 0.025),
+                            EdgeInsets.only(top: value * size.height * 0.000),
                         child: child,
                       ),
                     );
@@ -57,9 +57,7 @@ Widget buildHeaderPage(
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: size.height * 0.14,
-                  right: size.width * 0.01,
-                  left: size.width * 0.01,
+                  top: size.height * 0.1,
                 ),
                 child: widget,
               ),

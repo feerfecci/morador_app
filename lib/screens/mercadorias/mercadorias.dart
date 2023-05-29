@@ -57,44 +57,44 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
       );
     }
 
-    return buildScaffoldAll(
+    return buildScaffoldAll(context,
         body: buildHeaderPage(
-      context,
-      titulo: 'Mercadorias',
-      subTitulo: 'Confira suas mercadorias',
-      widget: ListView.builder(
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return MyBoxShadow(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ConstsWidget.buildTextTitle('Remetente'),
-              ConstsWidget.buildTextSubTitle('Envelope - 26/04/2023'),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildCircleStage('2', 'Aguardando Retirada', 1, 2),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(size.width * 0.05),
-                child: Row(
-                  children: [
-                    ConstsWidget.buildTextSubTitle('Informe o Protocolo: '),
-                    ConstsWidget.buildTextTitle('12346'),
-                  ],
-                ),
-              )
-            ],
-          ));
-        },
-      ),
-    ));
+          context,
+          titulo: 'Mercadorias',
+          subTitulo: 'Confira suas mercadorias',
+          widget: ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return MyBoxShadow(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstsWidget.buildTextTitle('Remetente'),
+                  ConstsWidget.buildTextSubTitle('Envelope - 26/04/2023'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        buildCircleStage('2', 'Aguardando Retirada', 1, 2),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(size.width * 0.05),
+                    child: Row(
+                      children: [
+                        ConstsWidget.buildTextSubTitle('Informe o Protocolo: '),
+                        ConstsWidget.buildTextTitle('12346'),
+                      ],
+                    ),
+                  )
+                ],
+              ));
+            },
+          ),
+        ));
   }
 }

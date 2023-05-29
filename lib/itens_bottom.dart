@@ -4,6 +4,8 @@ import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
+import 'consts/consts.dart';
+import 'notifications/notifi_service_corresp.dart';
 import 'widgets/custom_drawer/custom_drawer.dart';
 
 // ignore: must_be_immutable
@@ -22,14 +24,26 @@ class _ItensBottomState extends State<ItensBottom> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    initPlatFormState();
+    // initSons();
   }
 
-  static const String oneSignalAppId = "cb886dc8-9dc9-4297-9730-7de404a89716";
+  // Future initSons() async {
+  //   // NotificationServiceCorresp.showNotification();
+  //   return NotificationServiceCorresp.initNotificationCorresp();
+  //   // NotificationServiceCorresp.notificationDetailsCorresp();
+  // }
 
   Future initPlatFormState() async {
-    OneSignal.shared.setAppId(oneSignalAppId);
+    OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
-      OneSignal.shared.setExternalUserId('26');
+      OneSignal.shared.setExternalUserId(InfosMorador.idmorador.toString());
+      OneSignal.shared.sendTags({
+        'idmorador': InfosMorador.idmorador.toString(),
+        'idunidade': InfosMorador.idunidade.toString(),
+        'idcond': InfosMorador.idcondominio.toString()
+      });
+      OneSignal.shared.setEmail(email: InfosMorador.email.toString());
     });
   }
 
@@ -39,10 +53,12 @@ class _ItensBottomState extends State<ItensBottom> {
     return Scaffold(
       endDrawer: CustomDrawer(),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Image.network(
-            'https://www.portariaapp.com/wp-content/uploads/2023/03/portria.png',
+            'https://a.portariaapp.com/img/logo-portaria.png',
           ),
         ),
         elevation: 0,

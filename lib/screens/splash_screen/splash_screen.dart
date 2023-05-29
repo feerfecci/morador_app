@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
+import '../../notifications/notifi_service_corresp.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -41,6 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       startLoginApp();
     });
+    // NotificationServiceCorresp().initNotificationCorresp();
+    // NotificationServiceDelivery().initNotificationDelivery();
+    // NotificationServiceVisitas().initNotificationVisitas();
+    // NotificationAvisos().initNotificationAvisos();
     super.initState();
   }
 
@@ -56,7 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
             height: size.height * 0.3,
             width: size.width * 0.6,
             child: Image.network(
-                'https://www.portariaapp.com/wp-content/uploads/2023/03/portria.png'),
+              'https://a.portariaapp.com/img/logo-portaria.png',
+            ),
           ),
           Spacer(),
           Padding(

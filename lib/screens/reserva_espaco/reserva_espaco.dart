@@ -20,6 +20,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return buildScaffoldAll(
+      context,
       body: buildHeaderPage(context,
           titulo: 'Reservar Espaços',
           subTitulo: 'Solicite um espaço',

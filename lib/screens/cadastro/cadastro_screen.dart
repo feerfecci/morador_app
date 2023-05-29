@@ -17,6 +17,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
     return buildScaffoldAll(
+      context,
       body: buildHeaderPage(
         context,
         titulo: 'Cadastro',

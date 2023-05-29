@@ -18,6 +18,7 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return buildScaffoldAll(
+      context,
       body: buildHeaderPage(context,
           titulo: 'Quadro de Avisos',
           subTitulo: 'Confira as novidade',

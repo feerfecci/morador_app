@@ -15,7 +15,7 @@ ThemeData themeLight(BuildContext context) {
     cardColor: Colors.white,
     canvasColor: Colors.white,
     primaryIconTheme: IconThemeData(color: Colors.black),
-    iconTheme: IconThemeData(color: Colors.black),
+    iconTheme: IconThemeData(color: Color.fromARGB(255, 38, 43, 62)),
     appBarTheme: AppBarTheme(backgroundColor: Colors.blue),
     colorScheme: ColorScheme.light(primary: Colors.black),
     scaffoldBackgroundColor: Consts.kBackPageColor,

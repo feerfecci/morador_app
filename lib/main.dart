@@ -4,10 +4,17 @@ import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'notifications/notifi_service.dart';
+import 'notifications/notifi_service_delivery.dart';
+import 'notifications/notifi_service_corresp.dart';
+import 'notifications/notifi_service_visitas.dart';
 import 'repositories/themes_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // NotificationServiceDelivery().initNotificationDelivery();
+  // NotificationServiceVisitas().initNotificationVisitas();
+  // NotificationDetailsAvisos().initNotificationAvisos();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
