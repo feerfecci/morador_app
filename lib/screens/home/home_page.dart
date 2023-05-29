@@ -23,48 +23,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  launchNumber(number) async {
-    await launchUrl(Uri.parse('tel:$number'));
-  }
+  // Widget buildCard() {
+  //   if (InfosMorador.responsavel) {
+  //     return buildCardHome(
+  //       context,
+  //       title: 'Delivery',
+  //       iconApi: '${Consts.iconApiPort}delivery.png',
+  //       pageRoute: ChegadaScreen(tipo: 1),
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildCardCall(
-        {required String title,
-        required String iconApi,
-        required String numberCall}) {
-      return MyBoxShadow(
-        paddingAll: 0.0,
-        child: InkWell(
-          onTap: () {
-            launchNumber(numberCall);
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: size.width * 0.12,
-                height: size.height * 0.075,
-                child: Image.network(
-                  iconApi,
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              ConstsWidget.buildTextTitle(title),
-            ],
-          ),
-        ),
-      );
-    }
-
     return buildHeaderPage(
       context,
-      titulo: InfosMorador.nome_morador,
+      titulo: InfosMorador.nome_responsavel == ''
+          ? InfosMorador.nome_morador
+          : InfosMorador.nome_responsavel,
       subTitulo: '${InfosMorador.divisao} - ${InfosMorador.unidade}',
       widget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +52,24 @@ class _HomePageState extends State<HomePage> {
           // SizedBox(
           //   height: size.height * 0.025,
           // ),
+          SizedBox(
+            height: size.height * 0.148,
+            width: double.infinity,
+            child: buildCardHome(
+              context,
+              title: 'Ligar na Portaria',
+              iconApi: '${Consts.iconApiPort}ligar.png',
+              numberCall: InfosMorador.telefone_portaria,
+            ),
+          ),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 2,
+            ),
+            itemBuilder: (context, index) {},
+          ),
           GridView.count(
               physics: ClampingScrollPhysics(),
               crossAxisCount: 2,
@@ -88,11 +86,18 @@ class _HomePageState extends State<HomePage> {
                     tipoAviso: 1,
                   ),
                 ),
+
                 buildCardHome(
                   context,
                   title: 'Delivery',
                   iconApi: '${Consts.iconApiPort}delivery.png',
                   pageRoute: ChegadaScreen(tipo: 1),
+                ),
+                buildCardHome(
+                  context,
+                  title: 'Visitantes',
+                  iconApi: '${Consts.iconApiPort}visitas.png',
+                  pageRoute: ChegadaScreen(tipo: 2),
                 ),
                 buildCardHome(
                   context,
@@ -102,16 +107,6 @@ class _HomePageState extends State<HomePage> {
                     tipoAviso: 2,
                   ),
                 ),
-                buildCardHome(
-                  context,
-                  title: 'Visitantes',
-                  iconApi: '${Consts.iconApiPort}visitas.png',
-                  pageRoute: ChegadaScreen(tipo: 0),
-                ),
-                buildCardCall(
-                    title: 'Ligar Portaria',
-                    iconApi: '${Consts.iconApiPort}ligar.png',
-                    numberCall: InfosMorador.telefone_portaria),
                 buildCardHome(
                   context,
                   title: 'Quadro de avisos',
@@ -130,7 +125,14 @@ class _HomePageState extends State<HomePage> {
                   iconApi: '${Consts.iconApi}financeiro.png',
                   pageRoute: ReservaEspacos(),
                 ),
-                buildCardCall(
+                buildCardHome(
+                  context,
+                  title: 'Polícia',
+                  iconApi: '${Consts.iconApi}notificacoes.png',
+                  numberCall: '190',
+                ),
+                buildCardHome(
+                  context,
                   title: 'Samu',
                   iconApi: '${Consts.iconApi}correspondencias.png',
                   numberCall: '192',
@@ -141,12 +143,8 @@ class _HomePageState extends State<HomePage> {
                 //   iconApi: '${Consts.iconApi}perfil.png',
                 //   pageRoute: MyProfileScreen(),
                 // ),
-                buildCardCall(
-                  title: 'Polícia',
-                  iconApi: '${Consts.iconApi}notificacoes.png',
-                  numberCall: '190',
-                ),
-                buildCardCall(
+                buildCardHome(
+                  context,
                   title: 'Bombeiros',
                   iconApi: '${Consts.iconApi}financeiro.png',
                   numberCall: '193',

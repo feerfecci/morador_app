@@ -30,7 +30,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             leading,
             size: 25,
           ),
-          title: ConstsWidget.buildTextTitle(title),
+          title: ConstsWidget.buildTextTitle(context, title),
           trailing: Icon(
             size: 30,
             trailing,

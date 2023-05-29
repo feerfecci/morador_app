@@ -27,7 +27,7 @@ buildCustomSnackBar(BuildContext context,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ConstsWidget.buildTextTitle(titulo, color: Colors.white
+        ConstsWidget.buildTextTitle(context, titulo, color: Colors.white
             // color: Theme.of(context).snackBarTheme.actionTextColor,
             ),
         ConstsWidget.buildTextSubTitle(texto, color: Colors.white

@@ -37,7 +37,8 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: size.height * 0.01),
-                      child: ConstsWidget.buildTextTitle('Salão de Festa'),
+                      child: ConstsWidget.buildTextTitle(
+                          context, 'Salão de Festa'),
                     ),
                     ConstsWidget.buildTextSubTitle('Início:'),
                     Row(

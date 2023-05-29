@@ -1,11 +1,13 @@
+import 'package:app_portaria/consts/consts_future.dart';
+import 'package:app_portaria/screens/avisos_chegada/chegada_screen.dart';
 import 'package:app_portaria/screens/carrinho/pagina1_screen.dart';
+import 'package:app_portaria/screens/correspondencia/correspondencia_screen.dart';
 import 'package:app_portaria/screens/duvidas/pagina2_screen.dart';
 import 'package:app_portaria/screens/home/home_page.dart';
+import 'package:app_portaria/screens/quadro_avisos/quadro_avisos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
 import 'consts/consts.dart';
-import 'notifications/notifi_service_corresp.dart';
 import 'widgets/custom_drawer/custom_drawer.dart';
 
 // ignore: must_be_immutable
@@ -43,7 +45,38 @@ class _ItensBottomState extends State<ItensBottom> {
         'idunidade': InfosMorador.idunidade.toString(),
         'idcond': InfosMorador.idcondominio.toString()
       });
-      OneSignal.shared.setEmail(email: InfosMorador.email.toString());
+      OneSignal.shared.setNotificationOpenedHandler((openedResult) {
+        print(
+            'Nosso print ${openedResult.notification.additionalData!.values.first}');
+        //correp
+        if (openedResult.notification.additionalData!.values.first ==
+            'corresp') {
+          ConstsFuture.navigatorPageRoute(
+              context, CorrespondenciaScreen(tipoAviso: 1));
+        }
+        //delivery
+        else if (openedResult.notification.additionalData!.values.first ==
+            'delivery') {
+          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+        }
+
+        //visita
+        else if (openedResult.notification.additionalData!.values.first ==
+            'visita') {
+          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+        }
+        //aviso
+        else if (openedResult.notification.additionalData!.values.first ==
+            'aviso') {
+          ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
+        } else {
+          ConstsFuture.navigatorPageRoute(
+              context, CorrespondenciaScreen(tipoAviso: 1));
+        }
+      });
+      InfosMorador.email != ''
+          ? OneSignal.shared.setEmail(email: InfosMorador.email.toString())
+          : null;
     });
   }
 
@@ -53,6 +86,15 @@ class _ItensBottomState extends State<ItensBottom> {
     return Scaffold(
       endDrawer: CustomDrawer(),
       appBar: AppBar(
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: Icon(Icons.phone)),
+        //   IconButton(
+        //       onPressed: () {},
+        //       icon: Icon(
+        //         Icons.menu_rounded,
+        //         size: size.height * 0.045,
+        //       ))
+        // ],
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: Padding(

@@ -71,7 +71,7 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ConstsWidget.buildTextTitle('Remetente'),
+                  ConstsWidget.buildTextTitle(context, 'Remetente'),
                   ConstsWidget.buildTextSubTitle('Envelope - 26/04/2023'),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -87,7 +87,7 @@ class _MercadoriaScreenState extends State<MercadoriaScreen> {
                     child: Row(
                       children: [
                         ConstsWidget.buildTextSubTitle('Informe o Protocolo: '),
-                        ConstsWidget.buildTextTitle('12346'),
+                        ConstsWidget.buildTextTitle(context, '12346'),
                       ],
                     ),
                   )

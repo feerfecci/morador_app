@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/notifications/notifi_service_corresp.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(text: 'lucasdasilva');
-  final passWordCtrl = TextEditingController(text: '123456');
+  final emailCtrl = TextEditingController();
+  final passWordCtrl = TextEditingController();
   bool isLoading = false;
   _startLoading() async {
     setState(() {

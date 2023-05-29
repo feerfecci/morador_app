@@ -1,13 +1,17 @@
 // ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class InfosMorador {
+  static bool responsavel = true;
   static int idmorador = 0;
+  static int idresponsavel = 0;
   static bool ativo = false;
   static int idcondominio = 0;
   static int idunidade = 0;
   static String nome_condominio = '';
   static String nome_morador = '';
+  static String nome_responsavel = '';
   static String unidade = '';
   static String divisao = '';
   static String login = '';

@@ -1,16 +1,13 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'dart:async';
-
 import 'package:app_portaria/repositories/biometric.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../../consts/consts_widget.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
-import '../../notifications/notifi_service_corresp.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

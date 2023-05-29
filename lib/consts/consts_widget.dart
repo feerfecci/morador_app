@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'consts.dart';
 
 class ConstsWidget {
-  static Widget buildTextTitle(String title,
-      {textAlign, color, double size = 16}) {
+  static Widget buildTextTitle(BuildContext context, String title,
+      {textAlign, Color? color, double size = 16}) {
     return Text(
       title,
       maxLines: 20,
       textAlign: textAlign,
       style: TextStyle(
-        color: color,
+        color: color ?? Theme.of(context).colorScheme.primary,
         fontSize: size,
         fontWeight: FontWeight.bold,
       ),

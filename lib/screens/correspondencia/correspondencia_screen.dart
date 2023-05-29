@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_final_fields, unused_local_variable
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -39,10 +37,11 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
       setState(() {
         CorrespondenciaScreen(tipoAviso: widget.tipoAviso);
         loadingRetirada = !loadingRetirada;
-        buildCustomSnackBar(context,
-            titulo: 'Retirada Solicitada',
-            texto: 'Agora pode retirar suas encomendas',
-            );
+        buildCustomSnackBar(
+          context,
+          titulo: 'Retirada Solicitada',
+          texto: 'Agora pode retirar suas encomendas',
+        );
       });
     });
   }
@@ -119,7 +118,8 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                               var datahora_ultima_atualizacao =
                                   correspInfos['datahora_ultima_atualizacao'];
                               return ListTile(
-                                  title: ConstsWidget.buildTextTitle(remetente),
+                                  title: ConstsWidget.buildTextTitle(
+                                      context, remetente),
                                   subtitle: ConstsWidget.buildTextSubTitle(
                                       '$descricao - $datahora_cadastro'),
                                   trailing: SizedBox(
@@ -164,7 +164,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                             : Center(
                                                 child:
                                                     ConstsWidget.buildTextTitle(
-                                                        protocolo)),
+                                                        context, protocolo)),
                                   ));
                             });
                       }
@@ -271,7 +271,7 @@ launchSolicitarRetirada(listaRetirada) async {
                               //                                 child: Column(
                               //                               crossAxisAlignment: CrossAxisAlignment.start,
                               //                               children: [
-                              //                                 ConstsWidget.buildTextTitle(remetente),
+                              //                                 ConstsWidget.buildTextTitle(context,remetente),
                               //                                 ConstsWidget.buildTextSubTitle(
                               //                                     '$descricao - $datahora_cadastro'),
                               //                                 // Padding(
@@ -291,7 +291,7 @@ launchSolicitarRetirada(listaRetirada) async {
                               //                                     children: [
                               //                                       ConstsWidget.buildTextSubTitle(
                               //                                           'Id Corresp: '),
-                              //                                       ConstsWidget.buildTextTitle(
+                              //                                       ConstsWidget.buildTextTitle(context,
                               //                                           '$idcorrespondencia'),
                               //                                     ],
                               //                                   ),
