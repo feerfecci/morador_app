@@ -3,6 +3,7 @@ import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:validatorless/validatorless.dart';
 import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
@@ -21,6 +22,7 @@ class CadastroMorador extends StatefulWidget {
   String nascimento;
   String? telefone;
   String? ddd;
+  String? email;
   String? documento;
   int? acesso;
   int? idunidade;
@@ -32,6 +34,7 @@ class CadastroMorador extends StatefulWidget {
       this.login,
       this.telefone,
       this.ddd,
+      this.email,
       this.nascimento = '',
       this.documento,
       this.acesso,
@@ -58,6 +61,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
 
   final _formKeyMorador = GlobalKey<FormState>();
   FormInfosMorador _formInfosMorador = FormInfosMorador();
+  String loginGerado = '';
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +71,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         : '';
     var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
     bool isChecked = acessoApi;
+    String dataLogin = '';
     var size = MediaQuery.of(context).size;
 
     return buildScaffoldAll(
       context,
+      resizeToAvoidBottomInset: true,
       body: buildHeaderPage(
         context,
         titulo: widget.idmorador == null ? 'Incluir Morador' : 'Editar Morador',
@@ -82,154 +88,212 @@ class _CadastroMoradorState extends State<CadastroMorador> {
           child: MyBoxShadow(
             child: Column(
               children: [
-                buildAtivoInativo2(
-                  context,
-                ),
-                buildMyTextFormObrigatorio(
-                  context,
-                  'Nome Completo',
-                  initialValue: widget.nome_morador,
-                  onSaved: (text) => _formInfosMorador =
-                      _formInfosMorador.copyWith(nome_morador: text),
-                ),
-                buildMyTextFormObrigatorio(
-                  context,
-                  'Usário de login',
-                  initialValue: widget.login,
-                  onSaved: (text) => _formInfosMorador =
-                      _formInfosMorador.copyWith(login: text),
-                ),
-                widget.idmorador == null
-                    ? buildMyTextFormObrigatorio(
-                        context,
-                        'Senha Login',
-                        onSaved: (text) => _formInfosMorador =
-                            _formInfosMorador.copyWith(senha: text),
-                      )
-                    : SizedBox(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: size.width * 0.37,
-                      child: buildMyTextFormField(context,
-                          initialValue: dataParsed,
-                          title: 'Data de Nascimento',
-                          keyboardType: TextInputType.number,
-                          mask: '##/##/####',
-                          hintText: '##/##/####', onSaved: (text) {
-                        // var replace = text!.replaceAll('/', '-');
+                    // buildAtivoInativo2(
+                    //   context,
+                    // ),
+                    buildMyTextFormObrigatorio(
+                      context,
+                      title: 'Nome Completo',
+                      initialValue: widget.nome_morador,
+                      onSaved: (text) => _formInfosMorador =
+                          _formInfosMorador.copyWith(nome_morador: text),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.37,
+                          child: buildMyTextFormObrigatorio(context,
+                              initialValue: dataParsed,
+                              title: 'Data de Nascimento',
+                              keyboardType: TextInputType.number,
+                              mask: '##/##/####',
+                              hintText: '##/##/####', onSaved: (text) {
+                            // var replace = text!.replaceAll('/', '-');
 
-                        var ano = text!.substring(6);
-                        var mes = text.substring(3, 5);
-                        var dia = text.substring(0, 2);
-                        // print(replace);
+                            var ano = text!.substring(6);
+                            var mes = text.substring(3, 5);
+                            var dia = text.substring(0, 2);
+                            dataLogin = '$dia$mes';
+                            // print(replace);
 
-                        _formInfosMorador = _formInfosMorador.copyWith(
-                            nascimento: '$ano-$mes-$dia');
-                      }),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.5,
-                      child: buildMyTextFormField(
-                        context,
-                        title: 'Documento',
-                        initialValue: widget.documento,
-                        keyboardType: TextInputType.number,
-                        hintText: 'RG, CPF',
-                        onSaved: (text) => _formInfosMorador =
-                            _formInfosMorador.copyWith(documento: text),
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.145,
-                      child: buildMyTextFormField(context,
-                          initialValue: widget.ddd,
-                          onSaved: (text) => _formInfosMorador =
-                              _formInfosMorador.copyWith(ddd: text),
-                          title: 'DDD',
-                          keyboardType: TextInputType.number,
-                          mask: '##',
-                          hintText: '11'),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.5,
-                      child: buildMyTextFormField(
-                        context,
-                        initialValue: widget.telefone,
-                        title: 'Telefone',
-                        keyboardType: TextInputType.number,
-                        mask: '# ########',
-                        hintText: '9 11223344',
-                        onSaved: (text) => _formInfosMorador =
-                            _formInfosMorador.copyWith(telefone: text),
-                      ),
-                    ),
-                  ],
-                ),
-                ListTile(
-                  title: ConstsWidget.buildTextTitle(
-                      context, 'Permitir acesso ao sistema'),
-                  trailing: StatefulBuilder(builder: (context, setState) {
-                    return SizedBox(
-                        width: size.width * 0.125,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Checkbox(
-                              value: isChecked,
-                              activeColor: Consts.kColorApp,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                  int salvaAcesso = isChecked == true ? 1 : 0;
-                                  _formInfosMorador = _formInfosMorador
-                                      .copyWith(acesso: salvaAcesso);
-                                });
-                              },
-                            ),
-                          ],
-                        ));
-                  }),
-                ),
-                ConstsWidget.buildCustomButton(
-                  context,
-                  'Salvar',
-                  onPressed: () {
-                    var formValid =
-                        _formKeyMorador.currentState?.validate() ?? false;
-                    if (formValid) {
-                      _formKeyMorador.currentState?.save();
-                      String restoApi;
-                      widget.idmorador == null
-                          ? restoApi =
-                              'incluirMorador&senha=${_formInfosMorador.senha}'
-                          : restoApi = 'editarMorador&id=${widget.idmorador}';
-                      ConstsFuture.changeApi(
-                        // print(
-                        '${Consts.apiUnidade}moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&acessa_sistema=${_formInfosMorador.acesso}',
-                      ).whenComplete(() {
-                        ConstsFuture.navigatorPopAndReplacement(
+                            _formInfosMorador = _formInfosMorador.copyWith(
+                                nascimento: '$ano-$mes-$dia');
+                          }),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.5,
+                          child: buildMyTextFormObrigatorio(
                             context,
-                            ListaMoradores(
-                              idunidade: widget.idunidade,
-                            ));
-                        buildCustomSnackBar(context,
-                            titulo: 'Parabens',
-                            texto: 'Dados Alterados com sucesso');
-                      });
-                    } else {
-                      print(formValid.toString());
-                    }
-                  },
-                )
+                            title: 'Documento',
+                            initialValue: widget.documento,
+                            keyboardType: TextInputType.number,
+                            hintText: 'RG, CPF',
+                            onSaved: (text) => _formInfosMorador =
+                                _formInfosMorador.copyWith(documento: text),
+                          ),
+                        )
+                      ],
+                    ),
+                    //Contatos
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: ConstsWidget.buildTextTitle(context, 'Contatos'),
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.145,
+                          child: buildMyTextFormObrigatorio(context,
+                              initialValue: widget.ddd,
+                              onSaved: (text) => _formInfosMorador =
+                                  _formInfosMorador.copyWith(ddd: text),
+                              title: 'DDD',
+                              keyboardType: TextInputType.number,
+                              mask: '##',
+                              hintText: '11'),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.1,
+                        ),
+                        SizedBox(
+                          width: size.width * 0.5,
+                          child: buildMyTextFormObrigatorio(
+                            context,
+                            initialValue: widget.telefone,
+                            title: 'Telefone',
+                            keyboardType: TextInputType.number,
+                            mask: '# ########',
+                            hintText: '9 11223344',
+                            onSaved: (text) => _formInfosMorador =
+                                _formInfosMorador.copyWith(telefone: text),
+                          ),
+                        ),
+                      ],
+                    ),
+                    buildMyTextFormObrigatorio(
+                      context,
+                      title: 'Email',
+                      initialValue: widget.email,
+                      hintText: 'exemplo@exc.com',
+                      onSaved: (text) => _formInfosMorador =
+                          _formInfosMorador.copyWith(email: text),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: ConstsWidget.buildCustomButton(
+                        context,
+                        'Gerar Login',
+                        onPressed: () {
+                          var formValid =
+                              _formKeyMorador.currentState?.validate() ?? false;
+                          if (formValid) {
+                            _formKeyMorador.currentState?.save();
+                            List nomeEmLista =
+                                _formInfosMorador.nome_morador!.split(' ');
+                            List listaNome = nomeEmLista;
+
+                            setState(() {
+                              loginGerado =
+                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}$dataLogin';
+                              print(loginGerado);
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                //Login Gerado
+                if (loginGerado != '')
+                  Column(
+                    children: [
+                      buildMyTextFormField(
+                        context,
+                        title: 'Usário de login',
+                        initialValue: loginGerado,
+                        readOnly: true,
+                        onSaved: (text) => _formInfosMorador =
+                            _formInfosMorador.copyWith(login: text),
+                      ),
+                      if (widget.idmorador == null)
+                        buildMyTextFormField(
+                          context,
+                          title: 'Senha Login',
+                          onSaved: (text) => _formInfosMorador =
+                              _formInfosMorador.copyWith(senha: text),
+                        ),
+                      ListTile(
+                        title: ConstsWidget.buildTextTitle(
+                            context, 'Permitir acesso ao sistema'),
+                        trailing: StatefulBuilder(builder: (context, setState) {
+                          return SizedBox(
+                              width: size.width * 0.125,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Checkbox(
+                                    value: isChecked,
+                                    activeColor: Consts.kColorApp,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        isChecked = value!;
+                                        int salvaAcesso =
+                                            isChecked == true ? 1 : 0;
+                                        _formInfosMorador = _formInfosMorador
+                                            .copyWith(acesso: salvaAcesso);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ));
+                        }),
+                      ),
+                      ConstsWidget.buildCustomButton(
+                        context,
+                        'Salvar',
+                        onPressed: () {
+                          var formValid =
+                              _formKeyMorador.currentState?.validate() ?? false;
+                          if (formValid) {
+                            _formKeyMorador.currentState?.save();
+                            String restoApi;
+                            widget.idmorador == null
+                                ? restoApi =
+                                    'incluirMorador&senha=${_formInfosMorador.senha}'
+                                : restoApi =
+                                    'editarMorador&id=${widget.idmorador}';
+                            ConstsFuture.changeApi(
+                              // print(
+                              '${Consts.apiUnidade}moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&acessa_sistema=${_formInfosMorador.acesso}',
+                            ).then((value) {
+                              if (!value['erro']) {
+                                ConstsFuture.navigatorPopAndReplacement(
+                                    context,
+                                    ListaMoradores(
+                                      idunidade: widget.idunidade,
+                                    ));
+                                buildCustomSnackBar(context,
+                                    titulo: 'Parabens',
+                                    texto: value['mensagem']);
+                              } else {
+                                buildCustomSnackBar(context,
+                                    titulo: 'Erro!', texto: value['mensagem']);
+                              }
+                            });
+                          } else {
+                            print(formValid.toString());
+                          }
+                        },
+                      )
+                    ],
+                  )
               ],
             ),
           ),
