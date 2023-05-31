@@ -9,6 +9,7 @@ class FormInfosMorador {
   final String? documento;
   final String? telefone;
   final String? ddd;
+  final String? email;
   final int? acesso;
   int? iddivisao;
   FormInfosMorador({
@@ -20,6 +21,7 @@ class FormInfosMorador {
     this.nascimento = '',
     this.telefone = '',
     this.ddd = '',
+    this.email = '',
     this.acesso = 0,
     this.iddivisao = 0,
   });
@@ -32,6 +34,7 @@ class FormInfosMorador {
       String? nascimento,
       String? telefone,
       String? ddd,
+      String? email,
       int? acesso,
       int? iddivisao}) {
     return FormInfosMorador(
@@ -43,6 +46,7 @@ class FormInfosMorador {
         nascimento: nascimento ?? this.nascimento,
         telefone: telefone ?? this.telefone,
         ddd: ddd ?? this.ddd,
+        email: email ?? this.email,
         acesso: acesso ?? this.acesso,
         iddivisao: iddivisao ?? this.iddivisao);
   }

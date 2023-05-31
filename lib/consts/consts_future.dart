@@ -50,7 +50,7 @@ class ConstsFuture {
       bool erro = apiBody['erro'];
       if (!erro) {
         var apiInfos = apiBody['login'][0];
-        if (apiInfos['acessa_sistema'] == 1 ||
+        if (apiInfos['acessa_sistema'] == true ||
             apiInfos['acessa_sistema'] == null) {
           if (InfosMorador.responsavel = !apiInfos['responsavel']) {
             //login morador
@@ -109,12 +109,13 @@ class ConstsFuture {
     }
   }
 
-  static Future<http.Response> changeApi(String api) {
-    return http.post(
-      Uri.parse(api),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
+  static Future<dynamic> changeApi(String api) async {
+    var url = Uri.parse(api);
+    var resposta = await http.get(url);
+    if (resposta.statusCode == 200) {
+      return json.decode(resposta.body);
+    } else {
+      return false;
+    }
   }
 }

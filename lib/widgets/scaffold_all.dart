@@ -2,9 +2,11 @@ import 'package:app_portaria/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 Widget buildScaffoldAll(context,
-    {required Widget? body, Widget? floatingActionButton}) {
+    {required Widget? body,
+    Widget? floatingActionButton,
+    bool? resizeToAvoidBottomInset}) {
   return Scaffold(
-    resizeToAvoidBottomInset: false,
+    resizeToAvoidBottomInset: resizeToAvoidBottomInset,
     floatingActionButton: floatingActionButton,
     appBar: AppBar(
       backgroundColor: Colors.transparent,

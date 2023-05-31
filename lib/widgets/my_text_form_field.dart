@@ -10,6 +10,7 @@ Widget buildMyTextFormField(BuildContext context,
     List<TextInputFormatter>? inputFormatters,
     String? hintText,
     String? initialValue,
+    readOnly = false,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
   return Padding(
@@ -19,13 +20,14 @@ Widget buildMyTextFormField(BuildContext context,
       inputFormatters: [MaskTextInputFormatter(mask: mask)],
       initialValue: initialValue,
       onSaved: onSaved,
+      readOnly: readOnly,
       textAlign: TextAlign.start,
       textInputAction: TextInputAction.next,
       keyboardType: keyboardType,
       maxLines: 5,
       minLines: 1,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: size.width * 0.04),
+        contentPadding: EdgeInsets.only(left: size.width * 0.02),
         filled: true,
         fillColor: Theme.of(context).canvasColor,
         label: Text(title),
@@ -42,11 +44,15 @@ Widget buildMyTextFormField(BuildContext context,
   );
 }
 
-Widget buildMyTextFormObrigatorio(BuildContext context, String title,
-    {String mensagem = 'Este campo é obrigatótio',
+Widget buildMyTextFormObrigatorio(BuildContext context,
+    {String title = '',
+    String mensagem = 'Este campo é obrigatótio',
     List<TextInputFormatter>? inputFormatters,
+    String? mask,
+    TextInputType? keyboardType,
     String? hintText,
     String? initialValue,
+    bool readOnly = false,
     String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
@@ -54,24 +60,25 @@ Widget buildMyTextFormObrigatorio(BuildContext context, String title,
     padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
     child: TextFormField(
       initialValue: initialValue,
+      keyboardType: keyboardType,
+      inputFormatters: [MaskTextInputFormatter(mask: mask)],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textAlign: TextAlign.start,
       textInputAction: TextInputAction.next,
       onSaved: onSaved,
       maxLines: 5,
       minLines: 1,
-      
-      onFieldSubmitted: (value) {
+      readOnly: readOnly,
+      // onFieldSubmitted: (value) {
+      //   print(value.toString());
+      // },
+      // onEditingComplete: () {
+      //   print('onEditingComplete');
+      // },
+      // onTapOutside: (event) {
+      //   print('onTapOutside');
+      // },
 
-        print(value.toString());
-      },
-      onEditingComplete: () {
-        print('onEditingComplete');
-      },
-      onTapOutside: (event) {
-        print('onTapOutside');
-      },
-      inputFormatters: inputFormatters,
       validator: Validatorless.multiple([Validatorless.required(mensagem)]),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: size.width * 0.02),

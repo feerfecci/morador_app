@@ -3,10 +3,8 @@
 import 'package:flutter/material.dart';
 
 class InfosMorador {
-  static bool responsavel = true;
   static int idmorador = 0;
   static int idresponsavel = 0;
-  static bool ativo = false;
   static int idcondominio = 0;
   static int iddivisao = 0;
   static int idunidade = 0;
@@ -20,10 +18,12 @@ class InfosMorador {
   static String telefone = '';
   static String email = '';
   static String data_nascimento = '';
-  static bool acessa_sistema = false;
   static String datahora_cadastro = '';
   static String datahora_ultima_atualizacao = '';
   static String telefone_portaria = '';
+  static bool responsavel = true;
+  static bool ativo = false;
+  static bool acessa_sistema = false;
 }
 
 class Consts {
