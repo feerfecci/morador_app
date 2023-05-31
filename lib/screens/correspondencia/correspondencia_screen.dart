@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
+import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -48,6 +49,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String numProtocolo = '';
     bool isChecked = false;
     var size = MediaQuery.of(context).size;
     return buildScaffoldAll(context,
@@ -81,11 +83,12 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                               height: size.height * 0.03,
                               width: size.width * 0.03),
                         );
-                      } else if (snapshot.hasError) {
+                      } else if (snapshot.hasError || !snapshot.hasData) {
                         return Text('Algo deu errado! Volte Mais tarde!');
-                      } else if (snapshot.data['erro'] == true) {
-                        return Text(snapshot.data['mensagem']);
                       } else {
+                        if (snapshot.data['erro'] == true) {
+                          return PageVazia(title: snapshot.data['mensagem']);
+                        }
                         return ListView.builder(
                             shrinkWrap: true,
                             physics: ClampingScrollPhysics(),
@@ -110,7 +113,8 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                               var tipo = correspInfos['tipo'];
                               var remetente = correspInfos['remetente'];
                               var descricao = correspInfos['descricao'];
-                              var protocolo = correspInfos['protocolo'];
+                              var protocolo =
+                                  numProtocolo = correspInfos['protocolo'];
                               numeroProtocolo = protocolo;
                               var datahora_cadastro = DateFormat('dd/MM/yyyy')
                                   .format(DateTime.parse(
@@ -169,17 +173,19 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                             });
                       }
                     }),
-                ConstsWidget.buildLoadingButton(
-                  context,
-                  title: 'Solicitar Retirada',
-                  color: numeroProtocolo == '' ? Consts.kColorApp : Colors.grey,
-                  isLoading: loadingRetirada,
-                  onPressed: numeroProtocolo == ''
-                      ? () {
-                          carregandoRetirada();
-                        }
-                      : () {},
-                ),
+                if (numProtocolo != '')
+                  ConstsWidget.buildLoadingButton(
+                    context,
+                    title: 'Solicitar Retirada',
+                    color:
+                        numeroProtocolo == '' ? Consts.kColorApp : Colors.grey,
+                    isLoading: loadingRetirada,
+                    onPressed: numeroProtocolo == ''
+                        ? () {
+                            carregandoRetirada();
+                          }
+                        : () {},
+                  ),
               ],
             ),
           ),

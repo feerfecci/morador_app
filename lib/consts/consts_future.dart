@@ -26,6 +26,17 @@ class ConstsFuture {
     );
   }
 
+  static Future navigatorPopAndReplacement(
+      BuildContext context, Widget pageRoute) {
+    Navigator.pop(context);
+    return Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => pageRoute,
+      ),
+    );
+  }
+
   static efetuaLogin(context, String user, String senha) async {
     var senhacripto = md5.convert(utf8.encode(senha)).toString();
     Timer(Duration(hours: 1), () {
@@ -37,44 +48,58 @@ class ConstsFuture {
     if (resposta.statusCode == 200) {
       var apiBody = json.decode(resposta.body);
       bool erro = apiBody['erro'];
-      var apiInfos = apiBody['login'][0];
       if (!erro) {
-        if (InfosMorador.responsavel = !apiInfos['responsavel']) {
-          InfosMorador.idmorador = apiInfos['id'];
-          InfosMorador.ativo = apiInfos['ativo'];
-          InfosMorador.idcondominio = apiInfos['idcondominio'];
-          InfosMorador.idunidade = apiInfos['idunidade'];
-          InfosMorador.nome_condominio = apiInfos['nome_condominio'];
-          InfosMorador.nome_morador = apiInfos['nome_morador'];
-          InfosMorador.unidade = apiInfos['unidade'];
-          InfosMorador.divisao = apiInfos['divisao'];
-          InfosMorador.login = apiInfos['login'];
-          InfosMorador.documento = apiInfos['documento'];
-          InfosMorador.telefone = apiInfos['telefone'];
-          InfosMorador.email = apiInfos['email'];
-          InfosMorador.data_nascimento = apiInfos['data_nascimento'];
-          InfosMorador.acessa_sistema = apiInfos['acessa_sistema'];
-          InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];
-          InfosMorador.telefone_portaria = apiInfos['telefone_portaria'];
-          InfosMorador.datahora_ultima_atualizacao =
-              apiInfos['datahora_ultima_atualizacao'];
+        var apiInfos = apiBody['login'][0];
+        if (apiInfos['acessa_sistema'] == 1 ||
+            apiInfos['acessa_sistema'] == null) {
+          if (InfosMorador.responsavel = !apiInfos['responsavel']) {
+            //login morador
+            InfosMorador.responsavel = apiInfos['responsavel'];
+            InfosMorador.idmorador = apiInfos['id'];
+            InfosMorador.iddivisao = apiInfos['iddivisao'];
+            InfosMorador.ativo = apiInfos['ativo'];
+            InfosMorador.idcondominio = apiInfos['idcondominio'];
+            InfosMorador.idunidade = apiInfos['idunidade'];
+            InfosMorador.nome_condominio = apiInfos['nome_condominio'];
+            InfosMorador.nome_morador = apiInfos['nome_morador'];
+            InfosMorador.numero = apiInfos['unidade'];
+            InfosMorador.divisao = apiInfos['divisao'];
+            InfosMorador.login = apiInfos['login'];
+            InfosMorador.documento = apiInfos['documento'];
+            InfosMorador.telefone = apiInfos['telefone'];
+            InfosMorador.email = apiInfos['email'];
+            InfosMorador.data_nascimento = apiInfos['data_nascimento'];
+            InfosMorador.acessa_sistema = apiInfos['acessa_sistema'];
+            InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];
+            InfosMorador.telefone_portaria = apiInfos['telefone_portaria'];
+            InfosMorador.datahora_ultima_atualizacao =
+                apiInfos['datahora_ultima_atualizacao'];
+          } else {
+            //login responsável
+            InfosMorador.responsavel = apiInfos['responsavel'];
+            InfosMorador.iddivisao = apiInfos['iddivisao'];
+            InfosMorador.ativo = apiInfos['ativo'];
+            InfosMorador.idcondominio = apiInfos['idcondominio'];
+            InfosMorador.idunidade = apiInfos['idunidade'];
+            InfosMorador.nome_condominio = apiInfos['nome_condominio'];
+            InfosMorador.nome_responsavel = apiInfos['nome_responsavel'];
+            InfosMorador.numero = apiInfos['unidade'];
+            InfosMorador.divisao = apiInfos['divisao'];
+            InfosMorador.login = apiInfos['login'];
+            InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];
+            InfosMorador.telefone_portaria = apiInfos['telefone_portaria'];
+            InfosMorador.datahora_ultima_atualizacao =
+                apiInfos['datahora_ultima_atualizacao'];
+          }
         } else {
-          InfosMorador.responsavel = apiInfos['responsavel'];
-          InfosMorador.ativo = apiInfos['ativo'];
-          InfosMorador.idcondominio = apiInfos['idcondominio'];
-          InfosMorador.idunidade = apiInfos['idunidade'];
-          InfosMorador.nome_condominio = apiInfos['nome_condominio'];
-          InfosMorador.nome_responsavel = apiInfos['nome_responsavel'];
-          InfosMorador.unidade = apiInfos['unidade'];
-          InfosMorador.divisao = apiInfos['divisao'];
-          InfosMorador.login = apiInfos['login'];
-          InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];
-          InfosMorador.telefone_portaria = apiInfos['telefone_portaria'];
-          InfosMorador.datahora_ultima_atualizacao =
-              apiInfos['datahora_ultima_atualizacao'];
+          buildCustomSnackBar(context,
+              titulo: "Algo deu errado!!", texto: 'Você não tem acesso!');
+
+          return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
         }
 
-        ConstsFuture.navigatorPopAndPush(context, ItensBottom(currentTab: 0));
+        return ConstsFuture.navigatorPopAndPush(
+            context, ItensBottom(currentTab: 0));
       } else {
         ConstsFuture.navigatorPopAndPush(context, LoginScreen());
         LocalPreferences.removeUserLogin();
@@ -82,5 +107,14 @@ class ConstsFuture {
             titulo: "Algo deu errado!!", texto: apiBody['mensagem']);
       }
     }
+  }
+
+  static Future<http.Response> changeApi(String api) {
+    return http.post(
+      Uri.parse(api),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
   }
 }

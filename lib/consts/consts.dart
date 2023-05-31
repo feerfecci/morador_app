@@ -8,11 +8,12 @@ class InfosMorador {
   static int idresponsavel = 0;
   static bool ativo = false;
   static int idcondominio = 0;
+  static int iddivisao = 0;
   static int idunidade = 0;
   static String nome_condominio = '';
   static String nome_morador = '';
   static String nome_responsavel = '';
-  static String unidade = '';
+  static String numero = '';
   static String divisao = '';
   static String login = '';
   static String documento = '';

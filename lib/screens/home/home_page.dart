@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:app_portaria/screens/cadastro/cadastro_screen.dart';
+import 'package:app_portaria/screens/cadastro/listar_moradores.dart';
 import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       titulo: InfosMorador.nome_responsavel == ''
           ? InfosMorador.nome_morador
           : InfosMorador.nome_responsavel,
-      subTitulo: '${InfosMorador.divisao} - ${InfosMorador.unidade}',
+      subTitulo: '${InfosMorador.divisao} - ${InfosMorador.numero}',
       widget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,15 +62,9 @@ class _HomePageState extends State<HomePage> {
               numberCall: InfosMorador.telefone_portaria,
             ),
           ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 2,
-            ),
-            itemBuilder: (context, index) {},
-          ),
-          GridView.count(
+
+          if (!InfosMorador.responsavel)
+            GridView.count(
               physics: ClampingScrollPhysics(),
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -86,7 +80,6 @@ class _HomePageState extends State<HomePage> {
                     tipoAviso: 1,
                   ),
                 ),
-
                 buildCardHome(
                   context,
                   title: 'Delivery',
@@ -107,48 +100,65 @@ class _HomePageState extends State<HomePage> {
                     tipoAviso: 2,
                   ),
                 ),
+              ],
+            ),
+
+          GridView.count(
+              physics: ClampingScrollPhysics(),
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              childAspectRatio: 1.6,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 0.5,
+              children: [
                 buildCardHome(
                   context,
                   title: 'Quadro de avisos',
                   iconApi: '${Consts.iconApiPort}avisos.png',
                   pageRoute: QuadroAvisosScreen(),
                 ),
+
                 buildCardHome(
                   context,
                   title: 'Cadastros',
                   iconApi: '${Consts.iconApi}perfil.png',
-                  pageRoute: CadastroScreen(),
+                  pageRoute: ListaMoradores(),
                 ),
-                buildCardHome(
-                  context,
-                  title: 'Reserva de Espaços',
-                  iconApi: '${Consts.iconApi}financeiro.png',
-                  pageRoute: ReservaEspacos(),
-                ),
-                buildCardHome(
-                  context,
-                  title: 'Polícia',
-                  iconApi: '${Consts.iconApi}notificacoes.png',
-                  numberCall: '190',
-                ),
-                buildCardHome(
-                  context,
-                  title: 'Samu',
-                  iconApi: '${Consts.iconApi}correspondencias.png',
-                  numberCall: '192',
-                ),
+                if (!InfosMorador.responsavel)
+                  buildCardHome(
+                    context,
+                    title: 'Reserva de Espaços',
+                    iconApi: '${Consts.iconApi}financeiro.png',
+                    pageRoute: ReservaEspacos(),
+                  ),
+                if (!InfosMorador.responsavel)
+                  buildCardHome(
+                    context,
+                    title: 'Polícia',
+                    iconApi: '${Consts.iconApi}notificacoes.png',
+                    numberCall: '190',
+                  ),
+
+                if (!InfosMorador.responsavel)
+                  buildCardHome(
+                    context,
+                    title: 'Samu',
+                    iconApi: '${Consts.iconApi}correspondencias.png',
+                    numberCall: '192',
+                  ),
                 // buildCardHome(
                 //   context,
                 //   title: 'Sos Portaria',
                 //   iconApi: '${Consts.iconApi}perfil.png',
                 //   pageRoute: MyProfileScreen(),
                 // ),
-                buildCardHome(
-                  context,
-                  title: 'Bombeiros',
-                  iconApi: '${Consts.iconApi}financeiro.png',
-                  numberCall: '193',
-                ),
+                if (!InfosMorador.responsavel)
+                  buildCardHome(
+                    context,
+                    title: 'Bombeiros',
+                    iconApi: '${Consts.iconApi}financeiro.png',
+                    numberCall: '193',
+                  ),
                 //////
                 // buildCardHome(
                 //   context,

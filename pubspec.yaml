@@ -26,6 +26,7 @@ dependencies:
   intl:
   shimmer: ^3.0.0
   
+  
 flutter_icons:
   image_path: "assets/portaria.png"
   ios: true

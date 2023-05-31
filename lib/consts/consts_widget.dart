@@ -112,4 +112,17 @@ class ConstsWidget {
                 ],
               ));
   }
+
+  static Widget buildAtivoInativo(BuildContext context, bool ativo) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      decoration: BoxDecoration(
+          color: ativo ? Colors.green : Colors.red,
+          borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(size.height * 0.01),
+        child: buildTextTitle(context, ativo ? 'Ativo' : 'Inativo'),
+      ),
+    );
+  }
 }

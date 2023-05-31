@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:app_portaria/consts/consts.dart';
+import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
+import 'package:app_portaria/screens/cadastro/listar_moradores.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
@@ -21,7 +24,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
     Widget buidListTile(
         {required String title,
         required IconData leading,
-        IconData trailing = Icons.keyboard_arrow_right_outlined}) {
+        IconData trailing = Icons.keyboard_arrow_right_outlined,
+        void Function()? onPressed}) {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
         child: ListTile(
@@ -31,9 +35,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             size: 25,
           ),
           title: ConstsWidget.buildTextTitle(context, title),
-          trailing: Icon(
-            size: 30,
-            trailing,
+          trailing: IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              size: 30,
+              trailing,
+            ),
           ),
         ),
       );
@@ -75,16 +82,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
               ),
-              buidListTile(
-                title: 'pagina 1',
-                leading: Icons.accessible,
-              ),
-              buidListTile(
-                  title: 'pagina 2', leading: Icons.wrap_text_outlined),
-              buidListTile(
-                  title: 'pagina 3', leading: Icons.invert_colors_on_sharp),
-              buidListTile(
-                  title: 'pagina 4', leading: Icons.price_check_outlined),
+              if (InfosMorador.responsavel)
+                buidListTile(
+                  title: 'Cadastros',
+                  leading: Icons.person,
+                  onPressed: () {
+                    // ConstsFuture.navigatorPageRoute(context, CadastroScreen());
+                  },
+                ),
               ChangeThemeButton(),
               Spacer(),
               Padding(

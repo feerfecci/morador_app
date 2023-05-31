@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 Widget buildScaffoldAll(context,
     {required Widget? body, Widget? floatingActionButton}) {
   return Scaffold(
+    resizeToAvoidBottomInset: false,
     floatingActionButton: floatingActionButton,
     appBar: AppBar(
       backgroundColor: Colors.transparent,

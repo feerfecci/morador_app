@@ -17,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController();
-  final passWordCtrl = TextEditingController();
+  final emailCtrl = TextEditingController(text: 'fernandofecci');
+  final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
     setState(() {
@@ -178,6 +178,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                   child: Column(
                     children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.height * 0.05),
+                        child:
+                            ConstsWidget.buildTextTitle(context, 'App Morador'),
+                      ),
                       buildTextFormEmail(0.04),
                       SizedBox(
                         height: 20,

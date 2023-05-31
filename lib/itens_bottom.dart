@@ -43,7 +43,9 @@ class _ItensBottomState extends State<ItensBottom> {
       OneSignal.shared.sendTags({
         'idmorador': InfosMorador.idmorador.toString(),
         'idunidade': InfosMorador.idunidade.toString(),
-        'idcond': InfosMorador.idcondominio.toString()
+        'idcond': InfosMorador.idcondominio.toString(),
+        // 'isresponsavel': InfosMorador.responsavel.toString(),
+        // 'ismorador': InfosMorador.responsavel ? false : true,
       });
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
         print(

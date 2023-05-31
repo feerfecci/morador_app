@@ -46,14 +46,18 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                       children: [
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data',
-                              inputFormatters: [
-                                MaskTextInputFormatter(mask: '##/##'),
-                              ]),
+                          child: buildMyTextFormField(
+                            context,
+                            title: 'Data',
+                            inputFormatters: [
+                              MaskTextInputFormatter(mask: '##/##'),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Horario',
+                          child: buildMyTextFormField(context,
+                              title: 'Horario',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##:##'),
                               ]),
@@ -66,14 +70,16 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                       children: [
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Data',
+                          child: buildMyTextFormField(context,
+                              title: 'Data',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##/##'),
                               ]),
                         ),
                         SizedBox(
                           width: size.width * 0.42,
-                          child: buildMyTextFormField(context, 'Horario',
+                          child: buildMyTextFormField(context,
+                              title: 'Horario',
                               inputFormatters: [
                                 MaskTextInputFormatter(mask: '##:##'),
                               ]),
@@ -82,7 +88,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                     ),
                     buildMyTextFormField(
                       context,
-                      'Quantidade de Pessoas',
+                      title: 'Quantidade de Pessoas',
                     ),
                     SizedBox(
                       height: size.height * 0.005,

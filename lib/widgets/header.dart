@@ -1,3 +1,5 @@
+import 'package:app_portaria/consts/consts.dart';
+import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:flutter/material.dart';
 
 Widget buildHeaderPage(
@@ -20,29 +22,29 @@ Widget buildHeaderPage(
                 builder: (context, value, child) {
                   return Opacity(
                     opacity: value,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.only(top: value * size.height * 0.000),
-                      child: child,
-                    ),
+                    child: child,
                   );
                 },
                 duration: Duration(milliseconds: 800),
                 child: Column(
                   children: [
-                    Text(
-                      titulo,
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                    Text(
-                      subTitulo,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
+                    // Text(
+                    //   titulo,
+                    //   style: TextStyle(
+                    //       fontSize: 40,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Theme.of(context).colorScheme.primary),
+                    // ),
+                    ConstsWidget.buildTextTitle(context, titulo,
+                        size: 24, textAlign: TextAlign.center),
+                    ConstsWidget.buildTextTitle(context, subTitulo,
+                        textAlign: TextAlign.center),
+                    // Text(
+                    //   subTitulo,
+                    //   style: TextStyle(
+                    //       fontSize: 20,
+                    //       color: Theme.of(context).colorScheme.primary),
+                    // ),
                   ],
                 ),
               ),

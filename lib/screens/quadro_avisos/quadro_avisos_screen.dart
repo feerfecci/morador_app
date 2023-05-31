@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
+import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -45,62 +46,66 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
-                } else if (snapshot.hasError ||
-                    snapshot.data['mensagem'] == '') {
+                } else if (snapshot.hasError || !snapshot.hasData) {
                   return Text('Algo deu errado');
-                }
-                return ListView.builder(
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data['avisos'].length,
-                  itemBuilder: (context, index) {
-                    var apiQuadro = snapshot.data['avisos'][index];
-                    var idaviso = apiQuadro['idaviso'];
-                    var tipo = apiQuadro['tipo'];
-                    var titulo = apiQuadro['titulo'];
-                    var txt_tipo = apiQuadro['txt_tipo'];
-                    var texto = apiQuadro['texto'];
-                    var datahora = DateFormat('dd/MM/yyyy HH:mm')
-                        .format(DateTime.parse(apiQuadro['datahora']));
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: size.height * 0.01),
-                      child: ListTile(
-                        leading: SizedBox(
-                          width: size.height * 0.1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              txt_tipo == 'Manutenção'
-                                  ? Icon(
-                                      Icons.engineering,
-                                      size: 40,
-                                    )
-                                  : Icon(
-                                      Icons.warning,
-                                      size: 40,
-                                    ),
-                              ConstsWidget.buildTextSubTitle(txt_tipo)
-                            ],
-                          ),
-                        ),
-                        title: ConstsWidget.buildTextTitle(context, titulo),
-                        subtitle: Padding(
+                } else {
+                  if (snapshot.data['erro']) {
+                    return PageVazia(title: snapshot.data['mensagem']);
+                  } else {
+                    return ListView.builder(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data['avisos'].length,
+                      itemBuilder: (context, index) {
+                        var apiQuadro = snapshot.data['avisos'][index];
+                        var idaviso = apiQuadro['idaviso'];
+                        var tipo = apiQuadro['tipo'];
+                        var titulo = apiQuadro['titulo'];
+                        var txt_tipo = apiQuadro['txt_tipo'];
+                        var texto = apiQuadro['texto'];
+                        var datahora = DateFormat('dd/MM/yyyy HH:mm')
+                            .format(DateTime.parse(apiQuadro['datahora']));
+                        return Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: size.height * 0.01),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ConstsWidget.buildTextSubTitle(texto),
-                              ConstsWidget.buildTextSubTitle(datahora),
-                            ],
+                          child: ListTile(
+                            leading: SizedBox(
+                              width: size.height * 0.1,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  txt_tipo == 'Manutenção'
+                                      ? Icon(
+                                          Icons.engineering,
+                                          size: 40,
+                                        )
+                                      : Icon(
+                                          Icons.warning,
+                                          size: 40,
+                                        ),
+                                  ConstsWidget.buildTextSubTitle(txt_tipo)
+                                ],
+                              ),
+                            ),
+                            title: ConstsWidget.buildTextTitle(context, titulo),
+                            subtitle: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.01),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ConstsWidget.buildTextSubTitle(texto),
+                                  ConstsWidget.buildTextSubTitle(datahora),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     );
-                  },
-                );
+                  }
+                }
               })),
     );
   }
