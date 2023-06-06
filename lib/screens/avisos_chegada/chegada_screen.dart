@@ -76,37 +76,40 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                         String datahora = DateFormat('dd/MM/yyyy - HH:mm')
                             .format(DateTime.parse(apiChegada['datahora']));
 
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.01),
-                          child: ListTile(
-                            title: ConstsWidget.buildTextTitle(context, titulo),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ConstsWidget.buildTextTitle(
-                                  context,
-                                  texto,
-                                ),
-                                ConstsWidget.buildTextSubTitle(
-                                  datahora,
-                                ),
-                              ],
+                        return MyBoxShadow(
+                            // ListTile(
+                            //   title: ConstsWidget.buildTextTitle(context, titulo),
+                            //   subtitle: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       ConstsWidget.buildTextTitle(
+                            //         context,
+                            //         texto,
+                            //       ),
+                            //       ConstsWidget.buildTextSubTitle(
+                            //         context,
+                            //         datahora,
+                            //       ),
+                            //     ],
+                            //   ),
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ConstsWidget.buildTextTitle(context, titulo),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.01),
+                              child: ConstsWidget.buildTextSubTitle(
+                                context,
+                                texto,
+                              ),
                             ),
-                            //     child: Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     ConstsWidget.buildTextTitle(context,'$id'),
-                            //     ConstsWidget.buildTextSubTitle(aviso_enviado),
-                            //     ConstsWidget.buildTextTitle(context,'$datahora'),
-                            //     Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       children: [],
-                            //     ),
-                            //   ],
-                            // )
-                          ),
-                        );
+                            ConstsWidget.buildTextSubTitle(
+                              context,
+                              datahora,
+                            ),
+                          ],
+                        ));
                       },
                     );
                   }

@@ -12,6 +12,7 @@ class FormInfosMorador {
   final String? email;
   final int? acesso;
   int? iddivisao;
+  int? idunidade;
   FormInfosMorador({
     this.ativo = 0,
     this.nome_morador = '',
@@ -24,6 +25,7 @@ class FormInfosMorador {
     this.email = '',
     this.acesso = 0,
     this.iddivisao = 0,
+    this.idunidade = 0,
   });
   FormInfosMorador copyWith(
       {int? ativo,
@@ -36,7 +38,8 @@ class FormInfosMorador {
       String? ddd,
       String? email,
       int? acesso,
-      int? iddivisao}) {
+      int? iddivisao,
+      int? idunidade}) {
     return FormInfosMorador(
         ativo: ativo ?? this.ativo,
         nome_morador: nome_morador ?? this.nome_morador,
@@ -48,6 +51,7 @@ class FormInfosMorador {
         ddd: ddd ?? this.ddd,
         email: email ?? this.email,
         acesso: acesso ?? this.acesso,
-        iddivisao: iddivisao ?? this.iddivisao);
+        iddivisao: iddivisao ?? this.iddivisao,
+        idunidade: idunidade ?? this.idunidade);
   }
 }

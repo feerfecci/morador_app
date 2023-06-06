@@ -67,7 +67,7 @@ class ConstsFuture {
             InfosMorador.login = apiInfos['login'];
             InfosMorador.documento = apiInfos['documento'];
             InfosMorador.telefone = apiInfos['telefone'];
-            InfosMorador.email = apiInfos['email'];
+            InfosMorador.email = apiInfos['email'] ?? '';
             InfosMorador.data_nascimento = apiInfos['data_nascimento'];
             InfosMorador.acessa_sistema = apiInfos['acessa_sistema'];
             InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];

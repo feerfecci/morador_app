@@ -16,12 +16,13 @@ class ConstsWidget {
     );
   }
 
-  static Widget buildTextSubTitle(String title, {color}) {
+  static Widget buildTextSubTitle(BuildContext context, String title,
+      {Color? color}) {
     return Text(
       title,
       maxLines: 20,
       style: TextStyle(
-        color: color,
+        color: color ?? Theme.of(context).colorScheme.primary,
         fontSize: Consts.fontSubTitulo,
         fontWeight: FontWeight.normal,
       ),

@@ -30,7 +30,7 @@ buildCustomSnackBar(BuildContext context,
         ConstsWidget.buildTextTitle(context, titulo, color: Colors.white
             // color: Theme.of(context).snackBarTheme.actionTextColor,
             ),
-        ConstsWidget.buildTextSubTitle(texto, color: Colors.white
+        ConstsWidget.buildTextSubTitle(context, texto, color: Colors.white
             // color: Theme.of(context).snackBarTheme.actionTextColor,
             ),
       ],

@@ -17,7 +17,7 @@ ThemeData themeLight(BuildContext context) {
     primaryIconTheme: IconThemeData(color: Colors.black),
     iconTheme: IconThemeData(color: Color.fromARGB(255, 38, 43, 62)),
     appBarTheme: AppBarTheme(backgroundColor: Colors.blue),
-    colorScheme: ColorScheme.light(primary: Colors.black),
+    colorScheme: ColorScheme.light(primary: Color.fromARGB(255, 69, 71, 70)),
     scaffoldBackgroundColor: Consts.kBackPageColor,
     dialogBackgroundColor: Color.fromARGB(255, 245, 245, 255),
     primaryColor: Colors.white,

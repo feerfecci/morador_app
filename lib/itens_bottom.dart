@@ -5,6 +5,8 @@ import 'package:app_portaria/screens/correspondencia/correspondencia_screen.dart
 import 'package:app_portaria/screens/duvidas/pagina2_screen.dart';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/screens/quadro_avisos/quadro_avisos_screen.dart';
+import 'package:app_portaria/widgets/alert_dialog.dart';
+import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'consts/consts.dart';
@@ -47,33 +49,38 @@ class _ItensBottomState extends State<ItensBottom> {
         // 'isresponsavel': InfosMorador.responsavel.toString(),
         // 'ismorador': InfosMorador.responsavel ? false : true,
       });
+      OneSignal.shared;
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        print(
-            'Nosso print ${openedResult.notification.additionalData!.values.first}');
+        if (openedResult.notification.buttons!.first.id == 'delivery') {
+          alertRespondeDelivery(context);
+        } else if (openedResult.notification.buttons!.first.id == 'visita') {
+          alertRespondeDelivery(context);
+        }
+
         //correp
         if (openedResult.notification.additionalData!.values.first ==
             'corresp') {
           ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 1));
+              context, CorrespondenciaScreen(tipoAviso: 3));
         }
-        //delivery
-        else if (openedResult.notification.additionalData!.values.first ==
-            'delivery') {
-          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-        }
+        // //delivery
+        // else if (openedResult.notification.additionalData!.values.first ==
+        //     'delivery') {
+        //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+        // }
 
-        //visita
-        else if (openedResult.notification.additionalData!.values.first ==
-            'visita') {
-          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-        }
+        // //visita
+        // else if (openedResult.notification.additionalData!.values.first ==
+        //     'visita') {
+        //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+        // }
         //aviso
         else if (openedResult.notification.additionalData!.values.first ==
             'aviso') {
           ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
         } else {
           ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 1));
+              context, CorrespondenciaScreen(tipoAviso: 4));
         }
       });
       InfosMorador.email != ''

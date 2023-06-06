@@ -40,7 +40,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                       child: ConstsWidget.buildTextTitle(
                           context, 'Salão de Festa'),
                     ),
-                    ConstsWidget.buildTextSubTitle('Início:'),
+                    ConstsWidget.buildTextSubTitle(context, 'Início:'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -64,7 +64,7 @@ class ReservaEspacosState extends State<ReservaEspacos> {
                         ),
                       ],
                     ),
-                    ConstsWidget.buildTextSubTitle('Término:'),
+                    ConstsWidget.buildTextSubTitle(context, 'Término:'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

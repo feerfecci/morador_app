@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:app_portaria/screens/cadastro/listar_moradores.dart';
+import 'package:app_portaria/screens/cadastro/listar_total.dart';
+import 'package:app_portaria/widgets/alert_dialog.dart';
 import 'package:app_portaria/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,6 +41,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
+    Widget buildGridView({required List<Widget> children}) {
+      return GridView.count(
+        physics: ClampingScrollPhysics(),
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        childAspectRatio: 1.6,
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 0.5,
+        children: children,
+      );
+    }
+
     return buildHeaderPage(
       context,
       titulo: InfosMorador.nome_responsavel == ''
@@ -49,9 +62,6 @@ class _HomePageState extends State<HomePage> {
       widget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SizedBox(
-          //   height: size.height * 0.025,
-          // ),
           SizedBox(
             height: size.height * 0.148,
             width: double.infinity,
@@ -64,20 +74,14 @@ class _HomePageState extends State<HomePage> {
           ),
 
           if (!InfosMorador.responsavel)
-            GridView.count(
-              physics: ClampingScrollPhysics(),
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              childAspectRatio: 1.6,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 0.5,
+            buildGridView(
               children: [
                 buildCardHome(
                   context,
                   title: 'Correspondências',
                   iconApi: '${Consts.iconApi}correspondencias.png',
                   pageRoute: CorrespondenciaScreen(
-                    tipoAviso: 1,
+                    tipoAviso: 3,
                   ),
                 ),
                 buildCardHome(
@@ -97,94 +101,113 @@ class _HomePageState extends State<HomePage> {
                   title: 'Mercadorias',
                   iconApi: '${Consts.iconApiPort}mercadorias.png',
                   pageRoute: CorrespondenciaScreen(
-                    tipoAviso: 2,
+                    tipoAviso: 4,
                   ),
                 ),
               ],
             ),
+          // if (!InfosMorador.responsavel)
+          SizedBox(
+            height: size.height * 0.148,
+            width: double.infinity,
+            child: buildCardHome(
+              context,
+              title: 'Cadastros',
+              iconApi: '${Consts.iconApi}financeiro.png',
+              pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+            ),
+          ),
+          // if (!InfosMorador.responsavel)
+          SizedBox(
+            height: size.height * 0.148,
+            width: double.infinity,
+            child: buildCardHome(
+              context,
+              title: 'Quadro de avisos',
+              iconApi: '${Consts.iconApiPort}avisos.png',
+              pageRoute: QuadroAvisosScreen(),
+            ),
+          ),
+          buildGridView(children: [
+            ConstsWidget.buildCustomButton(
+              context,
+              'title',
+              onPressed: () => alertRespondeDelivery(context),
+            ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Quadro de avisos',
+            //   iconApi: '${Consts.iconApiPort}avisos.png',
+            //   pageRoute: QuadroAvisosScreen(),
+            // ),
 
-          GridView.count(
-              physics: ClampingScrollPhysics(),
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              childAspectRatio: 1.6,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 0.5,
-              children: [
-                buildCardHome(
-                  context,
-                  title: 'Quadro de avisos',
-                  iconApi: '${Consts.iconApiPort}avisos.png',
-                  pageRoute: QuadroAvisosScreen(),
-                ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Cadastros',
+            //   iconApi: '${Consts.iconApi}perfil.png',
+            //   pageRoute: ListaMoradores(),
+            // ),
+            if (!InfosMorador.responsavel)
+              buildCardHome(
+                context,
+                title: 'Reserva de Espaços',
+                iconApi: '${Consts.iconApi}financeiro.png',
+                pageRoute: ReservaEspacos(),
+              ),
+            if (!InfosMorador.responsavel)
+              buildCardHome(
+                context,
+                title: 'Polícia',
+                iconApi: '${Consts.iconApi}notificacoes.png',
+                numberCall: '190',
+              ),
 
-                buildCardHome(
-                  context,
-                  title: 'Cadastros',
-                  iconApi: '${Consts.iconApi}perfil.png',
-                  pageRoute: ListaMoradores(),
-                ),
-                if (!InfosMorador.responsavel)
-                  buildCardHome(
-                    context,
-                    title: 'Reserva de Espaços',
-                    iconApi: '${Consts.iconApi}financeiro.png',
-                    pageRoute: ReservaEspacos(),
-                  ),
-                if (!InfosMorador.responsavel)
-                  buildCardHome(
-                    context,
-                    title: 'Polícia',
-                    iconApi: '${Consts.iconApi}notificacoes.png',
-                    numberCall: '190',
-                  ),
-
-                if (!InfosMorador.responsavel)
-                  buildCardHome(
-                    context,
-                    title: 'Samu',
-                    iconApi: '${Consts.iconApi}correspondencias.png',
-                    numberCall: '192',
-                  ),
-                // buildCardHome(
-                //   context,
-                //   title: 'Sos Portaria',
-                //   iconApi: '${Consts.iconApi}perfil.png',
-                //   pageRoute: MyProfileScreen(),
-                // ),
-                if (!InfosMorador.responsavel)
-                  buildCardHome(
-                    context,
-                    title: 'Bombeiros',
-                    iconApi: '${Consts.iconApi}financeiro.png',
-                    numberCall: '193',
-                  ),
-                //////
-                // buildCardHome(
-                //   context,
-                //   title: 'Enquete',
-                //   iconApi: '${Consts.iconApi}financeiro.png',
-                //   pageRoute: MyProfileScreen(),
-                // ),
-                // buildCardHome(
-                //   context,
-                //   title: 'Classificados',
-                //   iconApi: '${Consts.iconApi}financeiro.png',
-                //   pageRoute: MyProfileScreen(),
-                // ),
-                // buildCardHome(
-                //   context,
-                //   title: 'Sequestro',
-                //   iconApi: '${Consts.iconApi}financeiro.png',
-                //   pageRoute: MyProfileScreen(),
-                // ),
-                // buildCardHome(
-                //   context,
-                //   title: 'Propaganda',
-                //   iconApi: '${Consts.iconApi}financeiro.png',
-                //   pageRoute: MyProfileScreen(),
-                // ),
-              ]),
+            if (!InfosMorador.responsavel)
+              buildCardHome(
+                context,
+                title: 'Samu',
+                iconApi: '${Consts.iconApi}correspondencias.png',
+                numberCall: '192',
+              ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Sos Portaria',
+            //   iconApi: '${Consts.iconApi}perfil.png',
+            //   pageRoute: MyProfileScreen(),
+            // ),
+            if (!InfosMorador.responsavel)
+              buildCardHome(
+                context,
+                title: 'Bombeiros',
+                iconApi: '${Consts.iconApi}financeiro.png',
+                numberCall: '193',
+              ),
+            //////
+            // buildCardHome(
+            //   context,
+            //   title: 'Enquete',
+            //   iconApi: '${Consts.iconApi}financeiro.png',
+            //   pageRoute: MyProfileScreen(),
+            // ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Classificados',
+            //   iconApi: '${Consts.iconApi}financeiro.png',
+            //   pageRoute: MyProfileScreen(),
+            // ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Sequestro',
+            //   iconApi: '${Consts.iconApi}financeiro.png',
+            //   pageRoute: MyProfileScreen(),
+            // ),
+            // buildCardHome(
+            //   context,
+            //   title: 'Propaganda',
+            //   iconApi: '${Consts.iconApi}financeiro.png',
+            //   pageRoute: MyProfileScreen(),
+            // ),
+          ]),
         ],
       ),
     );

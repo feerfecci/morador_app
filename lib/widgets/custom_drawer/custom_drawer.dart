@@ -3,7 +3,7 @@
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/cadastro/listar_moradores.dart';
+import 'package:app_portaria/screens/cadastro/listar_total.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';

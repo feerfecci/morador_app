@@ -47,12 +47,11 @@ Widget buildMyTextFormField(BuildContext context,
 Widget buildMyTextFormObrigatorio(BuildContext context,
     {String title = '',
     String mensagem = 'Este campo é obrigatótio',
-    List<TextInputFormatter>? inputFormatters,
-    String? mask,
     TextInputType? keyboardType,
     String? hintText,
     String? initialValue,
     bool readOnly = false,
+    String? mask,
     String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
@@ -70,13 +69,13 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
       minLines: 1,
       readOnly: readOnly,
       // onFieldSubmitted: (value) {
-      //   print(value.toString());
+      //   value.toString());
       // },
       // onEditingComplete: () {
-      //   print('onEditingComplete');
+      //   'onEditingComplete');
       // },
       // onTapOutside: (event) {
-      //   print('onTapOutside');
+      //   'onTapOutside');
       // },
 
       validator: Validatorless.multiple([Validatorless.required(mensagem)]),

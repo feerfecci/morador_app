@@ -23,33 +23,15 @@ Widget buildCardHome(BuildContext context,
     await launchUrl(Uri.parse('tel:$number'));
   }
 
-  Widget tryImage() {
-    apiImage() async {
-      var url = Uri.parse(iconApi);
-      var resposta = await http.get(url);
-      if (resposta.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+  Future<Widget> apiImage() async {
+    var url = Uri.parse(iconApi);
+    var resposta = await http.get(url);
 
-    return FutureBuilder<dynamic>(
-      future: apiImage(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return ShimmerWidget(
-            height: size.height * 0.08,
-            width: size.width * 0.2,
-          );
-        } else if (snapshot.hasError) {
-          return Text('Deu ruim');
-        }
-        return Image.network(
-          iconApi,
-        );
-      },
-    );
+    return resposta.statusCode == 200
+        ? Image.network(
+            iconApi,
+          )
+        : Image.asset('assets/erro_png.png');
   }
 
   return MyBoxShadow(
@@ -73,10 +55,12 @@ Widget buildCardHome(BuildContext context,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-              width: size.width * 0.12,
-              height: size.height * 0.075,
-              child: tryImage()),
+          FutureBuilder(
+              future: apiImage(),
+              builder: (context, snapshot) => SizedBox(
+                  width: size.width * 0.12,
+                  height: size.height * 0.075,
+                  child: snapshot.data)),
           ConstsWidget.buildTextTitle(context, title),
         ],
       ),
