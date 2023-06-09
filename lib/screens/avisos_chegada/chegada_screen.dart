@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_portaria/consts/consts.dart';
+import 'package:app_portaria/widgets/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -76,6 +77,13 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                         String datahora = DateFormat('dd/MM/yyyy - HH:mm')
                             .format(DateTime.parse(apiChegada['datahora']));
 
+                        // var horaDeAgora =DateFormat('HH:mm')
+                        //     .format(DateTime.parse(apiChegada['datahora']));
+
+                        var diferenca = DateTime.now()
+                            .difference(DateTime.parse(apiChegada['datahora']));
+                        var isExperado = diferenca <= Duration(minutes: 5);
+
                         return MyBoxShadow(
                             // ListTile(
                             //   title: ConstsWidget.buildTextTitle(context, titulo),
@@ -92,22 +100,42 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                             //       ),
                             //     ],
                             //   ),
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            ConstsWidget.buildTextTitle(context, titulo),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.01),
-                              child: ConstsWidget.buildTextSubTitle(
-                                context,
-                                texto,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstsWidget.buildTextTitle(context, titulo),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: size.height * 0.01),
+                                  child: SizedBox(
+                                    width: size.width * 0.76,
+                                    child: ConstsWidget.buildTextSubTitle(
+                                      context,
+                                      texto,
+                                    ),
+                                  ),
+                                ),
+                                ConstsWidget.buildTextSubTitle(
+                                  context,
+                                  datahora,
+                                ),
+                              ],
                             ),
-                            ConstsWidget.buildTextSubTitle(
-                              context,
-                              datahora,
-                            ),
+                            if (isExperado)
+                              IconButton(
+                                  onPressed: () {
+                                    if (widget.tipo == 1) {
+                                      alertRespondeDelivery(context,
+                                          tipoAviso: 5);
+                                    } else if (widget.tipo == 2) {
+                                      alertRespondeDelivery(context,
+                                          tipoAviso: 6);
+                                    }
+                                  },
+                                  icon: Icon(Icons.call_missed)),
                           ],
                         ));
                       },

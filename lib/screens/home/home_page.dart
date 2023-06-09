@@ -62,20 +62,22 @@ class _HomePageState extends State<HomePage> {
       widget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: size.height * 0.148,
-            width: double.infinity,
-            child: buildCardHome(
-              context,
-              title: 'Ligar na Portaria',
-              iconApi: '${Consts.iconApiPort}ligar.png',
-              numberCall: InfosMorador.telefone_portaria,
-            ),
-          ),
-
           if (!InfosMorador.responsavel)
             buildGridView(
               children: [
+                buildCardHome(
+                  context,
+                  title: 'Ligar na Portaria',
+                  iconApi: '${Consts.iconApiPort}ligar.png',
+                  numberCall: InfosMorador.telefone_portaria,
+                ),
+                buildCardHome(
+                  context,
+                  title: 'Whatsapp Portaria',
+                  isWhats: true,
+                  iconApi: '${Consts.iconApiPort}ligar.png',
+                  numberCall: InfosMorador.telefone_portaria,
+                ),
                 buildCardHome(
                   context,
                   title: 'Correspondências',
@@ -106,17 +108,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          // if (!InfosMorador.responsavel)
-          SizedBox(
-            height: size.height * 0.148,
-            width: double.infinity,
-            child: buildCardHome(
-              context,
-              title: 'Cadastros',
-              iconApi: '${Consts.iconApi}financeiro.png',
-              pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+          if (InfosMorador.responsavel)
+            SizedBox(
+              height: size.height * 0.148,
+              width: double.infinity,
+              child: buildCardHome(
+                context,
+                title: 'Cadastros',
+                iconApi: '${Consts.iconApi}financeiro.png',
+                pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+              ),
             ),
-          ),
           // if (!InfosMorador.responsavel)
           SizedBox(
             height: size.height * 0.148,
@@ -129,11 +131,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           buildGridView(children: [
-            ConstsWidget.buildCustomButton(
-              context,
-              'title',
-              onPressed: () => alertRespondeDelivery(context),
-            ),
             // buildCardHome(
             //   context,
             //   title: 'Quadro de avisos',

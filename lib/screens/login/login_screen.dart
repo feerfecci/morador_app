@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController();
+  final emailCtrl = TextEditingController(text: 'cesarreballo0606r');
   final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {

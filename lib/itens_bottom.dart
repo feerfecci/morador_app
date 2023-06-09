@@ -29,14 +29,7 @@ class _ItensBottomState extends State<ItensBottom> {
     super.initState();
     _pageController = PageController();
     initPlatFormState();
-    // initSons();
   }
-
-  // Future initSons() async {
-  //   // NotificationServiceCorresp.showNotification();
-  //   return NotificationServiceCorresp.initNotificationCorresp();
-  //   // NotificationServiceCorresp.notificationDetailsCorresp();
-  // }
 
   Future initPlatFormState() async {
     OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
@@ -46,42 +39,46 @@ class _ItensBottomState extends State<ItensBottom> {
         'idmorador': InfosMorador.idmorador.toString(),
         'idunidade': InfosMorador.idunidade.toString(),
         'idcond': InfosMorador.idcondominio.toString(),
-        // 'isresponsavel': InfosMorador.responsavel.toString(),
-        // 'ismorador': InfosMorador.responsavel ? false : true,
       });
       OneSignal.shared;
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        if (openedResult.notification.buttons!.first.id == 'delivery') {
-          alertRespondeDelivery(context);
-        } else if (openedResult.notification.buttons!.first.id == 'visita') {
-          alertRespondeDelivery(context);
+        if (openedResult.notification.buttons!.first.id != '') {
+          if (openedResult.notification.buttons!.first.id == 'delivery') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+            alertRespondeDelivery(context, tipoAviso: 5);
+          } else if (openedResult.notification.buttons!.first.id == 'visita') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+            alertRespondeDelivery(context, tipoAviso: 6);
+          }
+        } else {
+          if (openedResult.notification.additionalData!.values.first ==
+              'corresp') {
+            ConstsFuture.navigatorPageRoute(
+                context, CorrespondenciaScreen(tipoAviso: 3));
+          }
+          // //delivery
+          // else if (openedResult.notification.additionalData!.values.first ==
+          //     'delivery') {
+          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+          // }
+
+          // //visita
+          // else if (openedResult.notification.additionalData!.values.first ==
+          //     'visita') {
+          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+          // }
+          //aviso
+          else if (openedResult.notification.additionalData!.values.first ==
+              'aviso') {
+            ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
+          } else if (openedResult.notification.additionalData!.values.first ==
+              'mercadorias') {
+            ConstsFuture.navigatorPageRoute(
+                context, CorrespondenciaScreen(tipoAviso: 4));
+          }
         }
 
         //correp
-        if (openedResult.notification.additionalData!.values.first ==
-            'corresp') {
-          ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 3));
-        }
-        // //delivery
-        // else if (openedResult.notification.additionalData!.values.first ==
-        //     'delivery') {
-        //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-        // }
-
-        // //visita
-        // else if (openedResult.notification.additionalData!.values.first ==
-        //     'visita') {
-        //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-        // }
-        //aviso
-        else if (openedResult.notification.additionalData!.values.first ==
-            'aviso') {
-          ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
-        } else {
-          ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 4));
-        }
       });
       InfosMorador.email != ''
           ? OneSignal.shared.setEmail(email: InfosMorador.email.toString())
@@ -95,15 +92,6 @@ class _ItensBottomState extends State<ItensBottom> {
     return Scaffold(
       endDrawer: CustomDrawer(),
       appBar: AppBar(
-        // actions: [
-        //   IconButton(onPressed: () {}, icon: Icon(Icons.phone)),
-        //   IconButton(
-        //       onPressed: () {},
-        //       icon: Icon(
-        //         Icons.menu_rounded,
-        //         size: size.height * 0.045,
-        //       ))
-        // ],
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
         leading: Padding(

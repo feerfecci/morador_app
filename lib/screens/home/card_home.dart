@@ -16,6 +16,7 @@ Widget buildCardHome(BuildContext context,
     {required String title,
     Widget? pageRoute,
     required String iconApi,
+    bool? isWhats,
     String? numberCall}) {
   var size = MediaQuery.of(context).size;
 
@@ -36,21 +37,32 @@ Widget buildCardHome(BuildContext context,
 
   return MyBoxShadow(
     child: InkWell(
-      onTap: () {
-        if (InfosMorador.responsavel && title == 'Cadastros') {
-          numberCall != null
-              ? launchNumber(numberCall)
-              : ConstsFuture.navigatorPageRoute(context, pageRoute!);
-        } else if ((!InfosMorador.responsavel || InfosMorador.responsavel) &&
-            title != 'Cadastros') {
-          numberCall != null
-              ? launchNumber(numberCall)
-              : ConstsFuture.navigatorPageRoute(context, pageRoute!);
-        } else {
-          buildCustomSnackBar(context,
-              titulo: 'Desculpe', texto: 'Você não tem acesso');
-        }
-      },
+      onTap: numberCall == null
+          ? () {
+              ConstsFuture.navigatorPageRoute(context, pageRoute!);
+            }
+          : () {
+              if (isWhats != null) {
+                launchUrl(Uri.parse('https://api.whatsapp.com/send?phone='));
+              } else {
+                launchNumber(numberCall);
+              }
+            },
+      //  () {
+      //   if (InfosMorador.responsavel && title == 'Cadastros') {
+      //     numberCall != null
+      //         ? launchNumber(numberCall)
+      //         : ConstsFuture.navigatorPageRoute(context, pageRoute!);
+      //   } else if ((!InfosMorador.responsavel || InfosMorador.responsavel) &&
+      //       title != 'Cadastros') {
+      //     numberCall != null
+      //         ? launchNumber(numberCall)
+      //         : ConstsFuture.navigatorPageRoute(context, pageRoute!);
+      //   } else {
+      //     buildCustomSnackBar(context,
+      //         titulo: 'Desculpe', texto: 'Você não tem acesso');
+      //   }
+      // },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

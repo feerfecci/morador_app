@@ -165,7 +165,6 @@ class CorrespondenciaScreen extends StatelessWidget {
                                                                 .toString());
                                                   },
                                                 );
-                                                print(correspRetirar);
                                               },
                                             );
                                           }),
@@ -242,8 +241,6 @@ apiListarCorrespondencias(int? tipoAviso) async {
 launchSolicitarRetirada(listaRetirada) async {
   var resposta = await http.get(Uri.parse(
       '${Consts.apiUnidade}correspondencias/?fn=solicitarCorrespondencias&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&listacorrespondencias=$listaRetirada'));
-  // print(
-  //     '${Consts.apiUnidade}correspondencias/?fn=solicitarCorrespondencias&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&listacorrespondencias=$listaRetirada');
   if (resposta.statusCode == 200) {
     return json.decode(resposta.body);
   } else {
