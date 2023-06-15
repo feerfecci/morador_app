@@ -1,22 +1,15 @@
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
+
 import 'dart:convert';
-import 'package:app_portaria/widgets/snack_bar.dart';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'package:validatorless/validatorless.dart';
 import '../../../consts/consts.dart';
 import '../../../consts/consts_future.dart';
 import '../../../consts/consts_widget.dart';
-import '../../../forms/form_morador.dart';
-import '../../../widgets/header.dart';
 import '../../../widgets/my_box_shadow.dart';
-import '../../../widgets/my_text_form_field.dart';
 import '../../../widgets/page_vazia.dart';
 import '../../../widgets/row_infos.dart';
-import '../../../widgets/scaffold_all.dart';
-import '../listar_total.dart';
 import 'cadastro_morador.dart';
 
 class ListarMorador extends StatefulWidget {
@@ -141,7 +134,7 @@ class _ListarMoradorState extends State<ListarMorador> {
                                 iddivisao: iddivisao,
                                 idmorador: idmorador,
                                 email: email,
-                                nome_morador: nome_morador,
+                                nome_completo: nome_morador,
                                 login: login,
                                 numero: numero,
                                 ativo: ativo,

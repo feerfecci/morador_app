@@ -3,7 +3,7 @@
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/cadastro/listar_total.dart';
+import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
@@ -21,6 +21,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
+    // ignore: unused_element
     Widget buidListTile(
         {required String title,
         required IconData leading,
@@ -82,14 +83,72 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
               ),
-              if (InfosMorador.responsavel)
-                buidListTile(
-                  title: 'Cadastros',
-                  leading: Icons.person,
-                  onPressed: () {
-                    // ConstsFuture.navigatorPageRoute(context, CadastroScreen());
-                  },
+              ConstsWidget.buildTextTitle(context, InfosMorador.nome_completo),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.01),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ConstsWidget.buildTextSubTitle(context, 'Localizado:'),
+                        Row(
+                          children: [
+                            ConstsWidget.buildTextTitle(
+                                context, InfosMorador.divisao),
+                            ConstsWidget.buildTextTitle(
+                                context, InfosMorador.numero),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ConstsWidget.buildTextSubTitle(context, 'Login:'),
+                        ConstsWidget.buildTextTitle(
+                            context, InfosMorador.login),
+                      ],
+                    ),
+                  ],
                 ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.person,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                title: ConstsWidget.buildTextTitle(
+                  context,
+                  'Meu Perfil',
+                ),
+                onTap: () {
+                  ConstsFuture.navigatorPopAndPush(
+                      context,
+                      CadastroMorador(
+                        idmorador: InfosMorador.idmorador,
+                        iddivisao: InfosMorador.iddivisao,
+                        idunidade: InfosMorador.idunidade,
+                        numero: InfosMorador.numero,
+                        login: InfosMorador.login,
+                        documento: InfosMorador.documento,
+                        acesso: InfosMorador.acessa_sistema ? 1 : 0,
+                        ativo: InfosMorador.ativo,
+                        ddd: InfosMorador.dddtelefone,
+                        telefone: InfosMorador.telefone,
+                        email: InfosMorador.email,
+                        nascimento: InfosMorador.data_nascimento,
+                        nome_completo: InfosMorador.nome_completo,
+                        isDrawer: true,
+                      ));
+                },
+                trailing: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                ),
+              ),
               ChangeThemeButton(),
               Spacer(),
               Padding(

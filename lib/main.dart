@@ -1,4 +1,3 @@
-import 'package:app_portaria/itens_bottom.dart';
 import 'package:app_portaria/repositories/theme_provider.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';

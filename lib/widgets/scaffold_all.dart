@@ -5,6 +5,7 @@ Widget buildScaffoldAll(context,
     {required Widget? body,
     Widget? floatingActionButton,
     bool? resizeToAvoidBottomInset}) {
+  // ignore: unused_local_variable
   var size = MediaQuery.of(context).size;
   return Scaffold(
     resizeToAvoidBottomInset: resizeToAvoidBottomInset,

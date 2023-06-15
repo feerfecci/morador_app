@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
           CheckboxListTile(
             title: Text('Mantenha-me conectado'),
             value: isChecked,
-            activeColor: Consts.kButtonColor,
+            activeColor: Consts.kColorApp,
             onChanged: (bool? value) {
               setState(() {
                 isChecked = value!;
@@ -111,61 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
           )
         ],
       );
-    }
-
-    Widget buildLoginButton() {
-      return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Consts.borderButton))),
-          onPressed: () async {
-            var formValid = formKey.currentState?.validate() ?? false;
-            if (formValid) {
-              if (isChecked) {
-                await LocalPreferences.setUserLogin(
-                    emailCtrl.text, passWordCtrl.text);
-                _startLoading();
-              } else {
-                _startLoading();
-              }
-            } else {
-              buildCustomSnackBar(context,
-                  titulo: 'Login Errado',
-                  texto: 'Tente Verificar os dados preenchidos');
-            }
-          },
-          child: isLoading == false
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: const [
-                    Text(
-                      'Entrar',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.020,
-                      width: size.width * 0.05,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ));
     }
 
     return Form(
@@ -192,7 +137,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      buildLoginButton(),
+                      ConstsWidget.buildLoadingButton(
+                        context,
+                        isLoading: isLoading,
+                        onPressed: () async {
+                          var formValid =
+                              formKey.currentState?.validate() ?? false;
+                          if (formValid) {
+                            if (isChecked) {
+                              await LocalPreferences.setUserLogin(
+                                      emailCtrl.text, passWordCtrl.text)
+                                  .then((value) => null);
+                              _startLoading();
+                            } else {
+                              _startLoading();
+                            }
+                          } else {
+                            buildCustomSnackBar(context,
+                                titulo: 'Login Errado',
+                                texto: 'Tente Verificar os dados preenchidos');
+                          }
+                        },
+                        title: 'Entrar',
+                      ),
                     ],
                   ),
                 )

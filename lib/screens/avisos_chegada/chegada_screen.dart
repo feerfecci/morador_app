@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:app_portaria/consts/consts.dart';

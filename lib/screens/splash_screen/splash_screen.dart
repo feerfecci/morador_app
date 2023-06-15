@@ -7,7 +7,6 @@ import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
 import '../../consts/consts_future.dart';
-import '../../consts/consts_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

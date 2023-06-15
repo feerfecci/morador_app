@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
-
 import 'dart:convert';
-
 import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_vazia.dart';
@@ -9,9 +7,7 @@ import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-
 import '../../consts/consts.dart';
-import '../../consts/consts_widget.dart';
 import '../../consts/consts_widget.dart';
 
 class QuadroAvisosScreen extends StatefulWidget {
@@ -78,9 +74,11 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     txt_tipo == 'Manutenção'
-                                        ? Icon(
-                                            Icons.engineering,
-                                            size: 40,
+                                        ? Center(
+                                            child: Icon(
+                                              Icons.engineering,
+                                              size: 40,
+                                            ),
                                           )
                                         : Icon(
                                             Icons.warning,

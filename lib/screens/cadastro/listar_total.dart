@@ -1,19 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
-
-import 'dart:convert';
-
 import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/cadastro/morador/listar_morador.dart';
 import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 import '../../consts/consts_widget.dart';
-import '../../widgets/my_text_form_field.dart';
-import '../../widgets/page_vazia.dart';
 import 'carros/listar_carros.dart';
 
 class ListaTotalUnidade extends StatefulWidget {
@@ -41,23 +33,27 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
     var size = MediaQuery.of(context).size;
 
     Widget buildFiltroCadastro(String title, int tipoLista) {
-      return ConstsWidget.buildCustomButton(context, title, onPressed: () {
-        setState(() {
-          if (tipoLista == 1) {
-            isCheckedMorador = true;
-            isCheckedCarros = false;
-            isCheckedFuncionarios = false;
-          } else if (tipoLista == 2) {
-            isCheckedCarros = true;
-            isCheckedMorador = false;
-            isCheckedFuncionarios = false;
-          } else if (tipoLista == 3) {
-            isCheckedFuncionarios = true;
-            isCheckedCarros = false;
-            isCheckedMorador = false;
-          }
-        });
-      });
+      return ConstsWidget.buildCustomButton(
+        context,
+        title,
+        onPressed: () {
+          setState(() {
+            if (tipoLista == 1) {
+              isCheckedMorador = true;
+              isCheckedCarros = false;
+              isCheckedFuncionarios = false;
+            } else if (tipoLista == 2) {
+              isCheckedCarros = true;
+              isCheckedMorador = false;
+              isCheckedFuncionarios = false;
+            } else if (tipoLista == 3) {
+              isCheckedFuncionarios = true;
+              isCheckedCarros = false;
+              isCheckedMorador = false;
+            }
+          });
+        },
+      );
     }
 
     return buildScaffoldAll(
@@ -94,7 +90,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
               //listar funcionarios
               if (isCheckedFuncionarios)
                 Column(
-                  children: [MyBoxShadow(child: Text('Funcionarios'))],
+                  children: const [MyBoxShadow(child: Text('Funcionarios'))],
                 ),
             ],
           ),

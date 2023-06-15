@@ -6,7 +6,6 @@ import 'package:app_portaria/screens/duvidas/pagina2_screen.dart';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/screens/quadro_avisos/quadro_avisos_screen.dart';
 import 'package:app_portaria/widgets/alert_dialog.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'consts/consts.dart';
@@ -24,68 +23,11 @@ class ItensBottom extends StatefulWidget {
 
 class _ItensBottomState extends State<ItensBottom> {
   late PageController _pageController;
-  @override
+    @override
   void initState() {
     super.initState();
     _pageController = PageController();
-    initPlatFormState();
   }
-
-  Future initPlatFormState() async {
-    OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
-    OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
-      OneSignal.shared.setExternalUserId(InfosMorador.idmorador.toString());
-      OneSignal.shared.sendTags({
-        'idmorador': InfosMorador.idmorador.toString(),
-        'idunidade': InfosMorador.idunidade.toString(),
-        'idcond': InfosMorador.idcondominio.toString(),
-      });
-      OneSignal.shared;
-      OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        if (openedResult.notification.buttons!.first.id != '') {
-          if (openedResult.notification.buttons!.first.id == 'delivery') {
-            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-            alertRespondeDelivery(context, tipoAviso: 5);
-          } else if (openedResult.notification.buttons!.first.id == 'visita') {
-            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-            alertRespondeDelivery(context, tipoAviso: 6);
-          }
-        } else {
-          if (openedResult.notification.additionalData!.values.first ==
-              'corresp') {
-            ConstsFuture.navigatorPageRoute(
-                context, CorrespondenciaScreen(tipoAviso: 3));
-          }
-          // //delivery
-          // else if (openedResult.notification.additionalData!.values.first ==
-          //     'delivery') {
-          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-          // }
-
-          // //visita
-          // else if (openedResult.notification.additionalData!.values.first ==
-          //     'visita') {
-          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-          // }
-          //aviso
-          else if (openedResult.notification.additionalData!.values.first ==
-              'aviso') {
-            ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
-          } else if (openedResult.notification.additionalData!.values.first ==
-              'mercadorias') {
-            ConstsFuture.navigatorPageRoute(
-                context, CorrespondenciaScreen(tipoAviso: 4));
-          }
-        }
-
-        //correp
-      });
-      InfosMorador.email != ''
-          ? OneSignal.shared.setEmail(email: InfosMorador.email.toString())
-          : null;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

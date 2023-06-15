@@ -9,19 +9,19 @@ class InfosMorador {
   static int iddivisao = 0;
   static int idunidade = 0;
   static String nome_condominio = '';
-  static String nome_morador = '';
-  static String nome_responsavel = '';
+  static String nome_completo = '';
   static String numero = '';
   static String divisao = '';
   static String login = '';
   static String documento = '';
   static String telefone = '';
+  static String dddtelefone = '';
   static String email = '';
   static String data_nascimento = '';
   static String datahora_cadastro = '';
   static String datahora_ultima_atualizacao = '';
   static String telefone_portaria = '';
-  static bool responsavel = true;
+  static bool responsavel = false;
   static bool ativo = false;
   static bool acessa_sistema = false;
 }

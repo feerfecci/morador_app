@@ -103,7 +103,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     color: Theme.of(context).iconTheme.color,
                   ),
                   borderRadius: BorderRadius.circular(16),
-                  hint: Text('Selecione Um Aviso'),
+                  hint: Text('Selecione um veículo'),
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w400,

@@ -114,7 +114,10 @@ class ConstsWidget {
               ));
   }
 
-  static Widget buildAtivoInativo(BuildContext context, bool ativo) {
+  static Widget buildAtivoInativo(
+    BuildContext context,
+    bool ativo,
+  ) {
     var size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(

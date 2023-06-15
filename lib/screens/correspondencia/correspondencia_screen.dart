@@ -1,6 +1,7 @@
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_vazia.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../consts/consts.dart';
-import '../../consts/consts_widget.dart';
 import '../../consts/consts_widget.dart';
 import '../../widgets/scaffold_all.dart';
 import '../../widgets/snack_bar.dart';
@@ -63,6 +63,17 @@ class CorrespondenciaScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 children: [
+                  ConstsWidget.buildLoadingButton(context,
+                      title: 'Solicitar Retirada',
+                      color: Consts.kColorApp,
+                      isLoading: loadingRetirada, onPressed: () {
+                    correspRetirar.isNotEmpty
+                        ? carregandoRetirada()
+                        // print(correspRetirar)
+                        : buildCustomSnackBar(context,
+                            titulo: 'Cuidado',
+                            texto: 'Selecione um item para retirada');
+                  }),
                   FutureBuilder<dynamic>(
                       future: apiListarCorrespondencias(tipoAviso),
                       builder: (context, snapshot) {
@@ -144,12 +155,15 @@ class CorrespondenciaScreen extends StatelessWidget {
                                             height: size.height * 0.03,
                                             width: size.width * 0.3,
                                           )),
-                                        if (protocolo == null ||
-                                            protocolo == '')
+                                        if (protocolo == '')
                                           StatefulBuilder(
                                               builder: (context, setState) {
                                             return CheckboxListTile(
                                               title: Text('Retirar'),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal:
+                                                          size.height * 0.15),
                                               value: isChecked,
                                               activeColor: Consts.kColorApp,
                                               onChanged: (value) {
@@ -168,7 +182,7 @@ class CorrespondenciaScreen extends StatelessWidget {
                                               },
                                             );
                                           }),
-                                        if (protocolo.toString() != 'null')
+                                        if (protocolo != '')
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: size.height * 0.01),
@@ -209,17 +223,6 @@ class CorrespondenciaScreen extends StatelessWidget {
                           }
                         }
                       }),
-                  ConstsWidget.buildLoadingButton(context,
-                      title: 'Solicitar Retirada',
-                      color: Consts.kColorApp,
-                      isLoading: loadingRetirada, onPressed: () {
-                    correspRetirar.isNotEmpty
-                        ? carregandoRetirada()
-                        // print(correspRetirar)
-                        : buildCustomSnackBar(context,
-                            titulo: 'Cuidado',
-                            texto: 'Selecione um item para retirada');
-                  }),
                 ],
               ),
             ),

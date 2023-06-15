@@ -1,14 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:app_portaria/widgets/shimmer.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
-import '../../consts/consts_widget.dart';
 import '../../consts/consts_widget.dart';
 import '../../widgets/my_box_shadow.dart';
 
@@ -43,26 +36,12 @@ Widget buildCardHome(BuildContext context,
             }
           : () {
               if (isWhats != null) {
-                launchUrl(Uri.parse('https://api.whatsapp.com/send?phone='));
+                launchUrl(Uri.parse('https://wa.me/+55$numberCall'),
+                    mode: LaunchMode.externalApplication);
               } else {
                 launchNumber(numberCall);
               }
             },
-      //  () {
-      //   if (InfosMorador.responsavel && title == 'Cadastros') {
-      //     numberCall != null
-      //         ? launchNumber(numberCall)
-      //         : ConstsFuture.navigatorPageRoute(context, pageRoute!);
-      //   } else if ((!InfosMorador.responsavel || InfosMorador.responsavel) &&
-      //       title != 'Cadastros') {
-      //     numberCall != null
-      //         ? launchNumber(numberCall)
-      //         : ConstsFuture.navigatorPageRoute(context, pageRoute!);
-      //   } else {
-      //     buildCustomSnackBar(context,
-      //         titulo: 'Desculpe', texto: 'Você não tem acesso');
-      //   }
-      // },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

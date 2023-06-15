@@ -5,6 +5,7 @@ class FormInfosMorador {
   final String? nome_morador;
   final String? login;
   final String? senha;
+  final String? senhaRetirada;
   final String? nascimento;
   final String? documento;
   final String? telefone;
@@ -18,6 +19,7 @@ class FormInfosMorador {
     this.nome_morador = '',
     this.login = '',
     this.senha = '',
+    this.senhaRetirada = '',
     this.documento = '',
     this.nascimento = '',
     this.telefone = '',
@@ -32,6 +34,7 @@ class FormInfosMorador {
       String? nome_morador,
       String? login,
       String? senha,
+      String? senhaRetirada,
       String? documento,
       String? nascimento,
       String? telefone,
@@ -45,6 +48,7 @@ class FormInfosMorador {
         nome_morador: nome_morador ?? this.nome_morador,
         login: login ?? this.login,
         senha: senha ?? this.senha,
+        senhaRetirada: senhaRetirada ?? this.senhaRetirada,
         documento: documento ?? this.documento,
         nascimento: nascimento ?? this.nascimento,
         telefone: telefone ?? this.telefone,

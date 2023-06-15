@@ -1,12 +1,11 @@
-import 'dart:convert';
+// ignore_for_file: unused_local_variable
 
+import 'dart:convert';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/cadastro/carros/cadastro_carros.dart';
-import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/widgets/row_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-
 import '../../../consts/consts.dart';
 import '../../../consts/consts_widget.dart';
 import '../../../widgets/my_box_shadow.dart';
