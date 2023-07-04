@@ -1,15 +1,15 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
-
 import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/widgets/alert_dialog.dart';
+import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
+import 'package:app_portaria/widgets/alert_dialog/alert_resp_port.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../consts/consts_widget.dart';
-import '../../widgets/header.dart';
 import '../../widgets/my_box_shadow.dart';
+import '../../widgets/page_erro.dart';
 import '../../widgets/page_vazia.dart';
 import '../../widgets/scaffold_all.dart';
 
@@ -37,30 +37,21 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return buildScaffoldAll(context,
-        body: RefreshIndicator(
-          onRefresh: () async {
-            setState(() {
-              listarVisitasDlivery(tipoAviso: widget.tipo);
-            });
-          },
-          child: buildHeaderPage(
-            context,
-            titulo: widget.tipo == 1 ? 'Delivery' : 'Visitas',
-            subTitulo: widget.tipo == 1
-                ? 'Confira seus Deliveries'
-                : 'Confira seus Visitantes',
-            widget: FutureBuilder<dynamic>(
-                future: listarVisitasDlivery(tipoAviso: widget.tipo),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError || !snapshot.hasData) {
-                    return Text('Algo deu errado');
-                  } else {
-                    if (snapshot.data['erro']) {
-                      return PageVazia(title: snapshot.data['mensagem']);
-                    }
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          listarVisitasDlivery(tipoAviso: widget.tipo);
+        });
+      },
+      child: buildScaffoldAll(context,
+          title: widget.tipo == 1 ? 'Delivery' : 'Visitas',
+          body: FutureBuilder<dynamic>(
+              future: listarVisitasDlivery(tipoAviso: widget.tipo),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return LoadingCorresp();
+                } else if (snapshot.hasData) {
+                  if (!snapshot.data['erro']) {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
@@ -79,72 +70,77 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                         String datahora = DateFormat('dd/MM/yyyy - HH:mm')
                             .format(DateTime.parse(apiChegada['datahora']));
 
-                        // var horaDeAgora =DateFormat('HH:mm')
-                        //     .format(DateTime.parse(apiChegada['datahora']));
-
                         var diferenca = DateTime.now()
                             .difference(DateTime.parse(apiChegada['datahora']));
                         var isExperado = diferenca <= Duration(minutes: 5);
 
                         return MyBoxShadow(
-                            // ListTile(
-                            //   title: ConstsWidget.buildTextTitle(context, titulo),
-                            //   subtitle: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       ConstsWidget.buildTextTitle(
-                            //         context,
-                            //         texto,
-                            //       ),
-                            //       ConstsWidget.buildTextSubTitle(
-                            //         context,
-                            //         datahora,
-                            //       ),
-                            //     ],
-                            //   ),
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ConstsWidget.buildTextTitle(context, titulo),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.01),
-                                  child: SizedBox(
-                                    width: size.width * 0.76,
-                                    child: ConstsWidget.buildTextSubTitle(
-                                      context,
-                                      texto,
-                                    ),
+                            imagem: !isExperado,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.01),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          ConstsWidget.buildTextTitle(
+                                              context, titulo,
+                                              size: 18,
+                                              textAlign: TextAlign.center),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: size.height * 0.01),
+                                            child: SizedBox(
+                                              width: size.width * 0.9,
+                                              child: ConstsWidget
+                                                  .buildTextSubTitle(
+                                                      context, texto,
+                                                      textAlign:
+                                                          TextAlign.center),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            child:
+                                                ConstsWidget.buildTextSubTitle(
+                                              context,
+                                              datahora,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                ConstsWidget.buildTextSubTitle(
-                                  context,
-                                  datahora,
-                                ),
-                              ],
-                            ),
-                            if (isExperado)
-                              IconButton(
-                                  onPressed: () {
-                                    if (widget.tipo == 1) {
-                                      alertRespondeDelivery(context,
-                                          tipoAviso: 5);
-                                    } else if (widget.tipo == 2) {
-                                      alertRespondeDelivery(context,
-                                          tipoAviso: 6);
-                                    }
-                                  },
-                                  icon: Icon(Icons.call_missed)),
-                          ],
-                        ));
+                                  if (isExperado)
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: size.height * 0.01),
+                                      child: ConstsWidget.buildCustomButton(
+                                        context,
+                                        color: Color.fromARGB(255, 251, 80, 93),
+                                        'Responder Portaria',
+                                        onPressed: () {
+                                          alertRespondeDelivery(context,
+                                              tipoAviso: widget.tipo);
+                                        },
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ));
                       },
                     );
+                  } else {
+                    return PageVazia(title: snapshot.data['mensagem']);
                   }
-                }),
-          ),
-        ));
+                } else {
+                  return PageErro();
+                }
+              })),
+    );
   }
 }

@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
+import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:validatorless/validatorless.dart';
-
-import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(text: 'cesarreballo0606r');
+  final emailCtrl = TextEditingController();
   final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
@@ -39,80 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildTextFormEmail(double sizes) {
-      return TextFormField(
-        // initialValue: emailSalvo,
-        keyboardType: TextInputType.emailAddress,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        controller: emailCtrl,
-
-        validator: Validatorless.multiple([
-          Validatorless.required('Email é obrigatório'),
-        ]),
-        // autofillHints: [AutofillHints.email],
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: size.width * sizes),
-          filled: true,
-          fillColor: Theme.of(context).primaryColor,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.black26)),
-          hintText: 'Digite seu Email',
-        ),
-      );
-    }
-
-    Widget buildFormPassword(double sizes) {
-      return Column(
-        children: [
-          TextFormField(
-            textInputAction: TextInputAction.done,
-            controller: passWordCtrl,
-            // autofillHints: [AutofillHints.password],
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: Validatorless.multiple([
-              Validatorless.required('Senha é obrigatório'),
-              Validatorless.min(6, 'Mínimo de 6 caracteres')
-            ]),
-            // onEditingComplete: () => TextInput.finishAutofillContext(),
-            obscureText: isObscure,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(left: size.width * sizes),
-              filled: true,
-              fillColor: Theme.of(context).primaryColor,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black26)),
-              hintText: 'Digite sua Senha',
-              suffixIcon: GestureDetector(
-                onTap: (() {
-                  setState(() {
-                    isObscure = !isObscure;
-                  });
-                }),
-                child: isObscure
-                    ? Icon(Icons.visibility_off_outlined)
-                    : Icon(Icons.visibility_outlined),
-              ),
-            ),
-          ),
-          CheckboxListTile(
-            title: Text('Mantenha-me conectado'),
-            value: isChecked,
-            activeColor: Consts.kColorApp,
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            },
-          )
-        ],
-      );
-    }
-
     return Form(
         key: formKey,
         child: Scaffold(
@@ -120,22 +44,57 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Wrap(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  padding: EdgeInsets.only(
+                      left: size.width * 0.05,
+                      right: size.width * 0.05,
+                      bottom: size.height * 0.15),
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.05),
-                        child:
-                            ConstsWidget.buildTextTitle(context, 'App Morador'),
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: FutureBuilder(
+                          future: ConstsFuture.apiImageIcon(
+                              'https://a.portariaapp.com/img/logo_azul.png'),
+                          builder: (context, snapshot) {
+                            return SizedBox(
+                              height: size.height * 0.2,
+                              width: size.width * 0.5,
+                              child: snapshot.data,
+                            );
+                          },
+                        ),
                       ),
-                      buildTextFormEmail(0.04),
-                      SizedBox(
-                        height: 20,
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: size.height * 0.035,
+                            top: size.height * 0.025),
+                        child: ConstsWidget.buildTextTitle(
+                            context, 'Portaria App | Morador',
+                            size: 19),
                       ),
-                      buildFormPassword(0.04),
-                      SizedBox(
-                        height: 20,
+                      buildMyTextFormObrigatorio(context,
+                          controller: emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
+                          title: 'Login',
+                          hintText: 'Digite seu Login'),
+                      buildFormPassword(context,
+                          controller: passWordCtrl,
+                          isObscure: isObscure, onTap: (() {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      })),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: size.height * 0.025,
+                          top: size.height * 0.01,
+                        ),
+                        child: ConstsWidget.buildCheckBox(context,
+                            isChecked: isChecked, onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        }, title: 'Mantenha-me conectado'),
                       ),
                       ConstsWidget.buildLoadingButton(
                         context,

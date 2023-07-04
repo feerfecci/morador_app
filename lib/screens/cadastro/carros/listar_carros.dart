@@ -3,12 +3,14 @@
 import 'dart:convert';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/cadastro/carros/cadastro_carros.dart';
+import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
 import 'package:app_portaria/widgets/row_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../../../consts/consts.dart';
 import '../../../consts/consts_widget.dart';
 import '../../../widgets/my_box_shadow.dart';
+import '../../../widgets/page_erro.dart';
 import '../../../widgets/page_vazia.dart';
 
 class ListarCarros extends StatefulWidget {
@@ -35,28 +37,25 @@ class _ListarCarrosState extends State<ListarCarros> {
     var size = MediaQuery.of(context).size;
     return Column(
       children: [
-        ConstsWidget.buildCustomButton(
-          context,
-          'Adicionar Carros',
-          icon: Icons.add,
-          onPressed: () {
-            ConstsFuture.navigatorPageRoute(context, CadastroCarros());
-          },
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+          child: ConstsWidget.buildCustomButton(
+            context,
+            'Adicionar Carros',
+            color: Consts.kColorRed,
+            icon: Icons.add,
+            onPressed: () {
+              ConstsFuture.navigatorPageRoute(context, CadastroCarros());
+            },
+          ),
         ),
         FutureBuilder<dynamic>(
           future: apiCarros(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Algo deu errado');
-            } else {
-              if (snapshot.hasData && snapshot.data['erro']) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
-                  child: PageVazia(title: snapshot.data['mensagem']),
-                );
-              } else {
+              return LoadingCadastro();
+            } else if (snapshot.hasData) {
+              if (!snapshot.data['erro']) {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -112,7 +111,14 @@ class _ListarCarrosState extends State<ListarCarros> {
                     ));
                   },
                 );
+              } else {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
+                  child: PageVazia(title: snapshot.data['mensagem']),
+                );
               }
+            } else {
+              return PageErro();
             }
           },
         ),

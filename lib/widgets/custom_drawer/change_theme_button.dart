@@ -20,8 +20,9 @@ class _ChangeThemeButtonState extends State<ChangeThemeButton> {
     return ListTile(
       title: Text(title),
       iconColor: Theme.of(context).iconTheme.color,
-      leading:
-          isOn == true ? Icon(Icons.light_mode) : Icon(Icons.dark_mode_rounded),
+      leading: isOn == true
+          ? Icon(Icons.light_mode_outlined)
+          : Icon(Icons.dark_mode_outlined),
       trailing: Switch.adaptive(
         value: themeProvider.isDarkMode,
         onChanged: (value) {

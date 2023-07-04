@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
@@ -7,6 +6,7 @@ import '../../widgets/my_box_shadow.dart';
 
 Widget buildCardHome(BuildContext context,
     {required String title,
+    int? indexOrder,
     Widget? pageRoute,
     required String iconApi,
     bool? isWhats,
@@ -15,17 +15,6 @@ Widget buildCardHome(BuildContext context,
 
   launchNumber(number) async {
     await launchUrl(Uri.parse('tel:$number'));
-  }
-
-  Future<Widget> apiImage() async {
-    var url = Uri.parse(iconApi);
-    var resposta = await http.get(url);
-
-    return resposta.statusCode == 200
-        ? Image.network(
-            iconApi,
-          )
-        : Image.asset('assets/erro_png.png');
   }
 
   return MyBoxShadow(
@@ -47,7 +36,7 @@ Widget buildCardHome(BuildContext context,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FutureBuilder(
-              future: apiImage(),
+              future: ConstsFuture.apiImageIcon(iconApi),
               builder: (context, snapshot) => SizedBox(
                   width: size.width * 0.12,
                   height: size.height * 0.075,

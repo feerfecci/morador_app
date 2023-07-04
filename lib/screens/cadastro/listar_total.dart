@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
-import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/screens/cadastro/morador/listar_morador.dart';
-import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +35,9 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
         context,
         title,
         onPressed: () {
+          // isCheckedMorador = true;
+          // isCheckedCarros = false;
+          // isCheckedFuncionarios = false;
           setState(() {
             if (tipoLista == 1) {
               isCheckedMorador = true;
@@ -56,44 +57,38 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
       );
     }
 
-    return buildScaffoldAll(
-      context,
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            apiMoradores();
-          });
-        },
-        child: buildHeaderPage(
-          context,
-          titulo: 'Cadastro',
-          subTitulo: '${InfosMorador.divisao} - ${InfosMorador.numero}',
-          widget: ListView(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildFiltroCadastro('Morador', 1),
-                    buildFiltroCadastro('Carros', 2),
-                    buildFiltroCadastro('Funcionarios', 3),
-                  ],
-                ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          apiMoradores();
+        });
+      },
+      child: buildScaffoldAll(
+        context,
+        title: 'Cadastro',
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildFiltroCadastro('Morador', 1),
+                  buildFiltroCadastro('Carros', 2),
+                  buildFiltroCadastro('Funcionarios', 3),
+                ],
               ),
-              //listar morador
-              if (isCheckedMorador) ListarMorador(),
-              //listar carros
-              if (isCheckedCarros) ListarCarros(),
-              //listar funcionarios
-              if (isCheckedFuncionarios)
-                Column(
-                  children: const [MyBoxShadow(child: Text('Funcionarios'))],
-                ),
-            ],
-          ),
+            ),
+            //listar morador
+            if (isCheckedMorador) ListarMorador(),
+            //listar carros
+            if (isCheckedCarros) ListarCarros(),
+            //listar funcionarios
+            if (isCheckedFuncionarios)
+              Column(
+                children: const [MyBoxShadow(child: Text('Funcionarios'))],
+              ),
+          ],
         ),
       ),
     );

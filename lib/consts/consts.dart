@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 
 class InfosMorador {
+  static int qntApto = 0;
+  static String user = '';
+  static String senhaCripto = '';
   static int idmorador = 0;
   static int idresponsavel = 0;
   static int idcondominio = 0;
@@ -33,7 +36,10 @@ class Consts {
 
   static const kBackPageColor = Color.fromARGB(255, 245, 245, 255);
   static const kButtonColor = Color.fromARGB(255, 0, 134, 252);
-  static const kColorApp = Color.fromARGB(255, 127, 99, 254);
+  static const kColorRed = Color.fromARGB(255, 251, 80, 93);
+  static const kColorAzul = Color.fromARGB(255, 75, 132, 255);
+  static const kColorVerde = Color.fromARGB(255, 44, 201, 104);
+  static const kColorAmarelo = Color.fromARGB(255, 255, 193, 7);
 
   static const String iconApi = 'https://escritorioapp.com/img/ico-';
   static const String iconApiPort = 'https://a.portariaapp.com/img/ico-';

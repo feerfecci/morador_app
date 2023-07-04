@@ -4,6 +4,22 @@ class LocalPreferences {
   static const _keyUserUser = 'user';
   static const _keyUserPassWord = 'senha';
 
+  static Future setOrderCards(model, {required int qualModel}) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String key = qualModel == 1 ? 'indexList' : 'indexList2';
+    return preferences.setStringList(
+      key,
+      model,
+    );
+  }
+
+  static Future getOrderCards(int qualModel) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String key = qualModel == 1 ? 'indexList' : 'indexList2';
+    List? indexLista = preferences.getStringList(key);
+    return indexLista;
+  }
+
   static Future setUserLogin(String user, String senha) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(

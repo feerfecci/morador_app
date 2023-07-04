@@ -13,7 +13,7 @@
     <!-- Used to reschedule notification for sound alert disabled -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
    <application
-        android:label="Morador App"
+        android:label="Portaria App | Morador"
         android:name="${applicationName}"
         android:icon="@mipmap/launch_icon">
         <activity

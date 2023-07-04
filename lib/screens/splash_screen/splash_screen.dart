@@ -20,11 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
     LocalPreferences.getUserLogin().then((value) async {
       List cache = value;
       if (cache.first == null || cache.last == null) {
-        ConstsFuture.navigatorPopAndPush(context, LoginScreen());
+        return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
       } else if (cache.first != null || cache.last != null) {
         final auth = await LocalBiometrics.authenticate();
         final hasBiometrics = await LocalBiometrics.hasBiometric();
-        if (auth && hasBiometrics) {
+        if (!hasBiometrics) {
+          return ConstsFuture.efetuaLogin(context, cache.first, cache.last);
+        } else if (hasBiometrics && auth) {
           return ConstsFuture.efetuaLogin(context, cache.first, cache.last);
         }
       } else {
@@ -57,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
             height: size.height * 0.3,
             width: size.width * 0.6,
             child: Image.network(
-              'https://a.portariaapp.com/img/logo-portaria.png',
+              'https://a.portariaapp.com/img/logo_azul.png',
             ),
           ),
           Spacer(),

@@ -26,14 +26,16 @@ dependencies:
   intl:
   shimmer: ^3.0.0
   whatsapp_unilink: ^2.1.0
+  reorderable_grid_view: ^2.2.6
+  flutter_draggable_gridview: ^0.0.8
   
   
 flutter_icons:
-  image_path: "assets/portaria.png"
+  image_path: "assets/logo-morador.png"
   ios: true
   remove_alpha_ios: true
   android: "launch_icon"
-  adaptive_icon_foreground: "assets/portaria.png"
+  adaptive_icon_foreground: "assets/logo-morador.png"
 
 dev_dependencies:
   flutter_test:

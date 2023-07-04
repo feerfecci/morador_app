@@ -6,7 +6,7 @@ ThemeData themeLight(BuildContext context) {
   return ThemeData(
     snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.black, actionTextColor: Colors.white),
-    shadowColor: Color.fromARGB(255, 218, 218, 218),
+    shadowColor: Color.fromARGB(55, 103, 151, 255),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       unselectedItemColor: Colors.black38,
@@ -31,7 +31,7 @@ ThemeData themeDark(BuildContext context) {
   return ThemeData(
     snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.white, actionTextColor: Colors.black),
-    shadowColor: Color.fromARGB(255, 63, 63, 63),
+    shadowColor: Color.fromARGB(0, 27, 27, 27),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       unselectedItemColor: Colors.white38,
       selectedItemColor: Colors.white,
@@ -46,7 +46,7 @@ ThemeData themeDark(BuildContext context) {
     ),
     scaffoldBackgroundColor: Colors.grey.shade900,
     dialogBackgroundColor: Colors.blueGrey[1000],
-    primaryColor: Colors.blueGrey[800],
+    primaryColor: Colors.blueGrey[900],
     textTheme: Theme.of(context).textTheme.apply(
           fontSizeDelta: 1,
           bodyColor: Colors.white,

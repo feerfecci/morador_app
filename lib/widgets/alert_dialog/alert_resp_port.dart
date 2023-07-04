@@ -6,7 +6,7 @@ import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-import '../consts/consts.dart';
+import '../../consts/consts.dart';
 
 class RespondeDelivery extends StatefulWidget {
   final int? tipoAviso;
@@ -27,7 +27,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
 
   Future<dynamic> mensagensResponsta() async {
     var url = Uri.parse(
-        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso}&idcond=${InfosMorador.idcondominio}');
+        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso == 2 ? 6 : 5}&idcond=${InfosMorador.idcondominio}');
     var resposta = await get(url);
     if (resposta.statusCode == 200) {
       var jsonReponse = json.decode(resposta.body);
@@ -47,7 +47,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
         padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
         child: Container(
           width: double.infinity,
-          height: size.height * 0.07,
+          height: size.height * 0.075,
           decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             border: Border.all(color: Colors.black26),
@@ -66,9 +66,10 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
                 borderRadius: BorderRadius.circular(16),
                 hint: Text('Selecione Um Aviso'),
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18),
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
                 value: dropRespostas,
                 items: listRespostas.map((e) {
                   return DropdownMenuItem(
@@ -135,11 +136,12 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
 
 alertRespondeDelivery(BuildContext context, {required int tipoAviso}) {
   return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return RespondeDelivery(
-          tipoAviso: tipoAviso,
-        );
-      });
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return RespondeDelivery(
+        tipoAviso: tipoAviso,
+      );
+    },
+  );
 }

@@ -84,7 +84,8 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
 
       validator: Validatorless.multiple([Validatorless.required(mensagem)]),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: size.width * 0.02),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.035, vertical: size.height * 0.023),
         filled: true,
         fillColor: Theme.of(context).canvasColor,
         label: Text(title),
@@ -98,5 +99,46 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
         ),
       ),
     ),
+  );
+}
+
+Widget buildFormPassword(BuildContext context,
+    {TextEditingController? controller,
+    bool isObscure = false,
+    void Function()? onTap}) {
+  var size = MediaQuery.of(context).size;
+  return Column(
+    children: [
+      TextFormField(
+        textInputAction: TextInputAction.done,
+        controller: controller,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: Validatorless.multiple([
+          Validatorless.required('Senha é obrigatório'),
+          Validatorless.min(6, 'Mínimo de 6 caracteres')
+        ]),
+        obscureText: isObscure,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.032, vertical: size.height * 0.023),
+          filled: true,
+          fillColor: Theme.of(context).primaryColor,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(color: Colors.black26)),
+          hintText: 'Digite sua Senha',
+          suffixIcon: GestureDetector(
+            onTap: onTap,
+            child: isObscure
+                ? Icon(Icons.visibility_off_outlined)
+                : Icon(Icons.visibility_outlined),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: size.height * 0.01,
+      ),
+    ],
   );
 }

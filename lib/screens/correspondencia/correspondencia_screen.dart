@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:app_portaria/widgets/header.dart';
+import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:app_portaria/widgets/shimmer.dart';
@@ -44,189 +44,225 @@ class CorrespondenciaScreen extends StatelessWidget {
         });
       }
 
-      return buildScaffoldAll(context,
-          body: RefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                apiListarCorrespondencias(tipoAviso);
-                isChecked == true;
-                correspRetirar.clear();
-              });
-            },
-            child: buildHeaderPage(
-              context,
-              titulo: tipoAviso == 1 ? 'Correspondências' : 'Encomendas',
-              subTitulo: tipoAviso == 1
-                  ? 'Confira suas cartas'
-                  : 'Confira suas Caixas',
-              widget: ListView(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+      Widget buildRowCodigo(title, protocoloRet, codigoConf) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: size.height * 0.005),
+          child: Center(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
                 children: [
-                  ConstsWidget.buildLoadingButton(context,
+                  ConstsWidget.buildTextSubTitle(
+                      context, 'Protocolo de Retirada'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                    child: ConstsWidget.buildTextTitle(
+                      context,
+                      protocoloRet.toString(),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ConstsWidget.buildTextSubTitle(
+                      context, 'Código de Confirmação'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                    child: ConstsWidget.buildTextTitle(
+                      context,
+                      codigoConf.toString(),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )),
+        );
+      }
+
+      return RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            apiListarCorrespondencias(tipoAviso);
+            isChecked = false;
+            correspRetirar.clear();
+          });
+        },
+        child: buildScaffoldAll(context,
+            title: tipoAviso == 3 ? 'Cartas' : 'Caixas',
+            body: ListView(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: size.height * 0.005, bottom: size.height * 0.02),
+                  child: ConstsWidget.buildLoadingButton(context,
                       title: 'Solicitar Retirada',
-                      color: Consts.kColorApp,
+                      color: Color.fromARGB(255, 251, 80, 93),
                       isLoading: loadingRetirada, onPressed: () {
                     correspRetirar.isNotEmpty
                         ? carregandoRetirada()
                         // print(correspRetirar)
                         : buildCustomSnackBar(context,
-                            titulo: 'Cuidado',
-                            texto: 'Selecione um item para retirada');
+                            titulo: 'Atenção',
+                            texto: 'Selecione um ou mais itens para retirada');
                   }),
-                  FutureBuilder<dynamic>(
-                      future: apiListarCorrespondencias(tipoAviso),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ListTile(
-                            subtitle: ShimmerWidget(
-                              height: size.height * 0.02,
-                              width: size.width * 0.01,
-                            ),
-                            title: ShimmerWidget(
-                                height: size.height * 0.03,
-                                width: size.width * 0.03),
-                          );
-                        } else if (snapshot.hasError || !snapshot.hasData) {
-                          return Text('Algo deu errado! Volte Mais tarde!');
+                ),
+                FutureBuilder<dynamic>(
+                    future: apiListarCorrespondencias(tipoAviso),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return LoadingCorresp();
+                      } else if (snapshot.hasError || !snapshot.hasData) {
+                        return Text('Algo deu errado! Volte Mais tarde!');
+                      } else {
+                        if (snapshot.data['erro']) {
+                          return PageVazia(title: snapshot.data['mensagem']);
                         } else {
-                          if (snapshot.data['erro']) {
-                            return PageVazia(title: snapshot.data['mensagem']);
+                          if (loadingRetirada) {
+                            return ListTile(
+                              subtitle: ShimmerWidget(
+                                height: size.height * 0.02,
+                                width: size.width * 0.01,
+                              ),
+                              title: ShimmerWidget(
+                                  height: size.height * 0.03,
+                                  width: size.width * 0.03),
+                            );
                           } else {
-                            if (loadingRetirada) {
-                              return ListTile(
-                                subtitle: ShimmerWidget(
-                                  height: size.height * 0.02,
-                                  width: size.width * 0.01,
-                                ),
-                                title: ShimmerWidget(
-                                    height: size.height * 0.03,
-                                    width: size.width * 0.03),
-                              );
-                            } else {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
-                                  itemCount:
-                                      snapshot.data!['correspondencias'].length,
-                                  itemBuilder: (context, index) {
-                                    var correspInfos = snapshot
-                                        .data!['correspondencias'][index];
-                                    var idcorrespondencia =
-                                        correspInfos['idcorrespondencia'];
-                                    var idunidade = correspInfos['idunidade'];
-                                    var unidade = correspInfos['unidade'];
-                                    var divisao = correspInfos['divisao'];
-                                    var idcondominio =
-                                        correspInfos['idcondominio'];
-                                    var nome_condominio =
-                                        correspInfos['nome_condominio'];
-                                    var idfuncionario =
-                                        correspInfos['idfuncionario'];
-                                    var nome_funcionario =
-                                        correspInfos['nome_funcionario'];
-                                    var data_recebimento =
-                                        correspInfos['data_recebimento'];
-                                    var tipo = correspInfos['tipo'];
-                                    var remetente = correspInfos['remetente'];
-                                    var descricao = correspInfos['descricao'];
-                                    var protocolo = correspInfos['protocolo'];
-                                    var protocolo_entrega =
-                                        correspInfos['protocolo_entrega'];
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount:
+                                    snapshot.data!['correspondencias'].length,
+                                itemBuilder: (context, index) {
+                                  var correspInfos =
+                                      snapshot.data!['correspondencias'][index];
+                                  var idcorrespondencia =
+                                      correspInfos['idcorrespondencia'];
+                                  var idunidade = correspInfos['idunidade'];
+                                  var unidade = correspInfos['unidade'];
+                                  var divisao = correspInfos['divisao'];
+                                  var idcondominio =
+                                      correspInfos['idcondominio'];
+                                  var nome_condominio =
+                                      correspInfos['nome_condominio'];
+                                  var idfuncionario =
+                                      correspInfos['idfuncionario'];
+                                  var nome_funcionario =
+                                      correspInfos['nome_funcionario'];
+                                  var data_recebimento =
+                                      correspInfos['data_recebimento'];
+                                  var tipo = correspInfos['tipo'];
+                                  var remetente = correspInfos['remetente'];
+                                  var descricao = correspInfos['descricao'];
+                                  var protocolo = correspInfos['protocolo'];
+                                  var protocolo_entrega =
+                                      correspInfos['protocolo_entrega'];
+                                  var statusCorresp =
+                                      correspInfos['status_entrega'];
 
-                                    var datahora_cadastro = DateFormat(
-                                            'dd/MM/yyyy')
-                                        .format(DateTime.parse(
-                                            correspInfos['datahora_cadastro']));
-                                    var datahora_ultima_atualizacao =
-                                        correspInfos[
-                                            'datahora_ultima_atualizacao'];
-                                    return MyBoxShadow(
-                                        child: Column(
+                                  var datahora_cadastro = DateFormat(
+                                          'dd/MM/yyyy')
+                                      .format(DateTime.parse(
+                                          correspInfos['datahora_cadastro']));
+                                  var datahora_ultima_atualizacao =
+                                      correspInfos[
+                                          'datahora_ultima_atualizacao'];
+                                  return MyBoxShadow(
+                                      child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: size.height * 0.01),
+                                    child: Column(
                                       children: [
                                         ConstsWidget.buildTextTitle(
-                                            context, remetente),
-                                        ConstsWidget.buildTextSubTitle(context,
-                                            '$descricao - $datahora_cadastro'),
+                                            context, remetente,
+                                            textAlign: TextAlign.center,
+                                            size: 18),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: size.height * 0.01),
+                                          child: ConstsWidget.buildTextSubTitle(
+                                              context,
+                                              '$descricao - $datahora_cadastro'),
+                                        ),
                                         if (loadingRetirada)
                                           Center(
                                               child: ShimmerWidget(
                                             height: size.height * 0.03,
                                             width: size.width * 0.3,
                                           )),
-                                        if (protocolo == '')
+                                        if (!statusCorresp && protocolo == '')
                                           StatefulBuilder(
                                               builder: (context, setState) {
-                                            return CheckboxListTile(
-                                              title: Text('Retirar'),
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          size.height * 0.15),
-                                              value: isChecked,
-                                              activeColor: Consts.kColorApp,
-                                              onChanged: (value) {
-                                                setState(
-                                                  () {
-                                                    isChecked = value!;
-                                                    value
-                                                        ? correspRetirar.add(
-                                                            idcorrespondencia
-                                                                .toString())
-                                                        : correspRetirar.remove(
-                                                            idcorrespondencia
-                                                                .toString());
-                                                  },
-                                                );
-                                              },
-                                            );
+                                            return ConstsWidget.buildCheckBox(
+                                                context,
+                                                isChecked: isChecked,
+                                                onChanged: (value) {
+                                              setState(
+                                                () {
+                                                  isChecked = value!;
+                                                  value
+                                                      ? correspRetirar.add(
+                                                          idcorrespondencia
+                                                              .toString())
+                                                      : correspRetirar.remove(
+                                                          idcorrespondencia
+                                                              .toString());
+                                                },
+                                              );
+                                            }, title: 'Solicitar Retirar');
                                           }),
-                                        if (protocolo != '')
+                                        if (protocolo != 'Senha' &&
+                                            protocolo != '' &&
+                                            !statusCorresp)
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: size.height * 0.01),
-                                            child: Center(
-                                                child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    ConstsWidget.buildTextSubTitle(
-                                                        context,
-                                                        'Protocolo de retirada:'),
-                                                    ConstsWidget.buildTextTitle(
-                                                      context,
-                                                      protocolo.toString(),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    ConstsWidget.buildTextSubTitle(
-                                                        context,
-                                                        'Protocolo de entrega:'),
-                                                    ConstsWidget.buildTextTitle(
-                                                        context,
-                                                        protocolo_entrega
-                                                            .toString()),
-                                                  ],
-                                                )
-                                              ],
-                                            )),
+                                            child: ConstsWidget.buildTextTitle(
+                                                context,
+                                                'Dados para retirada por terceiros',
+                                                color: Color.fromARGB(
+                                                    255, 43, 135, 219)),
                                           ),
+                                        if (protocolo == 'Senha' &&
+                                            statusCorresp)
+                                          ConstsWidget.buildTextTitle(context,
+                                              'Retirada com senha do usuario',
+                                              color: Colors.red),
+                                        if (protocolo != 'Senha' &&
+                                            protocolo != '' &&
+                                            statusCorresp)
+                                          ConstsWidget.buildTextTitle(context,
+                                              'Retirada com protocolo'),
+                                        if (protocolo != 'Senha' &&
+                                            protocolo != '' &&
+                                            !statusCorresp)
+                                          buildRowCodigo(
+                                              'Protocolo de Retirada',
+                                              protocolo.toString(),
+                                              protocolo_entrega),
+                                        if (protocolo != 'Senha' &&
+                                            protocolo != '' &&
+                                            !statusCorresp)
+                                          ConstsWidget.buildTextSubTitle(
+                                              context,
+                                              'Pode utilizar a senha de retirada para validar a entrega',
+                                              color: Colors.red)
                                       ],
-                                    ));
-                                  });
-                            }
+                                    ),
+                                  ));
+                                });
                           }
                         }
-                      }),
-                ],
-              ),
-            ),
-          ));
+                      }
+                    }),
+              ],
+            )),
+      );
     });
   }
 }

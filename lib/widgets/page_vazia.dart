@@ -17,7 +17,7 @@ class _PageVaziaState extends State<PageVazia> {
     return Column(
       children: [
         Center(
-          child: Image.network('https://a.portariaapp.com/img/img.png'),
+          child: Image.asset('assets/vazio.png'),
         ),
         Padding(
           padding: EdgeInsets.all(8.0),

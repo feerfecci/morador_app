@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 Widget buildHeaderPage(
   BuildContext context, {
-  required String titulo,
-  required String subTitulo,
+  String? titulo,
+  String? subTitulo,
   required Widget widget,
 }) {
   var size = MediaQuery.of(context).size;
@@ -33,10 +33,15 @@ Widget buildHeaderPage(
                   //       fontWeight: FontWeight.bold,
                   //       color: Theme.of(context).colorScheme.primary),
                   // ),
-                  ConstsWidget.buildTextTitle(context, titulo,
-                      size: 24, textAlign: TextAlign.center),
-                  ConstsWidget.buildTextTitle(context, subTitulo,
-                      textAlign: TextAlign.center),
+                  if (titulo != null)
+                    ConstsWidget.buildTextTitle(context, titulo,
+                        size: 24, textAlign: TextAlign.center),
+                  if (subTitulo != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: ConstsWidget.buildTextTitle(context, subTitulo,
+                          textAlign: TextAlign.center, size: 20),
+                    ),
                   // Text(
                   //   subTitulo,
                   //   style: TextStyle(
@@ -49,7 +54,8 @@ Widget buildHeaderPage(
           ),
           Padding(
             padding: EdgeInsets.only(
-                top: size.height * 0.06,
+                top:
+                    subTitulo == null ? size.height * 0.06 : size.height * 0.01,
                 right: size.width * 0.02,
                 left: size.width * 0.02),
             child: widget,

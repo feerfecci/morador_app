@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/consts/consts_widget.dart';
@@ -8,8 +7,6 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../../widgets/header.dart';
 import '../../widgets/scaffold_all.dart';
 
 class FazerReserva extends StatefulWidget {
@@ -42,11 +39,12 @@ class _FazerReservaState extends State<FazerReserva> {
         setState(() {
           isLoading = !isLoading;
         });
-        ConstsFuture.navigatorPopAndPush(
-          context,
-          ListarEspacos(),
-        );
         if (!value['erro']) {
+          Navigator.pop(context);
+          ConstsFuture.navigatorPopAndPush(
+            context,
+            ListarEspacos(),
+          );
           buildCustomSnackBar(context,
               titulo: 'Muito Obrigado', texto: value['mensagem']);
         } else {
@@ -62,34 +60,38 @@ class _FazerReservaState extends State<FazerReserva> {
     var size = MediaQuery.of(context).size;
     return buildScaffoldAll(
       context,
-      body: buildHeaderPage(
-        context,
-        titulo: 'Reservar',
-        subTitulo: widget.nomeEspaco,
-        widget: MyBoxShadow(
-          child: Form(
-            key: keyReserva,
+      title: widget.nomeEspaco,
+      body: MyBoxShadow(
+        child: Form(
+          key: keyReserva,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ConstsWidget.buildTextTitle(context, 'Descrição'),
+                ConstsWidget.buildTextTitle(context, 'Descrição', size: 18),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
                   child: ConstsWidget.buildTextSubTitle(
-                      context, widget.descricaoEspaco),
+                      context, widget.descricaoEspaco,
+                      textAlign: TextAlign.center, size: 16),
                 ),
-                SizedBox(
-                  width: size.width * 0.3,
-                  child: buildMyTextFormObrigatorio(context,
-                      controller: dataCtrl,
-                      title: 'Data',
-                      mask: '##/##/####',
-                      hintText: '25/09/1997'),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                  child: SizedBox(
+                    width: size.width * 0.35,
+                    child: buildMyTextFormObrigatorio(context,
+                        controller: dataCtrl,
+                        title: 'Data',
+                        mask: '##/##/####',
+                        hintText: '25/09/1997'),
+                  ),
                 ),
-                ConstsWidget.buildLoadingButton(context, onPressed: () {
+                ConstsWidget.buildLoadingButton(context,
+                    color: Consts.kColorRed, onPressed: () {
                   var formValid = keyReserva.currentState?.validate() ?? false;
                   if (formValid) {
-                    print(dataCtrl.text);
                     setState(() {
                       isLoading = !isLoading;
                     });

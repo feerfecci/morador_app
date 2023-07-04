@@ -1,15 +1,14 @@
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
+
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/reserva_espaco/fazer_reserva.dart';
 import 'package:app_portaria/screens/reserva_espaco/listar_reserva.dart';
-import 'package:app_portaria/widgets/header.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/my_text_form_field.dart';
+import 'package:app_portaria/widgets/page_erro.dart';
+import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import '../../consts/consts_widget.dart';
 
 class ListarEspacos extends StatefulWidget {
@@ -28,97 +27,131 @@ class ListarEspacosState extends State<ListarEspacos> {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ConstsWidget.buildTextSubTitle(context, titulo),
-            ConstsWidget.buildTextTitle(context, texto),
+            ConstsWidget.buildTextSubTitle(
+              context,
+              titulo,
+            ),
+            SizedBox(
+              height: size.height * 0.005,
+            ),
+            ConstsWidget.buildTextTitle(context, texto, size: 18),
           ],
         ),
       );
     }
 
-    return buildScaffoldAll(context,
-        body: RefreshIndicator(
-          onRefresh: () async {
-            setState(() {
-              ConstsFuture.changeApi(
-                  '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}');
-            });
-          },
-          color: Colors.transparent,
-          child: buildHeaderPage(context,
-              titulo: 'Reservar Espaços',
-              subTitulo: 'Solicite um espaço',
-              widget: Column(
-                children: [
-                  ConstsWidget.buildCustomButton(context, 'Minhas Solicitações',
-                      onPressed: () => ConstsFuture.navigatorPageRoute(
-                          context, ListarReservas())),
-                  FutureBuilder<dynamic>(
-                    future: ConstsFuture.changeApi(
-                        '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}'),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasData) {
-                        if (!snapshot.data['erro']) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            itemCount: snapshot.data['lista_espacos'].length,
-                            itemBuilder: (context, index) {
-                              var apiEspacos =
-                                  snapshot.data['lista_espacos'][index];
-                              bool? ativo = apiEspacos['ativo'];
-                              int? idespaco = apiEspacos['idespaco'];
-                              String? nome_espaco = apiEspacos['nome_espaco'];
-                              int? idcondominio = apiEspacos['idcondominio'];
-                              String? descricao = apiEspacos['descricao'];
-                              return MyBoxShadow(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildTextoEspaco(
-                                      titulo: 'id:',
-                                      texto: idespaco.toString(),
-                                    ),
-                                    buildTextoEspaco(
-                                      titulo: 'Nome do Escpaço:',
-                                      texto: nome_espaco.toString(),
-                                    ),
-                                    buildTextoEspaco(
-                                      titulo: 'Descrição:',
-                                      texto: descricao.toString(),
-                                    ),
-                                    ConstsWidget.buildCustomButton(
-                                      context,
-                                      'Solicitar',
-                                      onPressed: () {
-                                        ConstsFuture.navigatorPageRoute(
-                                            context,
-                                            FazerReserva(
-                                                idespaco: idespaco!,
-                                                nomeEspaco:
-                                                    nome_espaco.toString(),
-                                                descricaoEspaco:
-                                                    descricao.toString()));
-                                      },
-                                    )
-                                  ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          ConstsFuture.changeApi(
+              '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}');
+        });
+      },
+      child: buildScaffoldAll(context,
+          title: 'Reservar Espaços',
+          body: ListView(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.005, bottom: size.height * 0.02),
+                child: ConstsWidget.buildCustomButton(
+                    context, 'Minhas Solicitações',
+                    icon: Icons.content_paste_go,
+                    color: Consts.kColorAzul,
+                    onPressed: () => ConstsFuture.navigatorPageRoute(
+                        context, ListarReservas())),
+              ),
+              FutureBuilder<dynamic>(
+                future: ConstsFuture.changeApi(
+                    '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData) {
+                    if (!snapshot.data['erro']) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: snapshot.data['lista_espacos'].length,
+                        itemBuilder: (context, index) {
+                          var apiEspacos =
+                              snapshot.data['lista_espacos'][index];
+                          bool? ativo = apiEspacos['ativo'];
+                          int? idespaco = apiEspacos['idespaco'];
+                          String? nome_espaco = apiEspacos['nome_espaco'];
+                          int? idcondominio = apiEspacos['idcondominio'];
+                          String? descricao = apiEspacos['descricao'];
+                          return MyBoxShadow(
+                            child: Column(
+                              children: [
+                                // buildTextoEspaco(
+                                //   titulo: 'id:',
+                                //   texto: idespaco.toString(),
+                                // ),
+                                buildTextoEspaco(
+                                  titulo: 'Nome do Espaço',
+                                  texto: nome_espaco.toString(),
                                 ),
-                              );
-                            },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: size.height * 0.01),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ConstsWidget.buildTextTitle(
+                                          context, 'Informações',
+                                          size: 18),
+                                      SizedBox(
+                                        height: size.height * 0.005,
+                                      ),
+                                      ConstsWidget.buildTextSubTitle(
+                                          context, descricao!,
+                                          textAlign: TextAlign.center,
+                                          size: 16),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: size.height * 0.01),
+                                  child: ConstsWidget.buildCustomButton(
+                                    context,
+                                    'Solicitar Reserva',
+                                    color: Consts.kColorRed,
+                                    icon: Icons.calendar_month_outlined,
+                                    onPressed: () {
+                                      ConstsFuture.navigatorPageRoute(
+                                          context,
+                                          FazerReserva(
+                                              idespaco: idespaco!,
+                                              nomeEspaco:
+                                                  nome_espaco.toString(),
+                                              descricaoEspaco:
+                                                  descricao.toString()));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
                           );
-                        } else {
-                          return Text('Não há nada');
-                        }
-                      } else {
-                        return Text('Algo deu errado');
-                      }
-                    },
-                  )
-                ],
-              )),
-        ));
+                        },
+                      );
+                    } else {
+                      return PageVazia(
+                          title: 'Não há espaços para alugar no condomínio');
+                    }
+                  } else {
+                    return PageErro();
+                  }
+                },
+              )
+            ],
+          )),
+    );
   }
 }

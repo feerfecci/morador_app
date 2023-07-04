@@ -1,6 +1,8 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
+import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,7 @@ import '../../../consts/consts.dart';
 import '../../../consts/consts_future.dart';
 import '../../../consts/consts_widget.dart';
 import '../../../widgets/my_box_shadow.dart';
+import '../../../widgets/page_erro.dart';
 import '../../../widgets/page_vazia.dart';
 import '../../../widgets/row_infos.dart';
 import 'cadastro_morador.dart';
@@ -35,29 +38,28 @@ class _ListarMoradorState extends State<ListarMorador> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Column(
+      // shrinkWrap: true,
+      // physics: ClampingScrollPhysics(),
       children: [
-        ConstsWidget.buildCustomButton(
-          context,
-          'Adicionar Morador',
-          icon: Icons.add,
-          onPressed: () {
-            ConstsFuture.navigatorPageRoute(context, CadastroMorador());
-          },
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+          child: ConstsWidget.buildCustomButton(
+            context,
+            color: Consts.kColorRed,
+            'Adicionar Morador',
+            icon: Icons.add,
+            onPressed: () {
+              ConstsFuture.navigatorPageRoute(context, CadastroMorador());
+            },
+          ),
         ),
         FutureBuilder<dynamic>(
           future: apiMoradores(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Algo deu errado');
-            } else {
-              if (snapshot.hasData && snapshot.data['erro']) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
-                  child: PageVazia(title: snapshot.data['mensagem']),
-                );
-              } else {
+              return LoadingCadastro();
+            } else if (snapshot.hasData) {
+              if (!snapshot.data['erro']) {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -106,25 +108,17 @@ class _ListarMoradorState extends State<ListarMorador> {
                                     bodyMorador['data_nascimento']))),
                         ConstsWidget.buildTextSubTitle(context, 'Email:'),
                         ConstsWidget.buildTextTitle(context, email),
-                        ListTile(
-                          title: ConstsWidget.buildTextTitle(
-                              context, 'Permitir acesso ao sistema'),
-                          trailing:
-                              StatefulBuilder(builder: (context, setState) {
-                            return SizedBox(
-                                width: size.width * 0.125,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Checkbox(
-                                        value: acessa_sistema,
-                                        activeColor: Consts.kColorApp,
-                                        onChanged: (bool? value) {}),
-                                  ],
-                                ));
-                          }),
-                        ),
+                        StatefulBuilder(builder: (context, setState) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ConstsWidget.buildCheckBox(context,
+                                  isChecked: acessa_sistema,
+                                  onChanged: (bool? value) {},
+                                  title: 'Permitir acesso ao sistema')
+                            ],
+                          );
+                        }),
                         ConstsWidget.buildCustomButton(
                             context, 'Editar Morador', onPressed: () {
                           ConstsFuture.navigatorPageRoute(
@@ -149,7 +143,14 @@ class _ListarMoradorState extends State<ListarMorador> {
                     ));
                   },
                 );
+              } else {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
+                  child: PageVazia(title: snapshot.data['mensagem']),
+                );
               }
+            } else {
+              return PageErro();
             }
           },
         ),

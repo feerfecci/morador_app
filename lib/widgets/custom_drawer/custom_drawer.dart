@@ -21,7 +21,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    // ignore: unused_element
     Widget buidListTile(
         {required String title,
         required IconData leading,
@@ -61,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.10,
+                height: size.height * 0.08,
                 width: size.width * 0.85,
                 child: DrawerHeader(
                   padding: EdgeInsets.symmetric(
@@ -70,62 +69,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
                         topLeft: Radius.circular(30),
                       ),
                       color: Colors.blue),
                   child: Text(
                     'Menu',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 24,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              ConstsWidget.buildTextTitle(context, InfosMorador.nome_completo),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.02,
-                    vertical: size.height * 0.01),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ConstsWidget.buildTextSubTitle(context, 'Localizado:'),
-                        Row(
-                          children: [
-                            ConstsWidget.buildTextTitle(
-                                context, InfosMorador.divisao),
-                            ConstsWidget.buildTextTitle(
-                                context, InfosMorador.numero),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ConstsWidget.buildTextSubTitle(context, 'Login:'),
-                        ConstsWidget.buildTextTitle(
-                            context, InfosMorador.login),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Theme.of(context).iconTheme.color,
-                ),
-                title: ConstsWidget.buildTextTitle(
-                  context,
-                  'Meu Perfil',
-                ),
-                onTap: () {
+              buidListTile(
+                title: 'Meu Perfil',
+                leading: Icons.business_center_outlined,
+                onPressed: () {
                   ConstsFuture.navigatorPopAndPush(
                       context,
                       CadastroMorador(
@@ -145,9 +105,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         isDrawer: true,
                       ));
                 },
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                ),
+              ),
+              buidListTile(
+                title: 'Seja um Representante',
+                leading: Icons.business_center_outlined,
+                onPressed: () {},
+              ),
+              buidListTile(
+                title: 'Política de privacidade',
+                leading: Icons.privacy_tip_outlined,
+                onPressed: () {},
+              ),
+              buidListTile(
+                title: 'Suporte',
+                leading: Icons.phone_forwarded_outlined,
+                onPressed: () {},
               ),
               ChangeThemeButton(),
               Spacer(),
@@ -156,6 +128,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: ConstsWidget.buildCustomButton(
                   context,
                   'Sair',
+                  icon: Icons.logout_outlined,
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                         context,

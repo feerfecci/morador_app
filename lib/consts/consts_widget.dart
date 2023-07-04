@@ -17,22 +17,23 @@ class ConstsWidget {
   }
 
   static Widget buildTextSubTitle(BuildContext context, String title,
-      {Color? color}) {
+      {Color? color, double size = 14, textAlign}) {
     return Text(
       title,
       maxLines: 20,
+      textAlign: textAlign,
       style: TextStyle(
-        color: color ?? Theme.of(context).colorScheme.primary,
-        fontSize: Consts.fontSubTitulo,
-        fontWeight: FontWeight.normal,
-      ),
+          color: color ?? Theme.of(context).colorScheme.primary,
+          fontSize: size,
+          fontWeight: FontWeight.normal,
+          height: 1.4),
     );
   }
 
   static Widget buildCustomButton(BuildContext context, String title,
       {IconData? icon,
       double? altura,
-      Color? color = Consts.kColorApp,
+      Color? color = Consts.kColorAzul,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
     return ElevatedButton(
@@ -47,21 +48,20 @@ class ConstsWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
+            if (icon != null) Icon(size: 24, icon, color: Colors.white),
+            if (icon != null)
+              SizedBox(
+                width: size.width * 0.015,
+              ),
             Text(
               title,
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(
-              width: size.width * 0.015,
-            ),
-            icon != null
-                ? Icon(size: 18, icon, color: Colors.white)
-                : SizedBox(),
           ],
         ),
       ),
@@ -72,12 +72,12 @@ class ConstsWidget {
       {required void Function()? onPressed,
       required bool isLoading,
       required String title,
-      Color color = Consts.kColorApp}) {
+      Color color = Consts.kColorAzul}) {
     var size = MediaQuery.of(context).size;
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+            padding: EdgeInsets.symmetric(vertical: size.height * 0.025),
             backgroundColor: color,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Consts.borderButton))),
@@ -92,7 +92,7 @@ class ConstsWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -125,8 +125,31 @@ class ConstsWidget {
           borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: EdgeInsets.all(size.height * 0.01),
-        child: buildTextTitle(context, ativo ? 'Ativo' : 'Inativo'),
+        child: buildTextTitle(context, ativo ? 'Ativo' : 'Inativo',
+            color: Colors.white),
       ),
+    );
+  }
+
+  static Widget buildCheckBox(BuildContext context,
+      {required bool isChecked,
+      required void Function(bool?)? onChanged,
+      required String title,
+      MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
+    return Row(
+      mainAxisAlignment: mainAxisAlignment,
+      children: [
+        buildTextTitle(context, title),
+        Transform.scale(
+          scale: 1.3,
+          child: Checkbox(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            value: isChecked,
+            onChanged: onChanged,
+          ),
+        ),
+      ],
     );
   }
 }
