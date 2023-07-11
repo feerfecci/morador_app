@@ -238,7 +238,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildDraggableGrid(
       {required int qualModel, required List<Model> models}) {
-    var size = MediaQuery.of(context).size;
     return StatefulBuilder(builder: (context, setState) {
       return ReorderableGridView.count(
         childAspectRatio: qualModel == 1 ? 1.6 : 3.25,
@@ -297,7 +296,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         elevation: 0,
-        leadingWidth: size.height * 0.06,
+        leadingWidth: size.height * 0.055,
       ),
       body: ListView(
         children: [
@@ -307,8 +306,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 if (InfosMorador.qntApto != 1) DropAptos(),
                 if (InfosMorador.qntApto == 1)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                  ConstsWidget.buildPadding001(
+                    context,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -341,8 +340,8 @@ class _HomePageState extends State<HomePage> {
                       pageRoute: ListaTotalUnidade(tipoAbrir: 1),
                     ),
                   ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                ConstsWidget.buildPadding001(
+                  context,
                   child: MyBoxShadow(
                       imagem: true,
                       child: SizedBox(

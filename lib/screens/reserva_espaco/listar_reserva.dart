@@ -22,8 +22,8 @@ class ListarReservasState extends State<ListarReservas> {
     var size = MediaQuery.of(context).size;
 
     Widget buildTextReserva({required titulo, required texto}) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      return ConstsWidget.buildPadding001(
+        context,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,7 +34,8 @@ class ListarReservasState extends State<ListarReservas> {
       );
     }
 
-    return RefreshIndicator(
+    return ConstsWidget.buildRefreshIndicator(
+      context,
       onRefresh: () async {
         setState(() {
           ConstsFuture.changeApi(

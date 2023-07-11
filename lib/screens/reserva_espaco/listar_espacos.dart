@@ -24,8 +24,8 @@ class ListarEspacosState extends State<ListarEspacos> {
     var size = MediaQuery.of(context).size;
 
     Widget buildTextoEspaco({required titulo, required texto}) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      return ConstsWidget.buildPadding001(
+        context,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -42,7 +42,8 @@ class ListarEspacosState extends State<ListarEspacos> {
       );
     }
 
-    return RefreshIndicator(
+    return ConstsWidget.buildRefreshIndicator(
+      context,
       onRefresh: () async {
         setState(() {
           ConstsFuture.changeApi(
@@ -96,9 +97,8 @@ class ListarEspacosState extends State<ListarEspacos> {
                                   titulo: 'Nome do Espaço',
                                   texto: nome_espaco.toString(),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.01),
+                                ConstsWidget.buildPadding001(
+                                  context,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -116,9 +116,8 @@ class ListarEspacosState extends State<ListarEspacos> {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.01),
+                                ConstsWidget.buildPadding001(
+                                  context,
                                   child: ConstsWidget.buildCustomButton(
                                     context,
                                     'Solicitar Reserva',

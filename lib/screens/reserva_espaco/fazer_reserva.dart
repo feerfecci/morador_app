@@ -64,21 +64,21 @@ class _FazerReservaState extends State<FazerReserva> {
       body: MyBoxShadow(
         child: Form(
           key: keyReserva,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+          child: ConstsWidget.buildPadding001(
+            context,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ConstsWidget.buildTextTitle(context, 'Descrição', size: 18),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                ConstsWidget.buildPadding001(
+                  context,
                   child: ConstsWidget.buildTextSubTitle(
                       context, widget.descricaoEspaco,
                       textAlign: TextAlign.center, size: 16),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                ConstsWidget.buildPadding001(
+                  context,
                   child: SizedBox(
                     width: size.width * 0.35,
                     child: buildMyTextFormObrigatorio(context,

@@ -41,8 +41,8 @@ class _ListarMoradorState extends State<ListarMorador> {
       // shrinkWrap: true,
       // physics: ClampingScrollPhysics(),
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+        ConstsWidget.buildPadding001(
+          context,
           child: ConstsWidget.buildCustomButton(
             context,
             color: Consts.kColorRed,
@@ -95,18 +95,18 @@ class _ListarMoradorState extends State<ListarMorador> {
                           ],
                         ),
                         buildRowInfos(context,
-                            title1: 'Login:',
+                            title1: 'Login',
                             subTitle1: login,
-                            title2: 'Telefone:',
+                            title2: 'Telefone',
                             subTitle2: '($ddd) $telefone'),
                         buildRowInfos(context,
-                            title1: 'Documento:',
+                            title1: 'Documento',
                             subTitle1: documento,
-                            title2: 'Nascimento:',
+                            title2: 'Nascimento',
                             subTitle2: DateFormat('dd/MM/yyyy').format(
                                 DateTime.parse(
                                     bodyMorador['data_nascimento']))),
-                        ConstsWidget.buildTextSubTitle(context, 'Email:'),
+                        ConstsWidget.buildTextSubTitle(context, 'Email'),
                         ConstsWidget.buildTextTitle(context, email),
                         StatefulBuilder(builder: (context, setState) {
                           return Row(
@@ -144,8 +144,8 @@ class _ListarMoradorState extends State<ListarMorador> {
                   },
                 );
               } else {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
+                return ConstsWidget.buildPadding001(
+                  context,
                   child: PageVazia(title: snapshot.data['mensagem']),
                 );
               }

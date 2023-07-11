@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'consts.dart';
 
 class ConstsWidget {
+  static Widget buildPadding001(BuildContext context,
+      {double horizontal = 0, double vertical = 0.01, required Widget? child}) {
+    var size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: size.height * vertical,
+        horizontal: size.width * horizontal,
+      ),
+      child: child,
+    );
+  }
+
   static Widget buildTextTitle(BuildContext context, String title,
       {textAlign, Color? color, double size = 16}) {
     return Text(
@@ -43,15 +55,19 @@ class ConstsWidget {
               borderRadius: BorderRadius.circular(Consts.borderButton))),
       onPressed: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.023),
+        padding: EdgeInsets.symmetric(vertical: size.height * 0.025),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            if (icon != null) Icon(size: 24, icon, color: Colors.white),
             if (icon != null)
-              SizedBox(
-                width: size.width * 0.015,
+              Row(
+                children: [
+                  Icon(size: 24, icon, color: Colors.white),
+                  SizedBox(
+                    width: size.width * 0.015,
+                  ),
+                ],
               ),
             Text(
               title,
@@ -103,7 +119,7 @@ class ConstsWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   SizedBox(
-                    height: size.height * 0.020,
+                    height: size.height * 0.025,
                     width: size.width * 0.05,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
@@ -151,5 +167,17 @@ class ConstsWidget {
         ),
       ],
     );
+  }
+
+  static Widget buildRefreshIndicator(BuildContext context,
+      {required Widget child, required Future<void> Function() onRefresh}) {
+    var size = MediaQuery.of(context).size;
+    return RefreshIndicator(
+        strokeWidth: 2,
+        backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
+        color: Theme.of(context).canvasColor,
+        displacement: size.height * 0.1,
+        onRefresh: onRefresh,
+        child: child);
   }
 }

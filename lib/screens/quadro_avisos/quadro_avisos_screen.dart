@@ -37,10 +37,9 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
     return buildScaffoldAll(
       context,
       title: 'Quadro de Avisos',
-      body: RefreshIndicator(
-          onRefresh: () async {
-            apiQuadroAvisos();
-          },
+      body: ConstsWidget.buildRefreshIndicator(context, onRefresh: () async {
+        apiQuadroAvisos();
+      },
           child: FutureBuilder<dynamic>(
               future: apiQuadroAvisos(),
               builder: (context, snapshot) {
@@ -64,18 +63,16 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                             .format(DateTime.parse(apiQuadro['datahora']));
                         return MyBoxShadow(
                           imagem: true,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: size.height * 0.01,
-                                horizontal: size.width * 0.03),
+                          child: ConstsWidget.buildPadding001(
+                            context,
+                            horizontal: 0.03,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ConstsWidget.buildTextTitle(context, titulo,
                                     textAlign: TextAlign.center, size: 18),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.01),
+                                ConstsWidget.buildPadding001(
+                                  context,
                                   child: ConstsWidget.buildTextSubTitle(
                                       context, texto,
                                       textAlign: TextAlign.center, size: 14),

@@ -27,7 +27,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
 
   Future<dynamic> mensagensResponsta() async {
     var url = Uri.parse(
-        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso == 2 ? 6 : 5}&idcond=${InfosMorador.idcondominio}');
+        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso}&idcond=${InfosMorador.idcondominio}');
     var resposta = await get(url);
     if (resposta.statusCode == 200) {
       var jsonReponse = json.decode(resposta.body);
@@ -43,8 +43,8 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     Widget buildDropRespDelivery() {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      return ConstsWidget.buildPadding001(
+        context,
         child: Container(
           width: double.infinity,
           height: size.height * 0.075,

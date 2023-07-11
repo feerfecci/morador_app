@@ -37,7 +37,8 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return RefreshIndicator(
+    return ConstsWidget.buildRefreshIndicator(
+      context,
       onRefresh: () async {
         setState(() {
           listarVisitasDlivery(tipoAviso: widget.tipo);
@@ -76,9 +77,8 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
 
                         return MyBoxShadow(
                             imagem: !isExperado,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.01),
+                            child: ConstsWidget.buildPadding001(
+                              context,
                               child: Column(
                                 children: [
                                   Row(
@@ -92,9 +92,8 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                                               context, titulo,
                                               size: 18,
                                               textAlign: TextAlign.center),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: size.height * 0.01),
+                                          ConstsWidget.buildPadding001(
+                                            context,
                                             child: SizedBox(
                                               width: size.width * 0.9,
                                               child: ConstsWidget
@@ -125,7 +124,8 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                                         'Responder Portaria',
                                         onPressed: () {
                                           alertRespondeDelivery(context,
-                                              tipoAviso: widget.tipo);
+                                              tipoAviso:
+                                                  widget.tipo == 1 ? 5 : 6);
                                         },
                                       ),
                                     )

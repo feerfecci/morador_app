@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 
 class InfosMorador {
+  static List<String> listIdMorador = [];
+  static List<String> listIdCond = [];
+  static List<String> listIdUnidade = [];
   static int qntApto = 0;
   static String user = '';
   static String senhaCripto = '';

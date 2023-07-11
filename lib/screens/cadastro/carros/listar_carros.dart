@@ -37,8 +37,8 @@ class _ListarCarrosState extends State<ListarCarros> {
     var size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+        ConstsWidget.buildPadding001(
+          context,
           child: ConstsWidget.buildCustomButton(
             context,
             'Adicionar Carros',
@@ -112,8 +112,8 @@ class _ListarCarrosState extends State<ListarCarros> {
                   },
                 );
               } else {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.05),
+                return ConstsWidget.buildPadding001(
+                  context,
                   child: PageVazia(title: snapshot.data['mensagem']),
                 );
               }

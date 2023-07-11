@@ -21,8 +21,8 @@ class _DropAptosState extends State<DropAptos> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+    return ConstsWidget.buildPadding001(
+      context,
       child: MyBoxShadow(
         child: Container(
           width: double.maxFinite,

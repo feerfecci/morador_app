@@ -165,8 +165,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ],
                   ),
                   //Contatos
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                  ConstsWidget.buildPadding001(
+                    context,
                     child: ConstsWidget.buildTextTitle(context, 'Contatos'),
                   ),
                   Row(
@@ -214,9 +214,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     },
                   ),
                   if (InfosMorador.responsavel)
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                    ConstsWidget.buildPadding001(
+                      context,
                       child: ConstsWidget.buildCustomButton(
                         context,
                         'Gerar Login',
@@ -225,14 +224,18 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               _formKeyMorador.currentState?.validate() ?? false;
                           if (formValid) {
                             _formKeyMorador.currentState?.save();
-
+                            List listaNome = [];
                             List nomeEmLista =
                                 _formInfosMorador.nome_morador!.split(' ');
-                            List listaNome = nomeEmLista;
 
+                            for (var i = 1; i < (nomeEmLista.length - 1); i++) {
+                              if (nomeEmLista[i] != '') {
+                                listaNome.add(nomeEmLista[i]);
+                              }
+                            }
                             setState(() {
                               loginGerado =
-                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 6)}';
+                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}';
                               _formInfosMorador = _formInfosMorador.copyWith(
                                   login: loginGerado);
                             });
@@ -249,9 +252,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   children: [
                     Row(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.01),
+                        ConstsWidget.buildPadding001(
+                          context,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -403,8 +405,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     int seEditando = 0,
   }) {
     var size = MediaQuery.of(context).size;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+    return ConstsWidget.buildPadding001(
+      context,
       child: StatefulBuilder(builder: (context, setState) {
         return Container(
           width: double.infinity,

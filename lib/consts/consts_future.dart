@@ -5,8 +5,13 @@ import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../repositories/shared_preferences.dart';
+import '../screens/avisos_chegada/chegada_screen.dart';
+import '../screens/correspondencia/correspondencia_screen.dart';
 import '../screens/home/dropAptos.dart';
+import '../screens/quadro_avisos/quadro_avisos_screen.dart';
+import '../widgets/alert_dialog/alert_resp_port.dart';
 import '../widgets/snack_bar.dart';
 import 'consts.dart';
 
@@ -62,9 +67,103 @@ class ConstsFuture {
           if (apiInfos['acessa_sistema'] == null ||
               apiInfos['acessa_sistema']) {
             //login morador
+            // if(apiBody['login'].length){
+
+            // }
             if (idUnidade == null) {
               InfosMorador.qntApto = apiBody['login'].length;
+              // for (i; i < InfosMorador.qntApto - 1; i++) {
+              //   print('passou for $i');
+              //   InfosMorador.listIdMorador.add(apiBody['login'][i]
+              //           ['responsavel']
+              //       ? apiBody['login'][i]['id'].toString()
+              //       : apiBody['login'][i]['idunidade'].toString());
+              //   InfosMorador.listIdCond
+              //       .add(apiBody['login'][i]['idcondominio'].toString());
+              //   InfosMorador.listIdUnidade
+              //       .add(apiBody['login'][i]['idunidade'].toString());
+              // },
+              OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
+
+              for (var i = 0; i < InfosMorador.qntApto; i++) {
+                print('passou for $i');
+                InfosMorador.listIdMorador.add(!apiBody['login'][i]
+                        ['responsavel']
+                    ? apiBody['login'][i]['id'].toString()
+                    : apiBody['login'][i]['idunidade'].toString());
+                InfosMorador.listIdCond
+                    .add(apiBody['login'][i]['idcondominio'].toString());
+                InfosMorador.listIdUnidade
+                    .add(apiBody['login'][i]['idunidade'].toString());
+                OneSignal.shared
+                    .promptUserForPushNotificationPermission()
+                    .then((value) {
+                  OneSignal.shared
+                      .setExternalUserId(InfosMorador.idmorador.toString());
+                  OneSignal.shared.sendTags({
+                    'idmorador': InfosMorador.listIdMorador[i],
+                    'idunidade': InfosMorador.listIdUnidade[i],
+                    'idcond': InfosMorador.listIdCond[i],
+                  });
+                  OneSignal.shared.setNotificationOpenedHandler((openedResult) {
+                    if (openedResult.notification.buttons!.first.id != '') {
+                      if (openedResult.notification.buttons!.first.id ==
+                          'delivery') {
+                        ConstsFuture.navigatorPageRoute(
+                            context, ChegadaScreen(tipo: 1));
+                        alertRespondeDelivery(context, tipoAviso: 5);
+                      } else if (openedResult.notification.buttons!.first.id ==
+                          'visita') {
+                        ConstsFuture.navigatorPageRoute(
+                            context, ChegadaScreen(tipo: 2));
+                        alertRespondeDelivery(context, tipoAviso: 6);
+                      }
+                    } else {
+                      if (openedResult
+                              .notification.additionalData!.values.first ==
+                          'corresp') {
+                        ConstsFuture.navigatorPageRoute(
+                            context, CorrespondenciaScreen(tipoAviso: 3));
+                      }
+                      // //delivery
+                      // else if (openedResult.notification.additionalData!.values.first ==
+                      //     'delivery') {
+                      //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+                      // }
+
+                      // //visita
+                      // else if (openedResult.notification.additionalData!.values.first ==
+                      //     'visita') {
+                      //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+                      // }
+                      //aviso
+                      else if (openedResult
+                              .notification.additionalData!.values.first ==
+                          'aviso') {
+                        ConstsFuture.navigatorPageRoute(
+                            context, QuadroAvisosScreen());
+                      } else if (openedResult
+                              .notification.additionalData!.values.first ==
+                          'mercadorias') {
+                        ConstsFuture.navigatorPageRoute(
+                            context, CorrespondenciaScreen(tipoAviso: 4));
+                      }
+                    }
+
+                    //correp
+                  });
+                  InfosMorador.email != ''
+                      ? OneSignal.shared
+                          .setEmail(email: InfosMorador.email.toString())
+                      : null;
+                });
+
+                print('id morador: ${InfosMorador.listIdMorador[i]}');
+                print('id unidade: ${InfosMorador.listIdUnidade[i]}');
+                print('id cond: ${InfosMorador.listIdCond[i]}');
+              }
             }
+
             InfosMorador.responsavel = apiInfos['responsavel'];
             InfosMorador.idmorador = !apiInfos['responsavel']
                 ? apiInfos['id']

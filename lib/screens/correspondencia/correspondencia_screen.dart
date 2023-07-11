@@ -45,8 +45,8 @@ class CorrespondenciaScreen extends StatelessWidget {
       }
 
       Widget buildRowCodigo(title, protocoloRet, codigoConf) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.005),
+        return ConstsWidget.buildPadding001(
+          context,
           child: Center(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -55,8 +55,8 @@ class CorrespondenciaScreen extends StatelessWidget {
                 children: [
                   ConstsWidget.buildTextSubTitle(
                       context, 'Protocolo de Retirada'),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                  ConstsWidget.buildPadding001(
+                    context,
                     child: ConstsWidget.buildTextTitle(
                       context,
                       protocoloRet.toString(),
@@ -68,8 +68,8 @@ class CorrespondenciaScreen extends StatelessWidget {
                 children: [
                   ConstsWidget.buildTextSubTitle(
                       context, 'Código de Confirmação'),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+                  ConstsWidget.buildPadding001(
+                    context,
                     child: ConstsWidget.buildTextTitle(
                       context,
                       codigoConf.toString(),
@@ -82,7 +82,8 @@ class CorrespondenciaScreen extends StatelessWidget {
         );
       }
 
-      return RefreshIndicator(
+      return ConstsWidget.buildRefreshIndicator(
+        context,
         onRefresh: () async {
           setState(() {
             apiListarCorrespondencias(tipoAviso);
@@ -173,18 +174,16 @@ class CorrespondenciaScreen extends StatelessWidget {
                                       correspInfos[
                                           'datahora_ultima_atualizacao'];
                                   return MyBoxShadow(
-                                      child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: size.height * 0.01),
+                                      child: ConstsWidget.buildPadding001(
+                                    context,
                                     child: Column(
                                       children: [
                                         ConstsWidget.buildTextTitle(
                                             context, remetente,
                                             textAlign: TextAlign.center,
                                             size: 18),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: size.height * 0.01),
+                                        ConstsWidget.buildPadding001(
+                                          context,
                                           child: ConstsWidget.buildTextSubTitle(
                                               context,
                                               '$descricao - $datahora_cadastro'),
@@ -219,9 +218,8 @@ class CorrespondenciaScreen extends StatelessWidget {
                                         if (protocolo != 'Senha' &&
                                             protocolo != '' &&
                                             !statusCorresp)
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: size.height * 0.01),
+                                          ConstsWidget.buildPadding001(
+                                            context,
                                             child: ConstsWidget.buildTextTitle(
                                                 context,
                                                 'Dados para retirada por terceiros',

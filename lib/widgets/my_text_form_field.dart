@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../consts/consts_widget.dart';
+
 Widget buildMyTextFormField(BuildContext context,
     {required String title,
     String? mask,
@@ -13,8 +15,8 @@ Widget buildMyTextFormField(BuildContext context,
     readOnly = false,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+  return ConstsWidget.buildPadding001(
+    context,
     child: TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [MaskTextInputFormatter(mask: mask)],
@@ -25,6 +27,7 @@ Widget buildMyTextFormField(BuildContext context,
       textInputAction: TextInputAction.next,
       keyboardType: keyboardType,
       maxLines: 5,
+      style: TextStyle(),
       minLines: 1,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: size.width * 0.02),
@@ -56,8 +59,8 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
     String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+  return ConstsWidget.buildPadding001(
+    context,
     child: TextFormField(
       controller: controller,
       initialValue: initialValue,

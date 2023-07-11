@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../consts/consts_widget.dart';
 import '../../widgets/my_box_shadow.dart';
 import '../../widgets/shimmer.dart';
 
@@ -31,8 +32,8 @@ class _LoadingMoradCadastro extends State<LoadingCadastro> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+          ConstsWidget.buildPadding001(
+            context,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -63,8 +64,8 @@ class _LoadingMoradCadastro extends State<LoadingCadastro> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+              ConstsWidget.buildPadding001(
+                context,
                 child: ShimmerWidget(
                   height: size.height * 0.03,
                   width: size.width * 0.6,
@@ -88,8 +89,8 @@ class _LoadingMoradCadastro extends State<LoadingCadastro> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+          ConstsWidget.buildPadding001(
+            context,
             child: ShimmerWidget(
               circular: 30,
               height: size.height * 0.06,

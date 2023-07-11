@@ -57,8 +57,8 @@ class _CadastroCarrosState extends State<CadastroCarros> {
     var size = MediaQuery.of(context).size;
     Widget buildDropTipo() {
       return StatefulBuilder(builder: (context, setState) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+        return ConstsWidget.buildPadding001(
+          context,
           child: Container(
             width: double.infinity,
             height: size.height * 0.07,
@@ -67,8 +67,8 @@ class _CadastroCarrosState extends State<CadastroCarros> {
               border: Border.all(color: Colors.black26),
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+            child: ConstsWidget.buildPadding001(
+              context,
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
                   alignedDropdown: true,

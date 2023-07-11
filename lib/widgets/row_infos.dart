@@ -7,9 +7,8 @@ Widget buildRowInfos(BuildContext context,
     required String subTitle1,
     required String title2,
     required String subTitle2}) {
-  var size = MediaQuery.of(context).size;
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+  return ConstsWidget.buildPadding001(
+    context,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

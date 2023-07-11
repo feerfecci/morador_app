@@ -57,7 +57,8 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
       );
     }
 
-    return RefreshIndicator(
+    return ConstsWidget.buildRefreshIndicator(
+      context,
       onRefresh: () async {
         setState(() {
           apiMoradores();
@@ -68,8 +69,8 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
         title: 'Cadastro',
         body: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+            ConstsWidget.buildPadding001(
+              context,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

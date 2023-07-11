@@ -15,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController();
+  final emailCtrl = TextEditingController(text: 'fabianaamorim2135');
   final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             bottom: size.height * 0.035,
                             top: size.height * 0.025),
                         child: ConstsWidget.buildTextTitle(
-                            context, 'Portaria App | Morador',
+                            context, 'Portaria App | Condômino',
                             size: 19),
                       ),
                       buildMyTextFormObrigatorio(context,
