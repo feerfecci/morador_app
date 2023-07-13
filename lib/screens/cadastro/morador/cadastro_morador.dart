@@ -224,11 +224,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               _formKeyMorador.currentState?.validate() ?? false;
                           if (formValid) {
                             _formKeyMorador.currentState?.save();
-                            List listaNome = [];
+                            final List<String> listaNome = [];
                             List nomeEmLista =
                                 _formInfosMorador.nome_morador!.split(' ');
 
-                            for (var i = 1; i < (nomeEmLista.length - 1); i++) {
+                            for (var i = 0; i <= nomeEmLista.length - 1; i++) {
                               if (nomeEmLista[i] != '') {
                                 listaNome.add(nomeEmLista[i]);
                               }
@@ -271,10 +271,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           buildMyTextFormField(context, title: 'Senha Login',
                               // readOnly:InfosMorador.!responsavel,
                               onSaved: (text) {
-                            ConstsFuture.criptoSenha(text!).then((value) {
-                              _formInfosMorador =
-                                  _formInfosMorador.copyWith(senha: value);
-                            });
+                            _formInfosMorador =
+                                _formInfosMorador.copyWith(senha: text);
                           }),
                           SizedBox(
                             height: size.height * 0.01,
@@ -285,10 +283,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           buildMyTextFormField(context, title: 'Senha Retirada',
                               // readOnly:InfosMorador.!responsavel,
                               onSaved: (text) {
-                            ConstsFuture.criptoSenha(text!).then((value) {
-                              _formInfosMorador = _formInfosMorador.copyWith(
-                                  senhaRetirada: value);
-                            });
+                            _formInfosMorador =
+                                _formInfosMorador.copyWith(senhaRetirada: text);
                           }),
                         ],
                       ),

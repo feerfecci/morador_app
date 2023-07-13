@@ -84,7 +84,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
               buidListTile(
                 title: 'Meu Perfil',
-                leading: Icons.business_center_outlined,
+                leading: Icons.person_2_outlined,
                 onPressed: () {
                   ConstsFuture.navigatorPopAndPush(
                       context,
@@ -117,8 +117,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onPressed: () {},
               ),
               buidListTile(
-                title: 'Suporte',
-                leading: Icons.phone_forwarded_outlined,
+                title: 'Indicar para Amigos',
+                leading: Icons.add_reaction_outlined,
+                onPressed: () {},
+              ),
+              buidListTile(
+                title: 'Central de Ajuda',
+                leading: Icons.support_outlined,
                 onPressed: () {},
               ),
               ChangeThemeButton(),
