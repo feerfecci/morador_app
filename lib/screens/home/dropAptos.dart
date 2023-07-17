@@ -77,7 +77,6 @@ class _DropAptosState extends State<DropAptos> {
                   setState(
                     () {
                       dropAptos = value;
-                      Navigator.pop(context);
                       ConstsFuture.efetuaLogin(
                           context, InfosMorador.login, InfosMorador.senhaCripto,
                           idUnidade: int.parse('$dropAptos'));

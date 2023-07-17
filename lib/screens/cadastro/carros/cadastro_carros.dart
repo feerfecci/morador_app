@@ -180,6 +180,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
               ),
               ConstsWidget.buildCustomButton(
                 context,
+                icon: Icons.save_alt,
                 'Salvar',
                 onPressed: () {
                   var formValid =

@@ -55,6 +55,7 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
     String? initialValue,
     bool readOnly = false,
     String? mask,
+    Iterable<String>? autofillHints,
     TextEditingController? controller,
     String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
@@ -75,6 +76,7 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
       maxLines: 5,
       minLines: 1,
       readOnly: readOnly,
+      autofillHints: autofillHints,
       // onFieldSubmitted: (value) {
       //   value.toString());
       // },
@@ -107,6 +109,7 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
 
 Widget buildFormPassword(BuildContext context,
     {TextEditingController? controller,
+    Iterable<String>? autofillHints,
     bool isObscure = false,
     void Function()? onTap}) {
   var size = MediaQuery.of(context).size;
@@ -115,6 +118,7 @@ Widget buildFormPassword(BuildContext context,
       TextFormField(
         textInputAction: TextInputAction.done,
         controller: controller,
+        autofillHints: autofillHints,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: Validatorless.multiple([
           Validatorless.required('Senha é obrigatório'),

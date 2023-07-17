@@ -25,10 +25,12 @@ class MyBoxShadowState extends State<MyBoxShadow> {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
-            image: widget.imagem
-                ? DecorationImage(
-                    image: AssetImage('assets/ver.jpg'), fit: BoxFit.fill)
-                : null,
+            // image: widget.imagem
+            //     ? DecorationImage(
+            //         image: AssetImage('assets/ver.jpg'),
+            //         fit: BoxFit.fill,
+            //         )
+            //     : null,
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).shadowColor,

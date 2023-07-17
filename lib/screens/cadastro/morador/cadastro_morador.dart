@@ -76,6 +76,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   FormInfosMorador _formInfosMorador = FormInfosMorador();
   String loginGerado = '';
   String dataLogin = '';
+  bool nomeDocAlterado = false;
+  bool isChecked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         ? DateFormat('dd/MM/yyy').format(DateTime.parse(widget.nascimento))
         : '';
     var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
-    bool isChecked = acessoApi;
+    isChecked = acessoApi;
     var size = MediaQuery.of(context).size;
 
     return buildScaffoldAll(
@@ -108,12 +110,19 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   // if (widget.idmorador == null)
                   buildMyTextFormObrigatorio(
                     context,
-                    readOnly: !InfosMorador.responsavel,
+                    // readOnly: !InfosMorador.responsavel,
                     title: 'Nome Completo',
                     initialValue: widget.nome_completo,
                     onSaved: (text) {
                       _formInfosMorador =
                           _formInfosMorador.copyWith(nome_morador: text);
+                      if (widget.idmorador != null) {
+                        if (text != widget.nome_completo) {
+                          setState(() {
+                            nomeDocAlterado = true;
+                          });
+                        }
+                      }
                     },
                   ),
                   // if (widget.idmorador == null)
@@ -124,7 +133,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         width: size.width * 0.37,
                         child: buildMyTextFormObrigatorio(context,
                             initialValue: dataParsed,
-                            readOnly: !InfosMorador.responsavel,
+                            // readOnly: !InfosMorador.responsavel,
                             title: 'Data de Nascimento',
                             keyboardType: TextInputType.number,
                             mask: '##/##/####',
@@ -145,7 +154,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         width: size.width * 0.5,
                         child: buildMyTextFormObrigatorio(
                           context,
-                          readOnly: !InfosMorador.responsavel,
+                          // readOnly: !InfosMorador.responsavel,
                           title: 'Documento',
                           initialValue: widget.documento,
                           keyboardType: TextInputType.number,
@@ -154,10 +163,24 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                             if (text!.length >= 4) {
                               _formInfosMorador =
                                   _formInfosMorador.copyWith(documento: text);
+                              if (widget.idmorador != null) {
+                                if (text != widget.documento) {
+                                  setState(() {
+                                    nomeDocAlterado = true;
+                                  });
+                                }
+                              }
                             } else {
                               buildCustomSnackBar(context,
                                   titulo: 'Cuidado',
                                   texto: 'Complete o documento');
+                            }
+                            if (widget.idmorador != null) {
+                              if (text != widget.documento) {
+                                setState(() {
+                                  nomeDocAlterado = true;
+                                });
+                              }
                             }
                           },
                         ),
@@ -213,12 +236,13 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           _formInfosMorador.copyWith(email: text);
                     },
                   ),
-                  if (InfosMorador.responsavel)
+
+                  if (loginGerado == '')
                     ConstsWidget.buildPadding001(
                       context,
                       child: ConstsWidget.buildCustomButton(
                         context,
-                        'Gerar Login',
+                        'Continuar',
                         onPressed: () {
                           var formValid =
                               _formKeyMorador.currentState?.validate() ?? false;
@@ -228,6 +252,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                             List nomeEmLista =
                                 _formInfosMorador.nome_morador!.split(' ');
 
+                            if (nomeDocAlterado) {
+                              buildCustomSnackBar(context,
+                                  titulo: 'Dados alterados',
+                                  texto: 'Alteramos o login');
+                            }
+
                             for (var i = 0; i <= nomeEmLista.length - 1; i++) {
                               if (nomeEmLista[i] != '') {
                                 listaNome.add(nomeEmLista[i]);
@@ -235,7 +265,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                             }
                             setState(() {
                               loginGerado =
-                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}';
+                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}${widget.isDrawer ? 'r' : ''}';
                               _formInfosMorador = _formInfosMorador.copyWith(
                                   login: loginGerado);
                             });
@@ -250,44 +280,57 @@ class _CadastroMoradorState extends State<CadastroMorador> {
               if (loginGerado != '')
                 Column(
                   children: [
-                    Row(
-                      children: [
-                        ConstsWidget.buildPadding001(
-                          context,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ConstsWidget.buildTextSubTitle(context, 'Login:'),
-                              ConstsWidget.buildTextTitle(
-                                  context, _formInfosMorador.login.toString()),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    if (loginGerado != '')
-                      Column(
+                    MyBoxShadow(
+                      child: Row(
                         children: [
-                          buildMyTextFormField(context, title: 'Senha Login',
-                              // readOnly:InfosMorador.!responsavel,
-                              onSaved: (text) {
-                            _formInfosMorador =
-                                _formInfosMorador.copyWith(senha: text);
-                          }),
-                          SizedBox(
-                            height: size.height * 0.01,
-                          ),
-                          ConstsWidget.buildTextTitle(context,
-                              'Essa senha será usada para retiradas na Portaria',
-                              color: Colors.red),
-                          buildMyTextFormField(context, title: 'Senha Retirada',
-                              // readOnly:InfosMorador.!responsavel,
-                              onSaved: (text) {
-                            _formInfosMorador =
-                                _formInfosMorador.copyWith(senhaRetirada: text);
-                          }),
+                          ConstsWidget.buildPadding001(
+                            context,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstsWidget.buildTextSubTitle(
+                                    context, 'Login:'),
+                                ConstsWidget.buildTextTitle(context,
+                                    _formInfosMorador.login.toString()),
+                              ],
+                            ),
+                          )
                         ],
                       ),
+                    ),
+                    loginGerado != '' && widget.idunidade == null
+                        ? Column(
+                            children: [
+                              buildMyTextFormField(context,
+                                  title: 'Senha Login',
+                                  // readOnly:InfosMorador.!responsavel,
+                                  onSaved: (text) {
+                                _formInfosMorador =
+                                    _formInfosMorador.copyWith(senha: text);
+                              }),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
+                              ConstsWidget.buildTextTitle(context,
+                                  'Essa senha será usada para retiradas na Portaria',
+                                  color: Colors.red),
+                              buildMyTextFormField(context,
+                                  title: 'Senha Retirada',
+                                  // readOnly:InfosMorador.!responsavel,
+                                  onSaved: (text) {
+                                _formInfosMorador = _formInfosMorador.copyWith(
+                                    senhaRetirada: text);
+                              }),
+                            ],
+                          )
+                        : ConstsWidget.buildPadding001(
+                            context,
+                            child: ConstsWidget.buildCustomButton(
+                              context,
+                              'Alterar senha',
+                              onPressed: () {},
+                            ),
+                          ),
                     // ListTile(
                     //   title: ConstsWidget.buildTextTitle(
                     //       context, 'Permitir acesso ao sistema'),
@@ -323,15 +366,16 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           int salvaAcesso = isChecked == true ? 1 : 0;
                           _formInfosMorador =
                               _formInfosMorador.copyWith(acesso: salvaAcesso);
-                          print(_formInfosMorador.acesso);
                         });
                       }, title: 'Permitir acesso ao sistema'),
                   ],
                 ),
-              if (widget.idmorador != null || loginGerado != '')
+              if (loginGerado != '')
                 ConstsWidget.buildCustomButton(
                   context,
                   'Salvar',
+                  color: Consts.kColorRed,
+                  icon: Icons.save_alt,
                   onPressed: () {
                     var formValid =
                         _formKeyMorador.currentState?.validate() ?? false;

@@ -16,14 +16,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool load = false;
   startLoginApp() async {
     LocalPreferences.getUserLogin().then((value) async {
       List cache = value;
       if (cache.first == null || cache.last == null) {
         return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
       } else if (cache.first != null || cache.last != null) {
+        setState(() {
+          load = true;
+        });
         final auth = await LocalBiometrics.authenticate();
         final hasBiometrics = await LocalBiometrics.hasBiometric();
+
         if (!hasBiometrics) {
           return ConstsFuture.efetuaLogin(context, cache.first, cache.last);
         } else if (hasBiometrics && auth) {
@@ -63,18 +68,20 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.03, horizontal: size.width * 0.03),
-            child: ConstsWidget.buildCustomButton(
-              context,
-              'Autenticar Biometria',
-              icon: Icons.lock_open_outlined,
-              onPressed: () {
-                startLoginApp();
-              },
+          Row(),
+          if (load)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height * 0.03, horizontal: size.width * 0.03),
+              child: ConstsWidget.buildCustomButton(
+                context,
+                'Autenticar Biometria',
+                icon: Icons.lock_open_outlined,
+                onPressed: () {
+                  startLoginApp();
+                },
+              ),
             ),
-          )
         ],
       ),
     );
