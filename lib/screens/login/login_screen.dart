@@ -20,13 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   _startLoading() async {
     setState(() {
-      isLoading = !isLoading;
+      isLoading = true;
     });
 
-    Timer(Duration(seconds: 3), () async {
+    ConstsFuture.efetuaLogin(context, emailCtrl.text, passWordCtrl.text)
+        .then((value) {
       setState(() {
-        ConstsFuture.efetuaLogin(context, emailCtrl.text, passWordCtrl.text);
-        isLoading = !isLoading;
+        isLoading = false;
       });
     });
   }

@@ -165,6 +165,10 @@ class CorrespondenciaScreen extends StatelessWidget {
                                       correspInfos['protocolo_entrega'];
                                   var statusCorresp =
                                       correspInfos['status_entrega'];
+                                  var nome_portador =
+                                      correspInfos['nome_portador'];
+                                  var documento_portador =
+                                      correspInfos['documento_portador'];
 
                                   var datahora_cadastro = DateFormat(
                                           'dd/MM/yyyy')
@@ -235,7 +239,7 @@ class CorrespondenciaScreen extends StatelessWidget {
                                             protocolo != '' &&
                                             statusCorresp)
                                           ConstsWidget.buildTextTitle(context,
-                                              'Retirada com protocolo'),
+                                              'Retirada com protocolo por $nome_portador'),
                                         if (protocolo != 'Senha' &&
                                             protocolo != '' &&
                                             !statusCorresp)

@@ -47,7 +47,7 @@ class ListarEspacosState extends State<ListarEspacos> {
       onRefresh: () async {
         setState(() {
           ConstsFuture.changeApi(
-              '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}');
+              'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}');
         });
       },
       child: buildScaffoldAll(context,
@@ -68,7 +68,7 @@ class ListarEspacosState extends State<ListarEspacos> {
               ),
               FutureBuilder<dynamic>(
                 future: ConstsFuture.changeApi(
-                    '${Consts.apiUnidade}reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}'),
+                    'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}'),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();

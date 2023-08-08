@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:app_portaria/consts/consts_widget.dart';
+import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
@@ -132,8 +133,11 @@ class _HomePageState extends State<HomePage> {
         'idcond': InfosMorador.idcondominio.toString(),
       });
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        print(openedResult.notification.buttons!.first.id);
-        if (openedResult.notification.buttons!.first.id != '') {
+        if (openedResult.notification.buttons == null ||
+            openedResult.notification.additionalData!.values.first ==
+                'previstas') {
+          ConstsFuture.navigatorPageRoute(context, MyVisitasScreen());
+        } else if (openedResult.notification.buttons!.first.id != '') {
           if (openedResult.notification.buttons!.first.id == 'delivery') {
             ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
             alertRespondeDelivery(context, tipoAviso: 5);
@@ -328,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                     numberCall: InfosMorador.telefone_portaria,
                   ),
                 ),
-                if (InfosMorador.responsavel)
+                if (!InfosMorador.responsavel)
                   SizedBox(
                     height: size.height * 0.148,
                     width: double.infinity,
@@ -349,6 +353,14 @@ class _HomePageState extends State<HomePage> {
                         width: double.maxFinite,
                       )),
                 ),
+                ConstsWidget.buildPadding001(
+                  context,
+                  child: ConstsWidget.buildCustomButton(
+                    context,
+                    'Por perto',
+                    onPressed: () {},
+                  ),
+                )
               ],
             ),
           )

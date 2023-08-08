@@ -88,17 +88,20 @@ class ConstsWidget {
       {required void Function()? onPressed,
       required bool isLoading,
       required String title,
+      double horizontal = 0,
       Color color = Consts.kColorAzul}) {
     var size = MediaQuery.of(context).size;
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+            padding: EdgeInsets.symmetric(
+                vertical: size.height * 0.025,
+                horizontal: size.width * horizontal),
             backgroundColor: color,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Consts.borderButton))),
         onPressed: onPressed,
-        child: isLoading == false
+        child: !isLoading
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -149,7 +152,7 @@ class ConstsWidget {
 
   static Widget buildCheckBox(BuildContext context,
       {required bool isChecked,
-      required void Function(bool?)? onChanged,
+      required void Function(bool? value)? onChanged,
       required String title,
       MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
     return Row(
@@ -166,6 +169,46 @@ class ConstsWidget {
           ),
         ),
       ],
+    );
+  }
+
+  static Widget buildOutlinedButton(BuildContext context,
+      {required String title,
+      required void Function()? onPressed,
+      Color color = Consts.kButtonColor,
+      Color? backgroundColor = Colors.transparent,
+      double fontSize = 18,
+      IconData? icon,
+      double vertical = 0.021,
+      double horizontal = 0.024}) {
+    var size = MediaQuery.of(context).size;
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        alignment: Alignment.center,
+        backgroundColor: backgroundColor,
+        padding: EdgeInsets.symmetric(
+            vertical: size.height * vertical,
+            horizontal: size.width * horizontal),
+        side: BorderSide(width: size.width * 0.005, color: Colors.blue),
+        shape: StadiumBorder(),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) Icon(size: 18, icon, color: color),
+          if (icon != null)
+            SizedBox(
+              width: size.width * 0.015,
+            ),
+          ConstsWidget.buildTextSubTitle(
+            context,
+            title,
+            size: fontSize,
+            color: Colors.blue,
+          ),
+        ],
+      ),
     );
   }
 

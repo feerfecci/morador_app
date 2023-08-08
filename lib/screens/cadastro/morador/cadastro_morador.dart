@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:app_portaria/screens/home/home_page.dart';
+import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:intl/intl.dart';
@@ -54,6 +55,16 @@ class CadastroMorador extends StatefulWidget {
 class _CadastroMoradorState extends State<CadastroMorador> {
   List listAtivo = [1, 0];
   Object? dropdownValueAtivo;
+  final formKeySenha = GlobalKey<FormState>();
+  final senhaAtualCtrl = TextEditingController();
+  final senhaNovaCtrl = TextEditingController();
+  final senhaConfirmCtrl = TextEditingController();
+
+  final formKeyRetirada = GlobalKey<FormState>();
+  final retiradaAtualCtrl = TextEditingController();
+  final retiradaNovaCtrl = TextEditingController();
+  final retiradaConfirmCtrl = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -323,13 +334,40 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               }),
                             ],
                           )
-                        : ConstsWidget.buildPadding001(
-                            context,
-                            child: ConstsWidget.buildCustomButton(
-                              context,
-                              'Alterar senha',
-                              onPressed: () {},
-                            ),
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ConstsWidget.buildPadding001(
+                                context,
+                                child: ConstsWidget.buildOutlinedButton(
+                                  context,
+                                  title: 'Senha Login',
+                                  onPressed: () {
+                                    trocarSenhaAlert(context,
+                                        formkeySenha: formKeySenha,
+                                        atualSenhaCtrl: senhaAtualCtrl,
+                                        title: ' Login',
+                                        novaSenhaCtrl: senhaNovaCtrl,
+                                        confirmSenhaCtrl: senhaConfirmCtrl);
+                                  },
+                                ),
+                              ),
+                              ConstsWidget.buildPadding001(
+                                context,
+                                child: ConstsWidget.buildCustomButton(
+                                  context,
+                                  'Senha Retirada',
+                                  onPressed: () {
+                                    trocarSenhaAlert(context,
+                                        formkeySenha: formKeyRetirada,
+                                        atualSenhaCtrl: retiradaAtualCtrl,
+                                        novaSenhaCtrl: retiradaNovaCtrl,
+                                        title: ' Retirada',
+                                        confirmSenhaCtrl: retiradaConfirmCtrl);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                     // ListTile(
                     //   title: ConstsWidget.buildTextTitle(
@@ -395,13 +433,14 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       widget.idmorador == null
                           ? restoApi =
                               'incluirMorador&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'
-                          : restoApi = 'editarMorador&id=${widget.idmorador}';
+                          : restoApi =
+                              'editarMorador&id=${widget.idmorador}&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}';
                       int isResponsavel;
                       InfosMorador.responsavel && widget.isDrawer
                           ? isResponsavel = 1
                           : isResponsavel = 0;
                       ConstsFuture.changeApi(
-                              '${Consts.apiUnidade}moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
+                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
                           .then((value) {
                         if (!value['erro']) {
                           if (!widget.isDrawer) {

@@ -114,7 +114,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
               'Avisar',
               onPressed: () {
                 ConstsFuture.changeApi(
-                        '${Consts.apiUnidade}respostas/index.php?fn=enviarRespostas&idcond=${InfosMorador.idcondominio}&idmsg=$dropRespostas&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}')
+                        'respostas/index.php?fn=enviarRespostas&idcond=${InfosMorador.idcondominio}&idmsg=$dropRespostas&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}')
                     .then((value) {
                   if (!value['erro']) {
                     Navigator.pop(context);

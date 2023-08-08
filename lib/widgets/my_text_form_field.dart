@@ -13,6 +13,7 @@ Widget buildMyTextFormField(BuildContext context,
     String? hintText,
     String? initialValue,
     readOnly = false,
+    TextEditingController? controller,
     final void Function(String? text)? onSaved}) {
   var size = MediaQuery.of(context).size;
   return ConstsWidget.buildPadding001(
@@ -23,6 +24,7 @@ Widget buildMyTextFormField(BuildContext context,
       initialValue: initialValue,
       onSaved: onSaved,
       readOnly: readOnly,
+      controller: controller,
       textAlign: TextAlign.start,
       textInputAction: TextInputAction.next,
       keyboardType: keyboardType,
@@ -30,7 +32,8 @@ Widget buildMyTextFormField(BuildContext context,
       style: TextStyle(),
       minLines: 1,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: size.width * 0.02),
+        contentPadding:
+            EdgeInsets.only(left: size.width * 0.02, top: size.height * 0.05),
         filled: true,
         fillColor: Theme.of(context).canvasColor,
         label: Text(title),

@@ -14,6 +14,7 @@ class InfosMorador {
   static int idcondominio = 0;
   static int iddivisao = 0;
   static int idunidade = 0;
+  static int tempo_resposta = 0;
   static String nome_condominio = '';
   static String nome_completo = '';
   static String numero = '';
@@ -30,11 +31,12 @@ class InfosMorador {
   static bool responsavel = false;
   static bool ativo = false;
   static bool acessa_sistema = false;
+  static bool convida_visita = true;
 }
 
 class Consts {
-  static double fontTitulo = 16;
-  static double fontSubTitulo = 14;
+  static double fontTitulo = 18;
+  static double fontSubTitulo = 16;
   static double borderButton = 60;
 
   static const kBackPageColor = Color.fromARGB(255, 245, 245, 255);

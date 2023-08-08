@@ -39,7 +39,7 @@ class ListarReservasState extends State<ListarReservas> {
       onRefresh: () async {
         setState(() {
           ConstsFuture.changeApi(
-              '${Consts.apiUnidade}reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}');
+              'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}');
         });
       },
       child: buildScaffoldAll(context,
@@ -50,7 +50,7 @@ class ListarReservasState extends State<ListarReservas> {
             children: [
               FutureBuilder<dynamic>(
                 future: ConstsFuture.changeApi(
-                    '${Consts.apiUnidade}reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}'),
+                    'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}'),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();

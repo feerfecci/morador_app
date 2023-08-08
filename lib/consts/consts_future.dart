@@ -48,13 +48,14 @@ class ConstsFuture {
     return senhacripto;
   }
 
-  static efetuaLogin(context, String user, String senha, {int? idUnidade}) {
+  static Future efetuaLogin(context, String user, String senha,
+      {int? idUnidade}) async {
     InfosMorador.user = user;
     criptoSenha(senha).then((senhaCrip) async {
       InfosMorador.senhaCripto = idUnidade == null ? senhaCrip : senha;
-      Timer(Duration(hours: 1), () {
-        LocalPreferences.removeUserLogin();
-      });
+      // Timer(Duration(hours: 1), () {
+      //   LocalPreferences.removeUserLogin();
+      // });
       var url = Uri.parse(
           'https://a.portariaapp.com/api/login-morador/?fn=login-morador&usuario=$user&senha=${idUnidade == null ? senhaCrip : InfosMorador.senhaCripto}${idUnidade != null ? '&idunidade=$idUnidade' : ''}');
       var resposta = await http.get(url);
@@ -68,7 +69,6 @@ class ConstsFuture {
               apiInfos['acessa_sistema']) {
             //login morador
             // if(apiBody['login'].length){
-
             // }
             if (idUnidade == null) {
               InfosMorador.qntApto = apiBody['login'].length;
@@ -188,6 +188,8 @@ class ConstsFuture {
                 InfosMorador.responsavel ? true : apiInfos['acessa_sistema'];
             InfosMorador.datahora_cadastro = apiInfos['datahora_cadastro'];
             InfosMorador.telefone_portaria = apiInfos['telefone_portaria'];
+            InfosMorador.tempo_resposta = apiInfos['tempo_respostas'];
+            InfosMorador.convida_visita = apiInfos['convida_visita'];
             InfosMorador.datahora_ultima_atualizacao =
                 apiInfos['datahora_ultima_atualizacao'];
           } else {
@@ -219,7 +221,7 @@ class ConstsFuture {
   }
 
   static Future<dynamic> changeApi(String api) async {
-    var url = Uri.parse(api);
+    var url = Uri.parse("${Consts.apiUnidade}$api");
     var resposta = await http.get(url);
     if (resposta.statusCode == 200) {
       try {
