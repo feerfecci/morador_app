@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
 
-import '../consts.dart';
+import '../consts/consts_widget.dart';
 
-buildCustomSnackBar(BuildContext context, String titulo, String texto) {
+buildCustomSnackBar(BuildContext context,
+    {required String titulo, required String texto}) {
+  ScaffoldMessenger.of(context).clearSnackBars();
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    action: SnackBarAction(
-        label: 'entendi',
-        onPressed: (() {
-          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        })),
+    dismissDirection: DismissDirection.endToStart,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    // action: SnackBarAction(
+    //     label: 'entendi',
+    //     onPressed: (() {
+    //       ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    //     })),
+
+    showCloseIcon: true,
+    closeIconColor: Colors.white,
     elevation: 8,
+
     duration: Duration(seconds: 4),
-    backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
+    backgroundColor: Colors.blue,
     behavior: SnackBarBehavior.floating,
     content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Consts.buildTextTitle(
-          titulo,
-          // color: Theme.of(context).snackBarTheme.actionTextColor,
-        ),
-        Consts.buildTextSubTitle(
-          texto,
-          // color: Theme.of(context).snackBarTheme.actionTextColor,
-        ),
+        ConstsWidget.buildTextTitle(context, titulo, color: Colors.white
+            // color: Theme.of(context).snackBarTheme.actionTextColor,
+            ),
+        ConstsWidget.buildTextSubTitle(context, texto, color: Colors.white
+            // color: Theme.of(context).snackBarTheme.actionTextColor,
+            ),
       ],
     ),
   ));

@@ -6,6 +6,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=2.19.0-255.0.dev <3.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
@@ -16,19 +17,33 @@ dependencies:
   local_auth: ^2.1.6
   flutter_platform_alert: ^0.3.0
   flutter_launcher_icons: ^0.13.1
-
+  url_launcher: ^6.1.5
+  mask_text_input_formatter: ^2.4.0
+  crypto: ^3.0.3
+  http: ^0.13.6
+  onesignal_flutter: ^3.4.2
+  flutter_local_notifications: ^14.0.0+2
+  intl:
+  shimmer: ^3.0.0
+  whatsapp_unilink: ^2.1.0
+  reorderable_grid_view: ^2.2.6
+  flutter_draggable_gridview: ^0.0.8
+  date_time_picker: ^2.1.0
+  
+  
 flutter_icons:
-  image_path: "assets/portaria.png"
+  image_path: "assets/logo-morador.png"
   ios: true
   remove_alpha_ios: true
   android: "launch_icon"
-  adaptive_icon_foreground: "assets/portaria.png"
+  adaptive_icon_foreground: "assets/logo-morador.png"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
+  flutter_localizations: # Add this line
+    sdk: flutter
 
 flutter:
   uses-material-design: true

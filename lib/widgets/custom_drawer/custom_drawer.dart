@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:app_portaria/consts/consts.dart';
+import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
+import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 import 'change_theme_button.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -21,19 +24,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
     Widget buidListTile(
         {required String title,
         required IconData leading,
-        IconData trailing = Icons.keyboard_arrow_right_outlined}) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+        IconData trailing = Icons.keyboard_arrow_right_outlined,
+        void Function()? onPressed}) {
+      return ConstsWidget.buildPadding001(
+        context,
         child: ListTile(
           iconColor: Theme.of(context).iconTheme.color,
           leading: Icon(
             leading,
             size: 25,
           ),
-          title: Consts.buildTextTitle(title),
-          trailing: Icon(
-            size: 30,
-            trailing,
+          title: ConstsWidget.buildTextTitle(context, title),
+          trailing: IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              size: 30,
+              trailing,
+            ),
           ),
         ),
       );
@@ -53,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.10,
+                height: size.height * 0.08,
                 width: size.width * 0.85,
                 child: DrawerHeader(
                   padding: EdgeInsets.symmetric(
@@ -62,36 +69,71 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
                         topLeft: Radius.circular(30),
                       ),
                       color: Colors.blue),
                   child: Text(
                     'Menu',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 24,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
               buidListTile(
-                title: 'pagina 1',
-                leading: Icons.accessible,
+                title: 'Meu Perfil',
+                leading: Icons.person_2_outlined,
+                onPressed: () {
+                  ConstsFuture.navigatorPopAndPush(
+                      context,
+                      CadastroMorador(
+                        idmorador: InfosMorador.idmorador,
+                        iddivisao: InfosMorador.iddivisao,
+                        idunidade: InfosMorador.idunidade,
+                        numero: InfosMorador.numero,
+                        login: InfosMorador.login,
+                        documento: InfosMorador.documento,
+                        acesso: InfosMorador.acessa_sistema ? 1 : 0,
+                        ativo: InfosMorador.ativo,
+                        ddd: InfosMorador.dddtelefone,
+                        telefone: InfosMorador.telefone,
+                        email: InfosMorador.email,
+                        nascimento: InfosMorador.data_nascimento,
+                        nome_completo: InfosMorador.nome_completo,
+                        isDrawer: true,
+                      ));
+                },
               ),
               buidListTile(
-                  title: 'pagina 2', leading: Icons.wrap_text_outlined),
+                title: 'Seja um Representante',
+                leading: Icons.business_center_outlined,
+                onPressed: () {},
+              ),
               buidListTile(
-                  title: 'pagina 3', leading: Icons.invert_colors_on_sharp),
+                title: 'Política de privacidade',
+                leading: Icons.privacy_tip_outlined,
+                onPressed: () {},
+              ),
               buidListTile(
-                  title: 'pagina 4', leading: Icons.price_check_outlined),
+                title: 'Indicar para Amigos',
+                leading: Icons.add_reaction_outlined,
+                onPressed: () {},
+              ),
+              buidListTile(
+                title: 'Central de Ajuda',
+                leading: Icons.support_outlined,
+                onPressed: () {},
+              ),
               ChangeThemeButton(),
               Spacer(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Consts.buildCustomButton(
+                child: ConstsWidget.buildCustomButton(
                   context,
                   'Sair',
+                  icon: Icons.logout_outlined,
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                         context,

@@ -1,33 +1,48 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalPreferences {
-  static const _keyUserEmail = 'email';
-  static const _keyUserPassWord = 'passWord';
+  static const _keyUserUser = 'user';
+  static const _keyUserPassWord = 'senha';
 
-  static Future setUserLogin(String email, String passWord) async {
+  static Future setOrderCards(model, {required int qualModel}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-     preferences.setString(
-      _keyUserEmail,
-      email,
+    String key = qualModel == 1 ? 'indexList' : 'indexList2';
+    return preferences.setStringList(
+      key,
+      model,
     );
-     preferences.setString(
+  }
+
+  static Future getOrderCards(int qualModel) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String key = qualModel == 1 ? 'indexList' : 'indexList2';
+    List? indexLista = preferences.getStringList(key);
+    return indexLista;
+  }
+
+  static Future setUserLogin(String user, String senha) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(
+      _keyUserUser,
+      user,
+    );
+    preferences.setString(
       _keyUserPassWord,
-      passWord,
+      senha,
     );
   }
 
   static Future getUserLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    Map<String, dynamic> cache = {
-      'email': preferences.getString(_keyUserEmail),
-      'senha': preferences.getString(_keyUserPassWord)
-    };
+    String? cacheUser = preferences.getString(_keyUserUser);
+    String? cacheSenha = preferences.getString(_keyUserPassWord);
+    List cache = [cacheUser, cacheSenha];
     return cache;
   }
 
   static removeUserLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove(_keyUserEmail);
+    preferences.remove(_keyUserUser);
     preferences.remove(_keyUserPassWord);
   }
 }

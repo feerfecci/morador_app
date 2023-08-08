@@ -1,9 +1,10 @@
+import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:flutter/material.dart';
 
 Widget buildHeaderPage(
   BuildContext context, {
-  required String titulo,
-  required String subTitulo,
+  String? titulo,
+  String? subTitulo,
   required Widget widget,
 }) {
   var size = MediaQuery.of(context).size;
@@ -19,38 +20,44 @@ Widget buildHeaderPage(
               builder: (context, value, child) {
                 return Opacity(
                   opacity: value,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: value * size.height * 0.025),
-                    child: child,
-                  ),
+                  child: child,
                 );
               },
               duration: Duration(milliseconds: 800),
               child: Column(
                 children: [
-                  Text(
-                    titulo,
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  Text(
-                    subTitulo,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
+                  // Text(
+                  //   titulo,
+                  //   style: TextStyle(
+                  //       fontSize: 40,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Theme.of(context).colorScheme.primary),
+                  // ),
+                  if (titulo != null)
+                    ConstsWidget.buildTextTitle(context, titulo,
+                        size: 24, textAlign: TextAlign.center),
+                  if (subTitulo != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: ConstsWidget.buildTextTitle(context, subTitulo,
+                          textAlign: TextAlign.center, size: 20),
+                    ),
+                  // Text(
+                  //   subTitulo,
+                  //   style: TextStyle(
+                  //       fontSize: 20,
+                  //       color: Theme.of(context).colorScheme.primary),
+                  // ),
                 ],
               ),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.14,
-              right: size.width * 0.01,
-              left: size.width * 0.01,
-            ),
+                top:
+                    subTitulo == null ? size.height * 0.06 : size.height * 0.01,
+                right: size.width * 0.02,
+                left: size.width * 0.02),
             child: widget,
           ),
         ],

@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
+import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:validatorless/validatorless.dart';
-
-import '../../consts.dart';
+import '../../consts/consts_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,18 +15,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(/*text: UserLogin.email*/);
-  final passWordCtrl = TextEditingController(/*text: UserLogin.password*/);
+  final emailCtrl = TextEditingController(text: 'fabianaamorim2135');
+  final passWordCtrl = TextEditingController(text: '123456');
   bool isLoading = false;
   _startLoading() async {
     setState(() {
-      isLoading = !isLoading;
+      isLoading = true;
     });
 
-    Timer(Duration(seconds: 3), () async {
+    ConstsFuture.efetuaLogin(context, emailCtrl.text, passWordCtrl.text)
+        .then((value) {
       setState(() {
-        UserLogin.efetuaLogin(context, emailCtrl.text, passWordCtrl.text);
-        isLoading = !isLoading;
+        isLoading = false;
       });
     });
   }
@@ -37,158 +37,99 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildTextFormEmail(double sizes) {
-      return TextFormField(
-        // initialValue: emailSalvo,
-        keyboardType: TextInputType.emailAddress,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        controller: emailCtrl,
-
-        validator: Validatorless.multiple([
-          Validatorless.required('Email é obrigatório'),
-          Validatorless.email('Preencha com um email Válido')
-        ]),
-        // autofillHints: [AutofillHints.email],
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: size.width * sizes),
-          filled: true,
-          fillColor: Theme.of(context).primaryColor,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.black26)),
-          hintText: 'Digite seu Email',
-        ),
-      );
-    }
-
-    Widget buildFormPassword(double sizes) {
-      return Column(
-        children: [
-          TextFormField(
-            textInputAction: TextInputAction.done,
-            controller: passWordCtrl,
-            // autofillHints: [AutofillHints.password],
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: Validatorless.multiple([
-              Validatorless.required('Senha é obrigatório'),
-              Validatorless.min(6, 'Mínimo de 6 caracteres')
-            ]),
-            // onEditingComplete: () => TextInput.finishAutofillContext(),
-            obscureText: isObscure,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(left: size.width * sizes),
-              filled: true,
-              fillColor: Theme.of(context).primaryColor,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black26)),
-              hintText: 'Digite sua Senha',
-              suffixIcon: GestureDetector(
-                onTap: (() {
-                  setState(() {
-                    isObscure = !isObscure;
-                  });
-                }),
-                child: isObscure
-                    ? Icon(Icons.visibility_off_outlined)
-                    : Icon(Icons.visibility_outlined),
+    return AutofillGroup(
+      child: Form(
+          key: formKey,
+          child: Scaffold(
+            body: Center(
+              child: Wrap(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: size.width * 0.05,
+                        right: size.width * 0.05,
+                        bottom: size.height * 0.15),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: FutureBuilder(
+                            future: ConstsFuture.apiImageIcon(
+                                'https://a.portariaapp.com/img/logo_azul.png'),
+                            builder: (context, snapshot) {
+                              return SizedBox(
+                                height: size.height * 0.2,
+                                width: size.width * 0.5,
+                                child: snapshot.data,
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              bottom: size.height * 0.035,
+                              top: size.height * 0.025),
+                          child: ConstsWidget.buildTextTitle(
+                              context, 'Portaria App | Condômino',
+                              size: 19),
+                        ),
+                        buildMyTextFormObrigatorio(context,
+                            controller: emailCtrl,
+                            keyboardType: TextInputType.emailAddress,
+                            title: 'Login',
+                            autofillHints: [AutofillHints.email],
+                            hintText: 'Digite seu Login'),
+                        buildFormPassword(context,
+                            controller: passWordCtrl,
+                            autofillHints: [AutofillHints.password],
+                            isObscure: isObscure, onTap: (() {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        })),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: size.height * 0.025,
+                            top: size.height * 0.01,
+                          ),
+                          child: ConstsWidget.buildCheckBox(context,
+                              isChecked: isChecked, onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          }, title: 'Mantenha-me conectado'),
+                        ),
+                        ConstsWidget.buildLoadingButton(
+                          context,
+                          isLoading: isLoading,
+                          onPressed: () async {
+                            var formValid =
+                                formKey.currentState?.validate() ?? false;
+                            if (formValid) {
+                              if (isChecked) {
+                                await LocalPreferences.setUserLogin(
+                                        emailCtrl.text, passWordCtrl.text)
+                                    .then((value) => null);
+                                _startLoading();
+                              } else {
+                                _startLoading();
+                              }
+                            } else {
+                              buildCustomSnackBar(context,
+                                  titulo: 'Login Errado',
+                                  texto:
+                                      'Tente Verificar os dados preenchidos');
+                            }
+                          },
+                          title: 'Entrar',
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
-          CheckboxListTile(
-            title: Text('Mantenha-me conectado'),
-            value: isChecked,
-            activeColor: Consts.kButtonColor,
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            },
-          )
-        ],
-      );
-    }
-
-    Widget buildLoginButton() {
-      return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Consts.borderButton))),
-          onPressed: () async {
-            var formValid = formKey.currentState?.validate() ?? false;
-            if (formValid) {
-              if (isChecked) {
-                await LocalPreferences.setUserLogin(
-                    emailCtrl.text, passWordCtrl.text);
-                _startLoading();
-              }
-              _startLoading();
-            } else {
-      buildCustomSnackBar(context, 'Login Errado', 'Tente Verificar os dados preenchidos');
-            }
-          },
-          child: isLoading == false
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: const [
-                    Text(
-                      'Entrar',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.020,
-                      width: size.width * 0.05,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ));
-    }
-
-    return Form(
-        key: formKey,
-        child: Scaffold(
-          body: Center(
-            child: Wrap(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Column(
-                    children: [
-                      buildTextFormEmail(0.04),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      buildFormPassword(0.04),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      buildLoginButton(),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+          )),
+    );
   }
 }
