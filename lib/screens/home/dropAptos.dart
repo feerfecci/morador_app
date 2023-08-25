@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:app_portaria/consts/consts_future.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts.dart';
@@ -26,7 +27,8 @@ class _DropAptosState extends State<DropAptos> {
       child: MyBoxShadow(
         child: Container(
           width: double.maxFinite,
-          height: size.height * 0.06,
+          height:
+              SplashScreen.isSmall ? size.height * 0.08 : size.height * 0.06,
           decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             // border: Border.all(color: Colors.black26),

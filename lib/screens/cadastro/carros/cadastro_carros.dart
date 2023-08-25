@@ -39,7 +39,7 @@ class CadastroCarros extends StatefulWidget {
 }
 
 class _CadastroCarrosState extends State<CadastroCarros> {
-  var keyFormCarros = GlobalKey<FormState>();
+  final keyFormCarros = GlobalKey<FormState>();
   FormInfosCarro formInfosCarro = FormInfosCarro();
   List listTipoCarro = [0, 1, 2];
   Object? getDropTipoCarro;
@@ -135,7 +135,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
 
     return buildScaffoldAll(
       context,
-      title: widget.idveiculo == null ? 'Adicionar Carro' : 'Editar Carro',
+      title: widget.idveiculo == null ? 'Adicionar Veículo' : 'Editar Veículo',
       resizeToAvoidBottomInset: true,
       body: Form(
         key: keyFormCarros,
@@ -145,8 +145,9 @@ class _CadastroCarrosState extends State<CadastroCarros> {
               buildDropTipo(),
               buildMyTextFormObrigatorio(
                 context,
-                title: 'Marcar',
+                title: 'Marca',
                 initialValue: widget.marca,
+                textCapitalization: TextCapitalization.words,
                 onSaved: (text) =>
                     formInfosCarro = formInfosCarro.copyWith(marca: text),
               ),
@@ -154,12 +155,14 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                 context,
                 title: 'Modelo',
                 initialValue: widget.modelo,
+                textCapitalization: TextCapitalization.words,
                 onSaved: (text) =>
                     formInfosCarro = formInfosCarro.copyWith(modelo: text),
               ),
               buildMyTextFormObrigatorio(
                 context,
                 initialValue: widget.cor,
+                textCapitalization: TextCapitalization.words,
                 title: 'Cor',
                 onSaved: (text) =>
                     formInfosCarro = formInfosCarro.copyWith(cor: text),
@@ -191,7 +194,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                         ? 'incluirVeiculosUnidade&'
                         : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
                     ConstsFuture.changeApi(
-                            'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
+                            'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
                         .then((value) {
                       if (!value['erro']) {
                         ConstsFuture.navigatorPopAndReplacement(
@@ -209,7 +212,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                       }
                     });
                   } else {
-                    print('object');
+                    //print('object');
                   }
                 },
               )

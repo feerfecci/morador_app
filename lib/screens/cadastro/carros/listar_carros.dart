@@ -21,8 +21,9 @@ class ListarCarros extends StatefulWidget {
 }
 
 Future apiCarros() async {
+  //print('listarVeiculosUnidade');
   var url = Uri.parse(
-      '${Consts.apiUnidade}veiculos/index.php?fn=listarVeiculosUnidade&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}');
+      '${Consts.apiUnidade}veiculos/index.php?fn=listarVeiculosUnidade&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}');
   var resposta = await get(url);
   if (resposta.statusCode == 200) {
     return json.decode(resposta.body);
@@ -41,11 +42,12 @@ class _ListarCarrosState extends State<ListarCarros> {
           context,
           child: ConstsWidget.buildCustomButton(
             context,
-            'Adicionar Carros',
+            'Adicionar Veículos',
             color: Consts.kColorRed,
             icon: Icons.add,
             onPressed: () {
-              ConstsFuture.navigatorPageRoute(context, CadastroCarros());
+              // ConstsFuture.navigatorPageRoute(context, CadastroCarros());
+              ConstsFuture.show(context, page: CadastroCarros());
             },
           ),
         ),
@@ -74,41 +76,47 @@ class _ListarCarrosState extends State<ListarCarros> {
                     String vaga = apiVeiculos['vaga'];
                     String datahora = apiVeiculos['datahora'];
                     return MyBoxShadow(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildRowInfos(context,
-                            title1: 'Tipo:',
+                      child: ConstsWidget.buildExpandedTile(
+                        context,
+                        title: buildRowInfos(context,
+                            title1: 'Tipo',
                             subTitle1: tipo,
                             title2: 'Marca',
                             subTitle2: marca),
-                        buildRowInfos(context,
-                            title1: 'Modelo:',
-                            subTitle1: modelo,
-                            title2: 'Cor',
-                            subTitle2: cor),
-                        buildRowInfos(context,
-                            title1: 'Placa',
-                            subTitle1: placa,
-                            title2: 'Vaga',
-                            subTitle2: vaga),
-                        ConstsWidget.buildCustomButton(
-                            context, 'Editar Veículo',
-                            onPressed: () => ConstsFuture.navigatorPageRoute(
-                                  context,
-                                  CadastroCarros(
-                                    cor: cor,
-                                    idunidade: idunidade,
-                                    idveiculo: idveiculo,
-                                    marca: marca,
-                                    modelo: modelo,
-                                    placa: placa,
-                                    tipo: tipo,
-                                    vaga: vaga,
-                                  ),
-                                ))
-                      ],
-                    ));
+                        children: [
+                          buildRowInfos(context,
+                              title1: 'Modelo',
+                              subTitle1: modelo,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              title2: 'Cor',
+                              subTitle2: cor),
+                          buildRowInfos(context,
+                              title1: 'Placa',
+                              subTitle1: placa,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              title2: 'Vaga',
+                              subTitle2: vaga),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          ConstsWidget.buildCustomButton(
+                              context, 'Editar Veículo',
+                              onPressed: () => ConstsFuture.navigatorPageRoute(
+                                    context,
+                                    CadastroCarros(
+                                      cor: cor,
+                                      idunidade: idunidade,
+                                      idveiculo: idveiculo,
+                                      marca: marca,
+                                      modelo: modelo,
+                                      placa: placa,
+                                      tipo: tipo,
+                                      vaga: vaga,
+                                    ),
+                                  ))
+                        ],
+                      ),
+                    );
                   },
                 );
               } else {

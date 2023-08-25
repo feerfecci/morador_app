@@ -32,6 +32,18 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
     });
   }
 
+  Future apiVisitar() {
+    return ConstsFuture.changeApi(
+        'lista_visitantes/?fn=listarVisitantes&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=45&confirmado=${filtrar == 0 ? 0 : 1}&autorizado=${filtrar == 0 ? 0 : filtrar == 1 ? 0 : 1}');
+  }
+
+  @override
+  void initState() {
+    apiVisitar();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -153,9 +165,9 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                     filtrar == 1 ? 'Confirmar ' : 'Anular ',
                                     color: Consts.kColorRed,
                                     onPressed: () {
-                                      // print(listIdVisita);
+                                      // //print(listIdVisita);
                                       ConstsFuture.changeApi(
-                                              'lista_visitantes/?fn=autorizarVisitante&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&listavisita=${listIdVisita.join(',')}&autorizado=${filtrar == 1 ? 1 : 0}')
+                                              'lista_visitantes/?fn=autorizarVisitante&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&listavisita=${listIdVisita.join(',')}&autorizado=${filtrar == 1 ? 1 : 0}')
                                           .then((value) {
                                         if (!value['erro']) {
                                           Navigator.pop(context);
@@ -185,8 +197,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                   ),
                 ),
               FutureBuilder(
-                future: ConstsFuture.changeApi(
-                    'lista_visitantes/?fn=listarVisitantes&idcond=${InfosMorador.idcondominio}&idunidade=45&confirmado=${filtrar == 0 ? 0 : 1}&autorizado=${filtrar == 0 ? 0 : filtrar == 1 ? 0 : 1}'),
+                future: apiVisitar(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return ShimmerWidget(height: size.height * 0.01);
@@ -220,22 +231,30 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                           bool autorizado = apiVisitante['autorizado'];
                           bool compareceu = apiVisitante['autorizado'];
 
+                          // Duration difference = DateTime.now().difference(
+                          //     DateTime.parse(apiVisitante['datahora_visita']));
+                          // bool isExpired = difference > Duration(seconds: 1);
+
                           return MyBoxShadow(
                               child: ConstsWidget.buildPadding001(
                             context,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  height: size.height * 0.01,
-                                ),
                                 if (!confirmado && !autorizado)
                                   Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ConstsWidget.buildTextTitle(context,
                                           'Já foi enviado convite para'),
-                                      ConstsWidget.buildTextSubTitle(
-                                          context, email!),
+                                      SizedBox(
+                                        width: size.width * 0.9,
+                                        child: ConstsWidget.buildTextSubTitle(
+                                          context,
+                                          email!,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 if (nome_convidado != null)
@@ -243,115 +262,150 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      ConstsWidget.buildTextSubTitle(
+                                          context, 'Nome convidado'),
+                                      ConstsWidget.buildTextTitle(
+                                          context, nome_convidado),
+                                    ],
+                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: size.height * 0.01,
+                                    ),
+                                    // if (!confirmado && !autorizado)
+                                    //   Column(
+                                    //     children: [
+                                    //       ConstsWidget.buildTextTitle(context,
+                                    //           'Já foi enviado convite para'),
+                                    //       ConstsWidget.buildTextSubTitle(
+                                    //           context, email!),
+                                    //     ],
+                                    //   ),
+                                    if (nome_convidado != null)
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          ConstsWidget.buildTextSubTitle(
-                                              context, 'Nome convidado'),
-                                          ConstsWidget.buildTextTitle(
-                                              context, nome_convidado),
+                                          // Column(
+                                          //   crossAxisAlignment:
+                                          //       CrossAxisAlignment.start,
+                                          //   children: [
+                                          //     ConstsWidget.buildTextSubTitle(
+                                          //         context, 'Nome convidado'),
+                                          //     ConstsWidget.buildTextTitle(
+                                          //         context, nome_convidado),
+                                          //   ],
+                                          // ),
+
+                                          if (nome_convidado != null)
+                                            ConstsWidget.buildPadding001(
+                                              context,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  ConstsWidget
+                                                      .buildTextSubTitle(
+                                                          context,
+                                                          'Email Cadastrado'),
+                                                  ConstsWidget.buildTextTitle(
+                                                      context, email!),
+                                                ],
+                                              ),
+                                            ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ConstsWidget.buildTextSubTitle(
+                                                  context,
+                                                  'Documento convidado'),
+                                              ConstsWidget.buildTextTitle(
+                                                  context, doc_convidado!),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.01,
+                                          ),
+                                          if (acompanhante != '')
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                ConstsWidget.buildTextSubTitle(
+                                                    context,
+                                                    'Nome Acompanhate'),
+                                                ConstsWidget.buildTextTitle(
+                                                    context, acompanhante!),
+                                              ],
+                                            ),
                                         ],
                                       ),
-                                      ConstsWidget.buildPadding001(
-                                        context,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                ConstsWidget.buildTextSubTitle(
-                                                    context,
-                                                    'Email Cadastrado'),
-                                                ConstsWidget.buildTextTitle(
-                                                    context, email!),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                ConstsWidget.buildTextSubTitle(
-                                                    context,
-                                                    'Documento convidado'),
-                                                ConstsWidget.buildTextTitle(
-                                                    context, doc_convidado!),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      if (acompanhante != '')
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ConstsWidget.buildTextSubTitle(
-                                                context, 'Nome Acompanhate'),
-                                            ConstsWidget.buildTextTitle(
-                                                context, acompanhante!),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ConstsWidget.buildTextSubTitle(
-                                        context, 'Data da Visita'),
-                                    ConstsWidget.buildTextTitle(
-                                        context, datahora_visita),
+                                    SizedBox(
+                                      height: size.height * 0.02,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ConstsWidget.buildTextSubTitle(
+                                            context, 'Data da Visita'),
+                                        ConstsWidget.buildTextTitle(
+                                            context, datahora_visita),
+                                      ],
+                                    ),
+                                    if (filtrar != 0)
+                                      StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return ConstsWidget.buildCheckBox(
+                                          context,
+                                          isChecked: isChecked,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked = value!;
+                                              value
+                                                  ? listIdVisita.add(idvisita)
+                                                  : listIdVisita
+                                                      .remove(idvisita);
+                                              //       //print(listIdVisita);
+                                            });
+                                          },
+                                          title: 'Selecionar Visita',
+                                        );
+                                      }),
+
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceEvenly,
+                                    //   children: [
+                                    //     Column(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         ConstsWidget.buildTextSubTitle(
+                                    //             context, 'confirmado'),
+                                    //         ConstsWidget.buildTextTitle(
+                                    //           context,
+                                    //           confirmado,
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //     Column(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         ConstsWidget.buildTextSubTitle(
+                                    //             context, 'autorizado'),
+                                    //         ConstsWidget.buildTextTitle(
+                                    //             context, autorizado.toString()),
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // )
                                   ],
                                 ),
-                                if (filtrar != 0)
-                                  StatefulBuilder(builder: (context, setState) {
-                                    return ConstsWidget.buildCheckBox(context,
-                                        isChecked: isChecked,
-                                        onChanged: (value) {
-                                      setState(() {
-                                        isChecked = value!;
-                                        value
-                                            ? listIdVisita.add(idvisita)
-                                            : listIdVisita.remove(idvisita);
-                                        print(listIdVisita);
-                                      });
-                                    }, title: 'Selecionar Visita');
-                                  })
-
-                                // Row(
-                                //   mainAxisAlignment:
-                                //       MainAxisAlignment.spaceEvenly,
-                                //   children: [
-                                //     Column(
-                                //       crossAxisAlignment:
-                                //           CrossAxisAlignment.start,
-                                //       children: [
-                                //         ConstsWidget.buildTextSubTitle(
-                                //             context, 'confirmado'),
-                                //         ConstsWidget.buildTextTitle(
-                                //           context,
-                                //           confirmado,
-                                //         ),
-                                //       ],
-                                //     ),
-                                //     Column(
-                                //       crossAxisAlignment:
-                                //           CrossAxisAlignment.start,
-                                //       children: [
-                                //         ConstsWidget.buildTextSubTitle(
-                                //             context, 'autorizado'),
-                                //         ConstsWidget.buildTextTitle(
-                                //             context, autorizado.toString()),
-                                //       ],
-                                //     ),
-                                //   ],
-                                // )
                               ],
                             ),
                           ));

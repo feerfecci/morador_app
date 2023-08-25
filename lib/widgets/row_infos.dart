@@ -6,11 +6,12 @@ Widget buildRowInfos(BuildContext context,
     {required String title1,
     required String subTitle1,
     required String title2,
-    required String subTitle2}) {
+    required String subTitle2,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.spaceEvenly}) {
   return ConstsWidget.buildPadding001(
     context,
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: mainAxisAlignment,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

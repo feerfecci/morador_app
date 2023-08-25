@@ -1,11 +1,18 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'dart:convert';
+
 import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
+import 'package:app_portaria/widgets/page_erro.dart';
+import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
 import '../../repositories/shared_preferences.dart';
@@ -17,8 +24,10 @@ import '../reserva_espaco/listar_espacos.dart';
 import 'card_home.dart';
 import '../correspondencia/correspondencia_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
+  static int qntCorresp = 0;
   const HomePage({
     super.key,
   });
@@ -27,19 +36,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+int qntCorresp = 0;
+
 class _HomePageState extends State<HomePage> {
-  // Widget buildCard() {
-  //   if (InfosMorador.responsavel) {
-  //     return buildCardHome(
-  //       context,
-  //       title: 'Delivery',
-  //       iconApi: '${Consts.iconApiPort}delivery.png',
-  //       pageRoute: ChegadaScreen(tipo: 1),
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  List<String> teleforsList1 = [];
+  List<String> teleforsList2 = [];
+  List<String> teleforsList3 = [];
   var models1 = [
     Model(
       indexOrder: 0,
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     Model(
       indexOrder: 3,
       title: 'Visitas',
-      iconApi: '${Consts.iconApiPort}visitas.png',
+      iconApi: '${Consts.iconApiPort}visitas.gif',
       pageRoute: ChegadaScreen(tipo: 2),
     ),
     Model(
@@ -108,21 +110,6 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  // var models2 = [
-  //   Model(
-  //     indexOrder: 0,
-  //     title: 'Ligar na Portaria',
-  //     iconApi: '${Consts.iconApiPort}ligar.png',
-  //     numberCall: InfosMorador.telefone_portaria,
-  //   ),
-  //   Model(
-  //     indexOrder: 1,
-  //     title: 'Cadastros',
-  //     iconApi: '${Consts.iconApiPort}cadastros.png',
-  //     pageRoute: ListaTotalUnidade(tipoAbrir: 1),
-  //   )
-  // ];
-
   Future initPlatFormState() async {
     OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
@@ -133,11 +120,7 @@ class _HomePageState extends State<HomePage> {
         'idcond': InfosMorador.idcondominio.toString(),
       });
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        if (openedResult.notification.buttons == null ||
-            openedResult.notification.additionalData!.values.first ==
-                'previstas') {
-          ConstsFuture.navigatorPageRoute(context, MyVisitasScreen());
-        } else if (openedResult.notification.buttons!.first.id != '') {
+        if (openedResult.notification.buttons != null) {
           if (openedResult.notification.buttons!.first.id == 'delivery') {
             ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
             alertRespondeDelivery(context, tipoAviso: 5);
@@ -146,25 +129,11 @@ class _HomePageState extends State<HomePage> {
             alertRespondeDelivery(context, tipoAviso: 6);
           }
         } else {
-          print(openedResult.notification.additionalData!.values.first);
           if (openedResult.notification.additionalData!.values.first ==
               'corresp') {
             ConstsFuture.navigatorPageRoute(
                 context, CorrespondenciaScreen(tipoAviso: 3));
-          }
-          // //delivery
-          // else if (openedResult.notification.additionalData!.values.first ==
-          //     'delivery') {
-          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-          // }
-
-          // //visita
-          // else if (openedResult.notification.additionalData!.values.first ==
-          //     'visita') {
-          //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-          // }
-          //aviso
-          else if (openedResult.notification.additionalData!.values.first ==
+          } else if (openedResult.notification.additionalData!.values.first ==
               'aviso') {
             ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
           } else if (openedResult.notification.additionalData!.values.first ==
@@ -204,40 +173,34 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // config2() async {
-  //   await LocalPreferences.getOrderCards(2).then((value2) {
-  //     print(value2);
-  //     if (value2 != null) {
-  //       List<String> lst2 = value2;
-  //       List<Model> list2 = [];
-  //       if (lst2 != null && lst2.isNotEmpty) {
-  //         list2 = lst2
-  //             .map(
-  //               (String indx) => models2.where((Model item) {
-  //                 return int.parse(indx) == item.indexOrder;
-  //               }).first,
-  //             )
-  //             .toList();
-  //         setState(() {
-  //           models2 = list2;
-  //         });
-  //       } else {
-  //         setState(() {});
-  //         return models2;
-  //       }
-  //     } else {
-  //       setState(() {});
-  //       return models2;
-  //     }
-  //   });
-  // }
+  Future<dynamic> apiPubli({required int local}) {
+    return ConstsFuture.changeApi(
+        'publicidade/?fn=mostrarPublicidade&idcond=16&local=$local');
+  }
 
   @override
   void initState() {
     super.initState();
     config();
-    // config2();
+    // apiPubli(local: 0);
     initPlatFormState();
+  }
+
+  Future<dynamic> cliquePubli(String api) async {
+    var url = Uri.parse(api);
+    var resposta = await http.get(url);
+    if (resposta.statusCode == 200) {
+      try {
+        return json.decode(resposta.body);
+      } catch (e) {
+        return {'erro': true, 'mensagem': 'Tente Novamente'};
+      }
+    }
+  }
+
+  void dispose() {
+    super.dispose();
+    apiQuadroAvisos();
   }
 
   Widget buildDraggableGrid(
@@ -253,13 +216,15 @@ class _HomePageState extends State<HomePage> {
         children: models
             .map((card) => Container(
                   key: ValueKey(card),
-                  child: buildCardHome(context,
-                      title: card.title!,
-                      indexOrder: card.indexOrder!,
-                      iconApi: card.iconApi!,
-                      pageRoute: card.pageRoute,
-                      isWhats: card.isWhats,
-                      numberCall: card.numberCall),
+                  child: buildCardHome(
+                    context,
+                    title: card.title!,
+                    indexOrder: card.indexOrder!,
+                    iconApi: card.iconApi!,
+                    pageRoute: card.pageRoute,
+                    isWhats: card.isWhats,
+                    numberCall: card.numberCall,
+                  ),
                 ))
             .toList(),
         onReorder: (oldIndex, newIndex) async {
@@ -281,90 +246,280 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      endDrawer: CustomDrawer(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: ConstsWidget.buildTextTitle(context, InfosMorador.nome_completo,
-            size: 20, textAlign: TextAlign.center),
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
-        leading: Padding(
-          padding: EdgeInsets.only(left: size.width * 0.025),
+    //print('Da Home tipo 3 ${CorrespondenciaScreen.listaNovaCorresp3.length}');
+    //print('Da Home tipo 4  ${CorrespondenciaScreen.listaNovaCorresp4.length}');
+    Widget buildBanerPubli({required int local, required List usarList}) {
+      return ConstsWidget.buildPadding001(context,
           child: FutureBuilder(
-            future: ConstsFuture.apiImageIcon(
-                'https://a.portariaapp.com/img/logo_azul.png'),
+            future: apiPubli(local: local),
             builder: (context, snapshot) {
-              return SizedBox(child: snapshot.data);
+              usarList.clear();
+              if (snapshot.hasData) {
+                if (!snapshot.data!["erro"]) {
+                  // if (snapshot.data['publicidade'] != null) {
+                  if (snapshot.data['publicidade'][0] != null) {
+                    var apiPublicidade = snapshot.data['publicidade'][0];
+                    var idpublidade = apiPublicidade['idpublidade'];
+                    var idcondominio = apiPublicidade['idcondominio'];
+                    var arquivo = apiPublicidade['arquivo'];
+                    var email = apiPublicidade['email'];
+                    var site = apiPublicidade['site'];
+                    var whatsapp = apiPublicidade['whatsapp'];
+                    var telefone = apiPublicidade['telefone'];
+                    var telefone2 = apiPublicidade['telefone2'];
+                    var impressoes = apiPublicidade['impressoes'];
+                    var datahora = apiPublicidade['datahora'];
+                    var ultima_atualizacao =
+                        apiPublicidade['ultima_atualizacao'];
+
+                    bool hasWhats = false;
+
+                    if (whatsapp != '') {
+                      usarList.add(whatsapp);
+                      hasWhats = true;
+                      //print('whatsapp $usarList');
+                    }
+                    if (telefone != '') {
+                      if (telefone != whatsapp) {
+                        usarList.add(telefone);
+                        //print('telefone $usarList');
+                      } else {
+                        hasWhats = true;
+                      }
+                    }
+                    if (telefone2 != '') {
+                      if (telefone2 != whatsapp && telefone2 != telefone) {
+                        usarList.add(telefone2);
+                        //print('telefone2 $usarList');
+                      } else {
+                        hasWhats = true;
+                      }
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        cliquePubli(
+                            'https://a.portariaapp.com/unidade/api/publicidade/?fn=cliquePublicidade&idpublicidade=$idpublidade');
+
+                        if (usarList.length == 1 && email == '' && site == '') {
+                          if (hasWhats) {
+                            launchUrl(Uri.parse('https://wa.me/+55$whatsapp'),
+                                mode: LaunchMode.externalApplication);
+                            print('Abrir whats');
+                          } else {
+                            print('Abrir Telefone');
+                          }
+                        } else if (usarList.isEmpty &&
+                            email == '' &&
+                            site != '') {
+                          launchUrl(Uri.parse(site),
+                              mode: LaunchMode.externalApplication);
+                          print('Abrir link no google');
+                        } else if (usarList.isEmpty &&
+                            site == '' &&
+                            email != '') {
+                          launchUrl(Uri.parse('mailto:$email'),
+                              mode: LaunchMode.externalApplication);
+                          print('Abrir o email');
+                        } else {
+                          showDialogAll(context,
+                              title: 'Entrar em contato',
+                              barrierDismissible: true,
+                              children: [
+                                Column(
+                                  children: usarList.map((e) {
+                                    return MyBoxShadow(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.01,
+                                          ),
+                                          ConstsWidget.buildTextTitle(
+                                              context, e),
+                                          Spacer(),
+                                          if (hasWhats && e == whatsapp)
+                                            IconButton(
+                                                onPressed: () {
+                                                  launchUrl(
+                                                      Uri.parse(
+                                                          'https://wa.me/+55$whatsapp'),
+                                                      mode: LaunchMode
+                                                          .externalApplication);
+                                                },
+                                                icon:
+                                                    Icon(Icons.wechat_rounded)),
+                                          if (whatsapp != null)
+                                            IconButton(
+                                                onPressed: () {
+                                                  launchUrl(
+                                                      Uri.parse('tel:$e'));
+                                                },
+                                                icon: Icon(Icons.call)),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    launchUrl(Uri.parse(site),
+                                        mode: LaunchMode.inAppWebView);
+                                  },
+                                  child: MyBoxShadow(
+                                      child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.01,
+                                      ),
+                                      ConstsWidget.buildTextTitle(
+                                          context, 'Acesse o site'),
+                                      Spacer(),
+                                      if (site != null)
+                                        ConstsWidget.buildPadding001(
+                                          context,
+                                          vertical: 0.015,
+                                          horizontal: 0.025,
+                                          child: Icon(Icons.wordpress_rounded),
+                                        ),
+                                    ],
+                                  )),
+                                )
+                              ]);
+                        }
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: ConstsWidget.buildFutureImage(context,
+                            title: 'Ver mais $idpublidade', iconApi: arquivo),
+                      ),
+                    );
+                    // } else {
+                    //   InfosMorador.qtd_publicidade == 0;
+                    //   return SizedBox();
+                    // }
+                  } else {
+                    InfosMorador.qtd_publicidade == 0;
+                    return Text('');
+                  }
+                } else {
+                  return Text('');
+                }
+              } else {
+                return Text('');
+              }
             },
-          ),
+          ));
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          // apiPubli(local: 0);
+          // CorrespondenciaScreen.listaNovaCorresp3.clear();
+          // CorrespondenciaScreen.listaNovaCorresp4.clear();
+        });
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        endDrawer: CustomDrawer(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: ConstsWidget.buildTextTitle(
+              context, InfosMorador.nome_completo,
+              size: 20, textAlign: TextAlign.center),
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
+          leading: Padding(
+              padding: EdgeInsets.only(
+                  left: size.width * 0.025,
+                  top: SplashScreen.isSmall
+                      ? size.height * 0.012
+                      : size.height * 0.01,
+                  bottom: SplashScreen.isSmall
+                      ? size.height * 0.015
+                      : size.height * 0.01),
+              child: ConstsWidget.buildFutureImage(context,
+                  iconApi: 'https://a.portariaapp.com/img/logo_azul.png')
+
+              //  FutureBuilder(
+              //   future: ConstsFuture.apiImageIcon(
+              //       'https://a.portariaapp.com/img/logo_azul.png'),
+              //   builder: (context, snapshot) {
+              //     return SizedBox(child: snapshot.data);
+              //   },
+              // ),
+              ),
+          toolbarHeight:
+              SplashScreen.isSmall ? size.height * 0.09 : size.height * 0.07,
+          elevation: 0,
+          leadingWidth:
+              SplashScreen.isSmall ? size.height * 0.075 : size.height * 0.06,
         ),
-        elevation: 0,
-        leadingWidth: size.height * 0.055,
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.015),
-            child: Column(
-              children: [
-                if (InfosMorador.qntApto != 1) DropAptos(),
-                if (InfosMorador.qntApto == 1)
-                  ConstsWidget.buildPadding001(
-                    context,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ConstsWidget.buildTextTitle(context,
-                            '${InfosMorador.divisao} - ${InfosMorador.numero}',
-                            size: 20),
-                      ],
+        body: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.015),
+              child: Column(
+                children: [
+                  if (InfosMorador.qntApto != 1) DropAptos(),
+                  if (InfosMorador.qntApto == 1)
+                    ConstsWidget.buildPadding001(
+                      context,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ConstsWidget.buildTextTitle(context,
+                              '${InfosMorador.divisao} - ${InfosMorador.numero}',
+                              size: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                buildDraggableGrid(qualModel: 1, models: models1),
-                SizedBox(
-                  height: size.height * 0.148,
-                  width: double.infinity,
-                  child: buildCardHome(
-                    context,
-                    title: 'Ligar na Portaria',
-                    iconApi: '${Consts.iconApiPort}ligar.png',
-                    numberCall: InfosMorador.telefone_portaria,
-                  ),
-                ),
-                if (!InfosMorador.responsavel)
+                  buildDraggableGrid(qualModel: 1, models: models1),
                   SizedBox(
-                    height: size.height * 0.148,
+                    height: SplashScreen.isSmall
+                        ? size.height * 0.16
+                        : size.height * 0.148,
                     width: double.infinity,
                     child: buildCardHome(
                       context,
-                      indexOrder: 1,
-                      title: 'Cadastros',
-                      iconApi: '${Consts.iconApiPort}cadastros.png',
-                      pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+                      title: 'Ligar na Portaria',
+                      iconApi: '${Consts.iconApiPort}ligar.png',
+                      numberCall: InfosMorador.telefone_portaria,
                     ),
                   ),
-                ConstsWidget.buildPadding001(
-                  context,
-                  child: MyBoxShadow(
-                      imagem: true,
-                      child: SizedBox(
-                        height: 300,
-                        width: double.maxFinite,
-                      )),
-                ),
-                ConstsWidget.buildPadding001(
-                  context,
-                  child: ConstsWidget.buildCustomButton(
-                    context,
-                    'Por perto',
-                    onPressed: () {},
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
+                  if (!InfosMorador.responsavel)
+                    SizedBox(
+                      height: SplashScreen.isSmall
+                          ? size.height * 0.16
+                          : size.height * 0.148,
+                      width: double.infinity,
+                      child: buildCardHome(
+                        context,
+                        indexOrder: 1,
+                        title: 'Cadastros',
+                        iconApi: '${Consts.iconApiPort}cadastros.png',
+                        pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+                      ),
+                    ),
+                  if (InfosMorador.qtd_publicidade != 0)
+                    buildBanerPubli(local: 1, usarList: teleforsList1),
+                  if (InfosMorador.qtd_publicidade != 0)
+                    GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5,
+                      childAspectRatio: 0.9,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      children: [
+                        buildBanerPubli(local: 2, usarList: teleforsList2),
+                        buildBanerPubli(local: 3, usarList: teleforsList3),
+                      ],
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

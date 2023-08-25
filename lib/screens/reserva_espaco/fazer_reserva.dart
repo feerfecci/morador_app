@@ -50,6 +50,9 @@ class _FazerReservaState extends State<FazerReserva> {
         );
         buildCustomSnackBar(context,
             titulo: 'Muito Obrigado', texto: value['mensagem']);
+        setState(() {
+          MyDatePicker.dataSelected = '';
+        });
       } else {
         buildCustomSnackBar(context,
             titulo: 'Algo Saiu Mal', texto: value['mensagem']);
@@ -98,11 +101,14 @@ class _FazerReservaState extends State<FazerReserva> {
                   onPressed: () {
                     var formValid =
                         keyReserva.currentState?.validate() ?? false;
-                    if (formValid) {
+                    if (formValid && MyDatePicker.dataSelected != '') {
                       setState(() {
                         isLoading = true;
                       });
                       startReserva();
+                    } else {
+                      buildCustomSnackBar(context,
+                          titulo: 'Cuidado!', texto: 'Selecione uma data');
                     }
                   },
                   isLoading: isLoading,
@@ -115,7 +121,7 @@ class _FazerReservaState extends State<FazerReserva> {
                 //     var formValid =
                 //         keyReserva.currentState?.validate() ?? false;
                 //     if (formValid) {
-                //       print(dataCtrl.text);
+                //       //print(dataCtrl.text);
                 //     }
                 //   },
                 // ),

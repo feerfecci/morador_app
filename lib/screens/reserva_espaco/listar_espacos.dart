@@ -10,6 +10,7 @@ import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
+import '../correspondencia/loading_corresp.dart';
 
 class ListarEspacos extends StatefulWidget {
   const ListarEspacos({super.key});
@@ -42,13 +43,16 @@ class ListarEspacosState extends State<ListarEspacos> {
       );
     }
 
+    Future apiListarEspacos() {
+      //print('listarEspacos');
+      return ConstsFuture.changeApi(
+          'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}');
+    }
+
     return ConstsWidget.buildRefreshIndicator(
       context,
       onRefresh: () async {
-        setState(() {
-          ConstsFuture.changeApi(
-              'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}');
-        });
+        setState(() {});
       },
       child: buildScaffoldAll(context,
           title: 'Reservar Espaços',
@@ -67,11 +71,10 @@ class ListarEspacosState extends State<ListarEspacos> {
                         context, ListarReservas())),
               ),
               FutureBuilder<dynamic>(
-                future: ConstsFuture.changeApi(
-                    'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}'),
+                future: apiListarEspacos(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return LoadingCorresp();
                   } else if (snapshot.hasData) {
                     if (!snapshot.data['erro']) {
                       return ListView.builder(

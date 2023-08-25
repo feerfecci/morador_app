@@ -27,7 +27,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
 
   Future<dynamic> mensagensResponsta() async {
     var url = Uri.parse(
-        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso}&idcond=${InfosMorador.idcondominio}');
+        '${Consts.apiUnidade}msgsprontas/index.php?fn=listarMensagens&tipo=${widget.tipoAviso}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}');
     var resposta = await get(url);
     if (resposta.statusCode == 200) {
       var jsonReponse = json.decode(resposta.body);
@@ -77,8 +77,17 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ConstsWidget.buildTextTitle(context, e['titulo']),
-                          ConstsWidget.buildTextSubTitle(context, e['texto']),
+                          SizedBox(
+                              height: size.height * 0.025,
+                              width: size.width * 0.9,
+                              child: ConstsWidget.buildTextTitle(
+                                  context, e['titulo'],
+                                  overflow: TextOverflow.ellipsis)),
+                          SizedBox(
+                              height: size.height * 0.025,
+                              width: size.width * 0.9,
+                              child: ConstsWidget.buildTextSubTitle(
+                                  context, e['texto'])),
                         ],
                       ));
                 }).toList(),
@@ -114,7 +123,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
               'Avisar',
               onPressed: () {
                 ConstsFuture.changeApi(
-                        'respostas/index.php?fn=enviarRespostas&idcond=${InfosMorador.idcondominio}&idmsg=$dropRespostas&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}')
+                        'respostas/index.php?fn=enviarRespostas&idcond=${InfosMorador.idcondominio}&idmsg=$dropRespostas&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}')
                     .then((value) {
                   if (!value['erro']) {
                     Navigator.pop(context);

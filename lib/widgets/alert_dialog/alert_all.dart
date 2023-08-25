@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 showDialogAll(BuildContext context,
-    {required String title, required List<Widget> children}) {
+    {required String title,
+    required List<Widget> children,
+    bool barrierDismissible = false}) {
   return showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       builder: (context) {
         return AlertDialogAll(
           title: title,

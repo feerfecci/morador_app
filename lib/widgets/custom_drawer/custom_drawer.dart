@@ -5,7 +5,10 @@ import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
+import 'package:app_portaria/screens/politica/politica_screen.dart';
+import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts_widget.dart';
 import 'change_theme_button.dart';
 
@@ -28,16 +31,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
         void Function()? onPressed}) {
       return ConstsWidget.buildPadding001(
         context,
-        child: ListTile(
-          iconColor: Theme.of(context).iconTheme.color,
-          leading: Icon(
-            leading,
-            size: 25,
-          ),
-          title: ConstsWidget.buildTextTitle(context, title),
-          trailing: IconButton(
-            onPressed: onPressed,
-            icon: Icon(
+        child: GestureDetector(
+          onTap: onPressed,
+          child: ListTile(
+            iconColor: Theme.of(context).iconTheme.color,
+            leading: Icon(
+              leading,
+              size: 21,
+            ),
+            title: ConstsWidget.buildTextTitle(context, title, size: 16),
+            trailing: Icon(
               size: 30,
               trailing,
             ),
@@ -109,39 +112,61 @@ class _CustomDrawerState extends State<CustomDrawer> {
               buidListTile(
                 title: 'Seja um Representante',
                 leading: Icons.business_center_outlined,
-                onPressed: () {},
+                onPressed: () => launchUrl(
+                    Uri.parse(
+                        'https://www.portariaapp.com/seja-um-representante'),
+                    mode: LaunchMode.externalNonBrowserApplication),
+              ),
+              buidListTile(
+                title: 'Termos de uso',
+                leading: Icons.supervised_user_circle,
+                onPressed: () => ConstsFuture.navigatorPageRoute(
+                    context, TermoDeUsoScreen()),
               ),
               buidListTile(
                 title: 'Política de privacidade',
                 leading: Icons.privacy_tip_outlined,
-                onPressed: () {},
+                onPressed: () =>
+                    ConstsFuture.navigatorPageRoute(context, PoliticaScreen()),
               ),
               buidListTile(
                 title: 'Indicar para Amigos',
                 leading: Icons.add_reaction_outlined,
-                onPressed: () {},
+                onPressed: () => launchUrl(
+                    Uri.parse('https://www.portariaapp.com/indicar-para-amigo'),
+                    mode: LaunchMode.externalNonBrowserApplication),
               ),
               buidListTile(
                 title: 'Central de Ajuda',
                 leading: Icons.support_outlined,
-                onPressed: () {},
+                onPressed: () => launchUrl(
+                    Uri.parse(
+                      'https://www.portariaapp.com/central-de-ajuda',
+                    ),
+                    mode: LaunchMode.externalNonBrowserApplication),
+              ),
+              buidListTile(
+                title: 'Efetuar logoff',
+                leading: Icons.logout_outlined,
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                      (route) => false);
+                  LocalPreferences.removeUserLogin();
+                },
               ),
               ChangeThemeButton(),
               Spacer(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: ConstsWidget.buildCustomButton(
-                  context,
-                  'Sair',
-                  icon: Icons.logout_outlined,
+                child: ConstsWidget.buildOutlinedButton(
+                  context, title: 'Fechar Menu',
+                  // icon: Icons.logout_outlined,
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                        (route) => false);
-                    LocalPreferences.removeUserLogin();
+                    Navigator.pop(context);
                   },
                 ),
               )

@@ -50,6 +50,8 @@ class ConstsFuture {
 
   static Future efetuaLogin(context, String user, String senha,
       {int? idUnidade}) async {
+    CorrespondenciaScreen.listaNovaCorresp3.clear();
+    CorrespondenciaScreen.listaNovaCorresp4.clear();
     InfosMorador.user = user;
     criptoSenha(senha).then((senhaCrip) async {
       InfosMorador.senhaCripto = idUnidade == null ? senhaCrip : senha;
@@ -73,7 +75,7 @@ class ConstsFuture {
             if (idUnidade == null) {
               InfosMorador.qntApto = apiBody['login'].length;
               // for (i; i < InfosMorador.qntApto - 1; i++) {
-              //   print('passou for $i');
+              //   //print('passou for $i');
               //   InfosMorador.listIdMorador.add(apiBody['login'][i]
               //           ['responsavel']
               //       ? apiBody['login'][i]['id'].toString()
@@ -86,7 +88,7 @@ class ConstsFuture {
               OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
 
               for (var i = 0; i < InfosMorador.qntApto; i++) {
-                print('passou for $i');
+                ////print('passou for $i');
                 InfosMorador.listIdMorador.add(!apiBody['login'][i]
                         ['responsavel']
                     ? apiBody['login'][i]['id'].toString()
@@ -95,72 +97,10 @@ class ConstsFuture {
                     .add(apiBody['login'][i]['idcondominio'].toString());
                 InfosMorador.listIdUnidade
                     .add(apiBody['login'][i]['idunidade'].toString());
-                OneSignal.shared
-                    .promptUserForPushNotificationPermission()
-                    .then((value) {
-                  OneSignal.shared
-                      .setExternalUserId(InfosMorador.idmorador.toString());
-                  OneSignal.shared.sendTags({
-                    'idmorador': InfosMorador.listIdMorador[i],
-                    'idunidade': InfosMorador.listIdUnidade[i],
-                    'idcond': InfosMorador.listIdCond[i],
-                  });
-                  OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-                    if (openedResult.notification.buttons!.first.id != '') {
-                      if (openedResult.notification.buttons!.first.id ==
-                          'delivery') {
-                        ConstsFuture.navigatorPageRoute(
-                            context, ChegadaScreen(tipo: 1));
-                        alertRespondeDelivery(context, tipoAviso: 5);
-                      } else if (openedResult.notification.buttons!.first.id ==
-                          'visita') {
-                        ConstsFuture.navigatorPageRoute(
-                            context, ChegadaScreen(tipo: 2));
-                        alertRespondeDelivery(context, tipoAviso: 6);
-                      }
-                    } else {
-                      if (openedResult
-                              .notification.additionalData!.values.first ==
-                          'corresp') {
-                        ConstsFuture.navigatorPageRoute(
-                            context, CorrespondenciaScreen(tipoAviso: 3));
-                      }
-                      // //delivery
-                      // else if (openedResult.notification.additionalData!.values.first ==
-                      //     'delivery') {
-                      //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-                      // }
 
-                      // //visita
-                      // else if (openedResult.notification.additionalData!.values.first ==
-                      //     'visita') {
-                      //   ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-                      // }
-                      //aviso
-                      else if (openedResult
-                              .notification.additionalData!.values.first ==
-                          'aviso') {
-                        ConstsFuture.navigatorPageRoute(
-                            context, QuadroAvisosScreen());
-                      } else if (openedResult
-                              .notification.additionalData!.values.first ==
-                          'mercadorias') {
-                        ConstsFuture.navigatorPageRoute(
-                            context, CorrespondenciaScreen(tipoAviso: 4));
-                      }
-                    }
-
-                    //correp
-                  });
-                  InfosMorador.email != ''
-                      ? OneSignal.shared
-                          .setEmail(email: InfosMorador.email.toString())
-                      : null;
-                });
-
-                print('id morador: ${InfosMorador.listIdMorador[i]}');
-                print('id unidade: ${InfosMorador.listIdUnidade[i]}');
-                print('id cond: ${InfosMorador.listIdCond[i]}');
+                //    //print('id morador: ${InfosMorador.listIdMorador[i]}');
+                //    //print('id unidade: ${InfosMorador.listIdUnidade[i]}');
+                //    //print('id cond: ${InfosMorador.listIdCond[i]}');
               }
             }
 
@@ -177,6 +117,7 @@ class ConstsFuture {
                 ? apiInfos['nome_responsavel']
                 : apiInfos['nome_morador'] ?? '';
             InfosMorador.numero = apiInfos['unidade'];
+            InfosMorador.qtd_publicidade = apiInfos['qtd_publicidade'];
             InfosMorador.divisao = apiInfos['divisao'];
             InfosMorador.login = apiInfos['login'];
             InfosMorador.documento = apiInfos['documento'];
@@ -199,14 +140,20 @@ class ConstsFuture {
             return navigatorPopAndPush(context, LoginScreen());
           }
 
-          return idUnidade == null
-              ? ConstsFuture.navigatorPopAndPush(context, HomePage())
-              : Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                  (route) => false);
+          return apiListarCorrespondencias(3).whenComplete(() {
+            apiListarCorrespondencias(4).whenComplete(() {
+              apiQuadroAvisos().whenComplete(() {
+                idUnidade == null
+                    ? ConstsFuture.navigatorPopAndPush(context, HomePage())
+                    : Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                        (route) => false);
+              });
+            });
+          });
           // if (apiBody['login'].length >= 1) {
           //   alertDialogTrocarAp(context);
           // }
@@ -237,9 +184,44 @@ class ConstsFuture {
   static Future<Widget> apiImageIcon(String iconApi) async {
     var url = Uri.parse(iconApi);
     var resposta = await http.get(url);
+    try {
+      return resposta.statusCode == 200
+          ? Image.network(iconApi)
+          : Image.asset('assets/ico-error.png');
+    } on Exception catch (e) {
+      return Image.asset('assets/ico-error.png');
+    }
+  }
 
-    return resposta.statusCode == 200
-        ? Image.network(iconApi)
-        : Image.asset('assets/ico-error.png');
+  static Future<void> show(BuildContext context, {required Widget page}) async {
+    await Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(builder: (context) => page));
+  }
+
+  static Future apiListarCorrespondencias(int? tipoAviso) async {
+    // CorrespondenciaScreen.listaNovaCorresp3.clear();
+    var resposta = await http.get(Uri.parse(
+        '${Consts.apiUnidade}correspondencias/?fn=listarCorrespondencias&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso'));
+    if (resposta.statusCode == 200) {
+      var respostaBody = json.decode(resposta.body);
+      for (var i = 0; i <= respostaBody['correspondencias'].length - 1; i++) {
+        if (respostaBody['correspondencias'][i]['protocolo'] == '') {
+          if (tipoAviso == 3) {
+            //   //print(
+            //       'tipo 3 ${respostaBody['correspondencias'][i]['status_entrega']}');
+            CorrespondenciaScreen.listaNovaCorresp3
+                .add(respostaBody['correspondencias'][i]['idcorrespondencia']);
+          } else {
+            //   //print(
+            //       'tipo 4 ${respostaBody['correspondencias'][i]['status_entrega']}');
+            CorrespondenciaScreen.listaNovaCorresp4
+                .add(respostaBody['correspondencias'][i]['idcorrespondencia']);
+          }
+        }
+      }
+      return json.decode(resposta.body);
+    } else {
+      return false;
+    }
   }
 }

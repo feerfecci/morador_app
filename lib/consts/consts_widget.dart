@@ -1,5 +1,10 @@
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:app_portaria/widgets/shimmer.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'consts.dart';
+import 'consts_future.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ConstsWidget {
   static Widget buildPadding001(BuildContext context,
@@ -15,28 +20,29 @@ class ConstsWidget {
   }
 
   static Widget buildTextTitle(BuildContext context, String title,
-      {textAlign, Color? color, double size = 16}) {
+      {textAlign, Color? color, double size = 18, TextOverflow? overflow}) {
     return Text(
       title,
       maxLines: 20,
       textAlign: textAlign,
+      overflow: overflow,
       style: TextStyle(
         color: color ?? Theme.of(context).colorScheme.primary,
-        fontSize: size,
+        fontSize: SplashScreen.isSmall ? (size - 4) : size,
         fontWeight: FontWeight.bold,
       ),
     );
   }
 
   static Widget buildTextSubTitle(BuildContext context, String title,
-      {Color? color, double size = 14, textAlign}) {
+      {Color? color, double size = 16, textAlign}) {
     return Text(
       title,
       maxLines: 20,
       textAlign: textAlign,
       style: TextStyle(
           color: color ?? Theme.of(context).colorScheme.primary,
-          fontSize: size,
+          fontSize: SplashScreen.isSmall ? (size - 4) : size,
           fontWeight: FontWeight.normal,
           height: 1.4),
     );
@@ -63,7 +69,10 @@ class ConstsWidget {
             if (icon != null)
               Row(
                 children: [
-                  Icon(size: 24, icon, color: Colors.white),
+                  Icon(
+                      size: SplashScreen.isSmall ? 20 : 24,
+                      icon,
+                      color: Colors.white),
                   SizedBox(
                     width: size.width * 0.015,
                   ),
@@ -74,12 +83,53 @@ class ConstsWidget {
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: SplashScreen.isSmall ? 14 : 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  static Widget buildOutlinedButton(BuildContext context,
+      {required String title,
+      required void Function()? onPressed,
+      Color color = Consts.kButtonColor,
+      Color? backgroundColor = Colors.transparent,
+      double fontSize = 18,
+      IconData? icon,
+      double vertical = 0.021,
+      double horizontal = 0.024}) {
+    var size = MediaQuery.of(context).size;
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        alignment: Alignment.center,
+        backgroundColor: backgroundColor,
+        padding: EdgeInsets.symmetric(
+            vertical: size.height * vertical,
+            horizontal: size.width * horizontal),
+        side: BorderSide(width: size.width * 0.005, color: Colors.blue),
+        shape: StadiumBorder(),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null)
+            Icon(size: SplashScreen.isSmall ? 20 : 24, icon, color: color),
+          if (icon != null)
+            SizedBox(
+              width: size.width * 0.015,
+            ),
+          ConstsWidget.buildTextSubTitle(
+            context,
+            title,
+            size: SplashScreen.isSmall ? fontSize - 2 : fontSize,
+            color: Colors.blue,
+          ),
+        ],
       ),
     );
   }
@@ -111,7 +161,7 @@ class ConstsWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: SplashScreen.isSmall ? 16 : 18,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -172,46 +222,6 @@ class ConstsWidget {
     );
   }
 
-  static Widget buildOutlinedButton(BuildContext context,
-      {required String title,
-      required void Function()? onPressed,
-      Color color = Consts.kButtonColor,
-      Color? backgroundColor = Colors.transparent,
-      double fontSize = 18,
-      IconData? icon,
-      double vertical = 0.021,
-      double horizontal = 0.024}) {
-    var size = MediaQuery.of(context).size;
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        alignment: Alignment.center,
-        backgroundColor: backgroundColor,
-        padding: EdgeInsets.symmetric(
-            vertical: size.height * vertical,
-            horizontal: size.width * horizontal),
-        side: BorderSide(width: size.width * 0.005, color: Colors.blue),
-        shape: StadiumBorder(),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) Icon(size: 18, icon, color: color),
-          if (icon != null)
-            SizedBox(
-              width: size.width * 0.015,
-            ),
-          ConstsWidget.buildTextSubTitle(
-            context,
-            title,
-            size: fontSize,
-            color: Colors.blue,
-          ),
-        ],
-      ),
-    );
-  }
-
   static Widget buildRefreshIndicator(BuildContext context,
       {required Widget child, required Future<void> Function() onRefresh}) {
     var size = MediaQuery.of(context).size;
@@ -221,6 +231,111 @@ class ConstsWidget {
         color: Theme.of(context).canvasColor,
         displacement: size.height * 0.1,
         onRefresh: onRefresh,
+        child: child);
+  }
+
+  static Widget buildFutureImage(BuildContext context,
+      {required String iconApi, double? width, double? height, String? title}) {
+    var size = MediaQuery.of(context).size;
+    bool isLoading = true;
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        FutureBuilder(
+            future: ConstsFuture.apiImageIcon(iconApi),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ShimmerWidget(
+                    height: SplashScreen.isSmall
+                        ? size.height * 0.08
+                        : size.height * 0.068,
+                    width: SplashScreen.isSmall
+                        ? size.width * 0.14
+                        : size.width * 0.15);
+              } else if (snapshot.hasData) {
+                isLoading == false;
+                return SizedBox(
+                  width: width != null ? size.width * width : null,
+                  height: height != null ? size.height * height : null,
+                  child: Image.network(
+                    iconApi,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              } else {
+                isLoading == false;
+                return Image.asset('assets/ico-error.png');
+              }
+            }),
+        // if (title != null)
+        //   Container(
+        //     decoration: BoxDecoration(
+        //       color: Colors.grey.withOpacity(0.5),
+        //     ),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         ConstsWidget.buildPadding001(
+        //           context,
+        //           child: ConstsWidget.buildTextTitle(
+        //             context,
+        //             title,
+        //             size: 20,
+        //             color: Colors.white,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   )
+      ],
+    );
+  }
+
+  static Widget buildExpandedTile(BuildContext context,
+      {required Widget title,
+      bool titleCenter = true,
+      Widget? subtitle,
+      required List<Widget> children,
+      void Function(bool)? onExpansionChanged,
+      CrossAxisAlignment? expandedCrossAxisAlignment,
+      Alignment? expandedAlignment}) {
+    var size = MediaQuery.of(context).size;
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        // trailing: Icon(Icons.arrow_downward),
+        onExpansionChanged: onExpansionChanged,
+        subtitle: subtitle == null
+            ? null
+            : titleCenter
+                ? Center(child: subtitle)
+                : subtitle,
+        expandedCrossAxisAlignment: expandedCrossAxisAlignment,
+        childrenPadding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+        expandedAlignment: expandedAlignment,
+        title: titleCenter ? Center(child: title) : title,
+        children: children,
+      ),
+    );
+  }
+
+  static Widget buildBadge(BuildContext context,
+      {required String title,
+      required bool showBadge,
+      required Widget? child,
+      BadgePosition? position}) {
+    return badges.Badge(
+        showBadge: showBadge,
+        badgeAnimation: badges.BadgeAnimation.fade(toAnimate: false),
+        badgeContent: Text(
+          title,
+          style: TextStyle(
+              color: Theme.of(context).cardColor, fontWeight: FontWeight.bold),
+        ),
+        position: position,
+        badgeStyle: badges.BadgeStyle(
+          badgeColor: Consts.kColorRed,
+        ),
         child: child);
   }
 }

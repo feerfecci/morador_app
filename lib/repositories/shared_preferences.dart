@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalPreferences {
@@ -30,6 +31,10 @@ class LocalPreferences {
       _keyUserPassWord,
       senha,
     );
+    preferences.setString(
+      'DateLogin',
+      DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now()).toString(),
+    );
   }
 
   static Future getUserLogin() async {
@@ -44,5 +49,21 @@ class LocalPreferences {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove(_keyUserUser);
     preferences.remove(_keyUserPassWord);
+  }
+
+  static Future setDateLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setString(
+      'DateLogin',
+      DateFormat('yyyy-MM-dd HH:mm:00').format(DateTime.now()),
+    );
+  }
+
+  static Future getDateLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? cacheDate = preferences.getString('DateLogin');
+
+    return cacheDate;
   }
 }

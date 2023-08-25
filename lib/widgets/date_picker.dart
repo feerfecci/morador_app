@@ -1,3 +1,4 @@
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -33,32 +34,37 @@ class _MyDatePickerState extends State<MyDatePicker> {
           borderRadius: BorderRadius.circular(16),
         ),
         hintText: 'Clique aqui para selecionar uma data',
-        hintStyle: TextStyle(fontSize: 16),
+        hintStyle: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: Colors.black26),
         ),
       ),
       type: DateTimePickerType.dateTime,
-      dateMask: 'dd MMMM, yyyy - HH:mm',
-      //initialValue: _initialValue,
+      selectableDayPredicate: (DateTime dateTime) {
+        if (dateTime == DateTime(2023, 8, 12)) {
+          return false;
+        }
+        return true;
+      },
+      initialDate: DateTime.now(),
+      dateMask: 'dd/MM/yyyy - HH:mm',
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-      //icon: Icon(Icons.event),
       style: TextStyle(
         fontSize: 20,
         color: Theme.of(context).colorScheme.primary,
       ),
       textAlign: TextAlign.center,
       cancelText: 'Cancelar',
-
       confirmText: 'Selecionar',
       dateLabelText: 'Date Time',
       locale: Locale('pt', 'BR'),
+
       use24HourFormat: true,
       calendarTitle: 'Selecione uma data e hora',
       onChanged: (val) {
-        print(val);
+        //print(val);
         setState(() {
           MyDatePicker.dataSelected = val;
         });

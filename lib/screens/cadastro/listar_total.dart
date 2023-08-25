@@ -22,10 +22,10 @@ class ListaTotalUnidade extends StatefulWidget {
   State<ListaTotalUnidade> createState() => _ListaTotalUnidadeState();
 }
 
+bool isChecked = false;
+
 class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
-  bool isCheckedMorador = true;
-  bool isCheckedCarros = false;
-  bool isCheckedFuncionarios = false;
+  int filtrar = 0;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -38,21 +38,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
           // isCheckedMorador = true;
           // isCheckedCarros = false;
           // isCheckedFuncionarios = false;
-          setState(() {
-            if (tipoLista == 1) {
-              isCheckedMorador = true;
-              isCheckedCarros = false;
-              isCheckedFuncionarios = false;
-            } else if (tipoLista == 2) {
-              isCheckedCarros = true;
-              isCheckedMorador = false;
-              isCheckedFuncionarios = false;
-            } else if (tipoLista == 3) {
-              isCheckedFuncionarios = true;
-              isCheckedCarros = false;
-              isCheckedMorador = false;
-            }
-          });
+          setState(() {});
         },
       );
     }
@@ -61,7 +47,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
       context,
       onRefresh: () async {
         setState(() {
-          apiMoradores();
+          // apiMoradores();
         });
       },
       child: buildScaffoldAll(
@@ -74,21 +60,42 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildFiltroCadastro('Morador', 1),
-                  buildFiltroCadastro('Carros', 2),
-                  buildFiltroCadastro('Funcionarios', 3),
+                  ConstsWidget.buildOutlinedButton(
+                    context,
+                    title: '    Moradores    ',
+                    fontSize: 18,
+                    backgroundColor: filtrar == 0 ? Colors.grey[300] : null,
+                    onPressed: () {
+                      setState(() {
+                        filtrar = 0;
+                        isChecked = false;
+                      });
+                    },
+                  ),
+                  ConstsWidget.buildOutlinedButton(
+                    context,
+                    title: '        Veículos        ',
+                    fontSize: 18,
+                    backgroundColor: filtrar == 1 ? Colors.grey[300] : null,
+                    onPressed: () {
+                      setState(() {
+                        filtrar = 1;
+                        isChecked = false;
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
             //listar morador
-            if (isCheckedMorador) ListarMorador(),
+            if (filtrar == 0) ListarMorador(),
             //listar carros
-            if (isCheckedCarros) ListarCarros(),
+            if (filtrar == 1) ListarCarros(),
             //listar funcionarios
-            if (isCheckedFuncionarios)
-              Column(
-                children: const [MyBoxShadow(child: Text('Funcionarios'))],
-              ),
+            // if (isCheckedFuncionarios)
+            //   Column(
+            //     children: const [MyBoxShadow(child: Text('Funcionarios'))],
+            //   ),
           ],
         ),
       ),

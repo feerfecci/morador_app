@@ -29,8 +29,9 @@ class ChegadaScreen extends StatefulWidget {
 
 class _ChegadaScreenState extends State<ChegadaScreen> {
   listarVisitasDlivery({required tipoAviso}) async {
+    // //print('historico_avisos');
     var url = Uri.parse(
-        '${Consts.apiUnidade}historico_avisos/index.php?fn=historicoAvisos&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso');
+        '${Consts.apiUnidade}historico_avisos/index.php?fn=historicoAvisos&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso');
 
     var resposta = await http.get(url);
     if (resposta.statusCode == 200) {
@@ -48,7 +49,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
       context,
       onRefresh: () async {
         setState(() {
-          listarVisitasDlivery(tipoAviso: widget.tipo);
+          // listarVisitasDlivery(tipoAviso: widget.tipo);
         });
       },
       child: buildScaffoldAll(context,
@@ -63,7 +64,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildOutlinedButton(
                         context,
-                        title: 'Adicionar Visita',
+                        title: '   Adicionar Visita   ',
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
                               context, AddVisitaScreen());
@@ -74,7 +75,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildCustomButton(
                         context,
-                        'Minhas Visitas',
+                        '   Minhas Visitas   ',
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
                               context, MyVisitasScreen());

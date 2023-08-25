@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../consts/consts_widget.dart';
 import '../../widgets/page_erro.dart';
+import '../correspondencia/loading_corresp.dart';
 
 class ListarReservas extends StatefulWidget {
   const ListarReservas({super.key});
@@ -21,14 +22,17 @@ class ListarReservasState extends State<ListarReservas> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildTextReserva({required titulo, required texto}) {
+    Widget buildTextReserva(
+        {required titulo, required texto, double width = 0.6}) {
       return ConstsWidget.buildPadding001(
         context,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ConstsWidget.buildTextSubTitle(context, titulo),
-            ConstsWidget.buildTextTitle(context, texto),
+            SizedBox(
+                width: size.width * width,
+                child: ConstsWidget.buildTextTitle(context, texto)),
           ],
         ),
       );
@@ -39,7 +43,7 @@ class ListarReservasState extends State<ListarReservas> {
       onRefresh: () async {
         setState(() {
           ConstsFuture.changeApi(
-              'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}');
+              'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}');
         });
       },
       child: buildScaffoldAll(context,
@@ -50,10 +54,10 @@ class ListarReservasState extends State<ListarReservas> {
             children: [
               FutureBuilder<dynamic>(
                 future: ConstsFuture.changeApi(
-                    'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}'),
+                    'reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}'),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return LoadingCorresp();
                   } else if (snapshot.hasData) {
                     if (!snapshot.data['erro']) {
                       return ListView.builder(
@@ -79,15 +83,15 @@ class ListarReservasState extends State<ListarReservas> {
                           String datahora = apiEspacos['datahora'];
 
                           return MyBoxShadow(
-                            child: ListView(
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              // crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Column(
+                              // shrinkWrap: true,
+                              // physics: ClampingScrollPhysics(),
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
                                     buildTextReserva(
-                                      titulo: 'Nome do Escpaço:',
+                                      titulo: 'Nome do Espaço',
                                       texto: nome_espaco.toString(),
                                     ),
                                     Spacer(),
@@ -111,14 +115,16 @@ class ListarReservasState extends State<ListarReservas> {
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     buildTextReserva(
-                                      titulo: 'Data:',
+                                      titulo: 'Data',
+                                      width: 0.3,
                                       texto: data_reserva.toString(),
                                     ),
-                                    Spacer(),
                                     buildTextReserva(
-                                      titulo: 'Reservado por:',
+                                      titulo: 'Reservado por',
+                                      width: 0.6,
                                       texto: nome_morador.toString(),
                                     ),
                                   ],

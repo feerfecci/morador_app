@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../consts/consts_widget.dart';
 import '../../repositories/theme_provider.dart';
 
 class ChangeThemeButton extends StatefulWidget {
@@ -18,7 +19,7 @@ class _ChangeThemeButtonState extends State<ChangeThemeButton> {
         themeProvider.isDarkMode ? 'Ativar Modo Claro' : 'Ativar Modo Escuro';
     bool isOn = themeProvider.isDarkMode;
     return ListTile(
-      title: Text(title),
+      title: ConstsWidget.buildTextTitle(context, title, size: 16),
       iconColor: Theme.of(context).iconTheme.color,
       leading: isOn == true
           ? Icon(Icons.light_mode_outlined)

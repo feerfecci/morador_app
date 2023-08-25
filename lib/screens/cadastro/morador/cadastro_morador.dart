@@ -5,6 +5,7 @@ import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:validatorless/validatorless.dart';
 import '../../../consts/consts.dart';
 import '../../../consts/consts_future.dart';
 import '../../../consts/consts_widget.dart';
@@ -13,6 +14,7 @@ import '../../../widgets/header.dart';
 import '../../../widgets/my_box_shadow.dart';
 import '../../../widgets/my_text_form_field.dart';
 import '../../../widgets/scaffold_all.dart';
+import '../../splash_screen/splash_screen.dart';
 import '../listar_total.dart';
 
 // ignore: must_be_immutable
@@ -124,6 +126,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     // readOnly: !InfosMorador.responsavel,
                     title: 'Nome Completo',
                     initialValue: widget.nome_completo,
+                    textCapitalization: TextCapitalization.words,
                     onSaved: (text) {
                       _formInfosMorador =
                           _formInfosMorador.copyWith(nome_morador: text);
@@ -237,16 +240,33 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       ),
                     ],
                   ),
-                  buildMyTextFormObrigatorio(
-                    context,
-                    title: 'Email',
+
+                  TextFormField(
                     initialValue: widget.email,
-                    hintText: 'exemplo@exc.com',
+                    keyboardType: TextInputType.emailAddress,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    textAlign: TextAlign.start,
+                    textInputAction: TextInputAction.next,
                     onSaved: (text) {
                       _formInfosMorador =
                           _formInfosMorador.copyWith(email: text);
                     },
+                    style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
+                    validator: Validatorless.email('Não é um email válido'),
+                    decoration: buildTextFieldDecoration(context,
+                        title: 'Email', hintText: 'exemplo@exc.com'),
                   ),
+
+                  // buildMyTextFormObrigatorio(
+                  //   context,
+                  //   title: 'Email',
+                  //   initialValue: widget.email,validator: ,
+                  //   hintText: 'exemplo@exc.com',
+                  //   onSaved: (text) {
+                  //     _formInfosMorador =
+                  //         _formInfosMorador.copyWith(email: text);
+                  //   },
+                  // ),
 
                   if (loginGerado == '')
                     ConstsWidget.buildPadding001(
@@ -297,12 +317,16 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           ConstsWidget.buildPadding001(
                             context,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ConstsWidget.buildTextSubTitle(
-                                    context, 'Login:'),
-                                ConstsWidget.buildTextTitle(context,
-                                    _formInfosMorador.login.toString()),
+                                    context, 'Login'),
+                                SizedBox(
+                                  width: size.width * 0.8,
+                                  child: ConstsWidget.buildTextTitle(context,
+                                      _formInfosMorador.login.toString(),
+                                      textAlign: TextAlign.center),
+                                ),
                               ],
                             ),
                           )
@@ -312,21 +336,30 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     loginGerado != '' && widget.idunidade == null
                         ? Column(
                             children: [
-                              buildMyTextFormField(context,
+                              buildMyTextFormObrigatorio(context,
                                   title: 'Senha Login',
                                   // readOnly:InfosMorador.!responsavel,
-                                  onSaved: (text) {
+                                  validator: Validatorless.multiple([
+                                    Validatorless.min(6,
+                                        'Necessário ter mais de 6 caracteres'),
+                                    Validatorless.required('Preencha')
+                                  ]), onSaved: (text) {
                                 _formInfosMorador =
                                     _formInfosMorador.copyWith(senha: text);
                               }),
                               SizedBox(
-                                height: size.height * 0.01,
+                                height: size.height * 0.02,
                               ),
                               ConstsWidget.buildTextTitle(context,
-                                  'Essa senha será usada para retiradas na Portaria',
+                                  'Senha a seguir será usada para retiradas na Portaria',
                                   color: Colors.red),
-                              buildMyTextFormField(context,
+                              buildMyTextFormObrigatorio(context,
                                   title: 'Senha Retirada',
+                                  validator: Validatorless.multiple([
+                                    Validatorless.min(6,
+                                        'Necessário ter mais de 6 caracteres'),
+                                    Validatorless.required('Preencha')
+                                  ]),
                                   // readOnly:InfosMorador.!responsavel,
                                   onSaved: (text) {
                                 _formInfosMorador = _formInfosMorador.copyWith(
@@ -440,7 +473,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           ? isResponsavel = 1
                           : isResponsavel = 0;
                       ConstsFuture.changeApi(
-                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
+                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
                           .then((value) {
                         if (!value['erro']) {
                           if (!widget.isDrawer) {
@@ -468,7 +501,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         }
                       });
                     } else {
-                      print(formValid.toString());
+                      //print(formValid.toString());
                     }
                   },
                 )

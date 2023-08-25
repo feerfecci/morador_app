@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class PageErro extends StatefulWidget {
-
-  PageErro({ super.key});
+  PageErro({super.key});
 
   @override
   State<PageErro> createState() => _PageErroState();
@@ -16,7 +15,7 @@ class _PageErroState extends State<PageErro> {
     return Column(
       children: [
         Center(
-          child: Image.asset('assets/vazio.png'),
+          child: Image.asset('assets/erro.png'),
         ),
       ],
     );

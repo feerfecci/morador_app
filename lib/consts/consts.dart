@@ -15,6 +15,7 @@ class InfosMorador {
   static int iddivisao = 0;
   static int idunidade = 0;
   static int tempo_resposta = 0;
+  static int qtd_publicidade = 0;
   static String nome_condominio = '';
   static String nome_completo = '';
   static String numero = '';

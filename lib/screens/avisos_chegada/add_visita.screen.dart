@@ -7,11 +7,13 @@ import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:validatorless/validatorless.dart';
 
 import '../../consts/consts_widget.dart';
 import '../../widgets/date_picker.dart';
 import '../../widgets/my_text_form_field.dart';
 import '../../widgets/snack_bar.dart';
+import '../splash_screen/splash_screen.dart';
 
 class AddVisitaScreen extends StatefulWidget {
   const AddVisitaScreen({super.key});
@@ -37,6 +39,36 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
   // String diaVisita = '';
   String horaVisita = '';
   String minutoVisita = '';
+  void starLogin() {
+    setState(() {
+      isLoading == false;
+    });
+    if (emailCtrl.text != '') {
+      buildCustomSnackBar(context,
+          titulo: 'Cuidado', texto: 'Adicione o email à lista');
+    } else if (MyDatePicker.dataSelected == '') {
+      buildCustomSnackBar(context,
+          titulo: 'Cuidado', texto: 'Adicione uma Data de Visita');
+    } else {
+      forEnviaConvite().then((value) {
+        contemErro = retornoListErro.contains(true);
+        setState(() {
+          isLoading = false;
+        });
+        if (!contemErro) {
+          Navigator.pop(context);
+          buildCustomSnackBar(context,
+              titulo: 'Muito Bem', texto: 'Aviso(s) enviado(s) com sucesso');
+          setState(() {
+            MyDatePicker.dataSelected == '';
+          });
+        } else {
+          buildCustomSnackBar(context,
+              titulo: 'Que pena!', texto: 'Algum email não foi enviado');
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +90,9 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                       ConstsWidget.buildPadding001(
                         context,
                         child: ConstsWidget.buildTextSubTitle(
-                            context, 'Email do Convidado'),
+                          context,
+                          'Email do Convidado',
+                        ),
                       ),
                       ConstsWidget.buildTextTitle(
                           context, listEmailVisita[index]),
@@ -85,7 +119,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                         // if (validForm) {
                         //   setState(() {
                         //     listEmailVisita.add(emailCtrl.text);
-                        //     print(listEmailVisita);
+                        //     //print(listEmailVisita);
                         //   });
                         // }
                       },
@@ -135,10 +169,17 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: size.width * 0.75,
+                        width: SplashScreen.isSmall
+                            ? size.width * 0.7
+                            : size.width * 0.75,
                         child: buildMyTextFormField(context,
                             controller: emailCtrl,
                             title: 'Email',
+                            validator: Validatorless.multiple([
+                              Validatorless.required('Preencha'),
+                              Validatorless.email(
+                                  'Preencha com um email válido')
+                            ]),
                             keyboardType: TextInputType.emailAddress),
                       ),
                       Spacer(),
@@ -210,7 +251,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                 //     //     //     newDate = DateFormat('dd/MM/yyyy')
                 //     //     //         .format(dataSelected!);
                 //     //     //     // var transformDate = ;
-                //     //     //     print(
+                //     //     //     //print(
                 //     //     //         'data do picker ${dataSelected?.year}-0${dataSelected?.month}-0${dataSelected?.day}');
                 //     //     //   });
                 //     //     // }
@@ -229,88 +270,67 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                 //     // ),
                 //   ],
                 // ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                if (listEmailVisita.isNotEmpty)
+                  Column(
+                    children: [
+                      MyBoxShadow(
+                        child: ConstsWidget.buildPadding001(context,
+                            horizontal: 0.02, child: buildListaEmailConvid()),
+                      ),
+                      ConstsWidget.buildPadding001(
+                        context,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ConstsWidget.buildOutlinedButton(
+                              context,
+                              title: 'Cancelar',
+                              onPressed: () {
+                                listEmailVisita.clear();
+                                Navigator.pop(context);
+                              },
+                            ),
+                            SizedBox(
+                              width: size.width * 0.02,
+                            ),
+                            ConstsWidget.buildLoadingButton(
+                              context,
+                              color: Consts.kColorRed,
+                              isLoading: isLoading,
+                              horizontal: 0.05,
+                              title: 'Confirmar',
+                              onPressed: () {
+                                if (listEmailVisita.isNotEmpty &&
+                                    emailCtrl.text.isEmpty &&
+                                    MyDatePicker.dataSelected != '') {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  // anoVisita = dataCtrl.text.substring(6, 10);
+                                  // mesVisita = dataCtrl.text.substring(3, 5);
+                                  // diaVisita = dataCtrl.text.substring(0, 2);
+                                  // horaVisita = dataCtrl.text.substring(11, 13);
+                                  // minutoVisita = dataCtrl.text.substring(14, 16);
+                                  //  horaAPIVisita = dataCtrl.text;
+                                  starLogin();
+                                } else {
+                                  buildCustomSnackBar(context,
+                                      titulo: 'Cuidado',
+                                      texto: 'Preencha os dados');
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
               ],
             )),
-            if (listEmailVisita.isNotEmpty)
-              MyBoxShadow(
-                child: ConstsWidget.buildPadding001(context,
-                    horizontal: 0.02, child: buildListaEmailConvid()),
-              ),
-            ConstsWidget.buildPadding001(
-              context,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ConstsWidget.buildOutlinedButton(
-                    context,
-                    title: 'Cancelar',
-                    onPressed: () {
-                      listEmailVisita.clear();
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  ConstsWidget.buildLoadingButton(
-                    context,
-                    color: Consts.kColorRed,
-                    isLoading: isLoading,
-                    horizontal: 0.05,
-                    title: 'Confirmar',
-                    onPressed: () {
-                      if (listEmailVisita.isNotEmpty &&
-                          emailCtrl.text == '' &&
-                          MyDatePicker.dataSelected != '') {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        // anoVisita = dataCtrl.text.substring(6, 10);
-                        // mesVisita = dataCtrl.text.substring(3, 5);
-                        // diaVisita = dataCtrl.text.substring(0, 2);
-                        // horaVisita = dataCtrl.text.substring(11, 13);
-                        // minutoVisita = dataCtrl.text.substring(14, 16);
-                        //  horaAPIVisita = dataCtrl.text;
-                        forEnviaConvite().then((value) {
-                          contemErro = retornoListErro.contains(true);
-                          if (!contemErro) {
-                            Navigator.pop(context);
-                            buildCustomSnackBar(context,
-                                titulo: 'Muito Bem',
-                                texto: 'Aviso(s) enviado(s) com sucesso');
-                          } else {
-                            buildCustomSnackBar(context,
-                                titulo: 'Que pena!',
-                                texto: 'Algum email não foi enviado');
-                          }
-                        });
-                      } else if (emailCtrl.text != '') {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        buildCustomSnackBar(context,
-                            titulo: 'Cuidado',
-                            texto: 'Adicione o email à lista');
-                      } else if (MyDatePicker.dataSelected == '') {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        buildCustomSnackBar(context,
-                            titulo: 'Cuidado',
-                            texto: 'Adicione uma Data de Visita');
-                      } else {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        buildCustomSnackBar(context,
-                            titulo: 'Cuidado',
-                            texto: 'Adicione pelo menos um email');
-                      }
-                    },
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

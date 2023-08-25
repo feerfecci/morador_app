@@ -23,8 +23,9 @@ class ListarMorador extends StatefulWidget {
 }
 
 Future apiMoradores() async {
+  //print('listarMoradores');
   var url = Uri.parse(
-      'https://a.portariaapp.com/unidade/api/moradores/?fn=listarMoradores&idunidade=${InfosMorador.idunidade}&idcond=${InfosMorador.idcondominio}');
+      'https://a.portariaapp.com/unidade/api/moradores/?fn=listarMoradores&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}');
   var resposta = await get(url);
   if (resposta.statusCode == 200) {
     return json.decode(resposta.body);
@@ -83,64 +84,94 @@ class _ListarMoradorState extends State<ListarMorador> {
                     var email = bodyMorador['email'];
                     var acessa_sistema = bodyMorador['acessa_sistema'];
                     var data_nascimento = bodyMorador['data_nascimento'];
+
                     return MyBoxShadow(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ConstsWidget.buildTextTitle(context, nome_morador),
-                            ConstsWidget.buildAtivoInativo(context, ativo),
-                          ],
-                        ),
-                        buildRowInfos(context,
-                            title1: 'Login',
-                            subTitle1: login,
-                            title2: 'Telefone',
-                            subTitle2: '($ddd) $telefone'),
-                        buildRowInfos(context,
-                            title1: 'Documento',
-                            subTitle1: documento,
-                            title2: 'Nascimento',
-                            subTitle2: DateFormat('dd/MM/yyyy').format(
-                                DateTime.parse(
-                                    bodyMorador['data_nascimento']))),
-                        ConstsWidget.buildTextSubTitle(context, 'Email'),
-                        ConstsWidget.buildTextTitle(context, email),
-                        StatefulBuilder(builder: (context, setState) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        child: ConstsWidget.buildExpandedTile(context,
+                            expandedAlignment: Alignment.topLeft,
+                            expandedCrossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.55,
+                                  child: ConstsWidget.buildTextTitle(
+                                      context, nome_morador),
+                                ),
+                                ConstsWidget.buildAtivoInativo(context, ativo),
+                              ],
+                            ),
                             children: [
-                              ConstsWidget.buildCheckBox(context,
-                                  isChecked: acessa_sistema,
-                                  onChanged: (bool? value) {},
-                                  title: 'Permitir acesso ao sistema')
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ConstsWidget.buildTextSubTitle(context, 'Login'),
+                              SizedBox(
+                                  width: size.width * 0.9,
+                                  child: ConstsWidget.buildTextTitle(
+                                      context, login)),
                             ],
-                          );
-                        }),
-                        ConstsWidget.buildCustomButton(
-                            context, 'Editar Morador', onPressed: () {
-                          ConstsFuture.navigatorPageRoute(
-                              context,
-                              CadastroMorador(
-                                idunidade: idunidade,
-                                iddivisao: iddivisao,
-                                idmorador: idmorador,
-                                email: email,
-                                nome_completo: nome_morador,
-                                login: login,
-                                numero: numero,
-                                ativo: ativo,
-                                nascimento: data_nascimento,
-                                documento: documento,
-                                ddd: ddd,
-                                telefone: telefone,
-                                acesso: acessa_sistema ? 1 : 0,
-                              ));
-                        })
-                      ],
-                    ));
+                          ),
+
+                          // buildRowInfos(context,
+                          //     title1: ,
+                          //     subTitle1: ,
+                          //     title2: ,
+                          //     subTitle2: '($ddd) $telefone'),
+                          buildRowInfos(context,
+                              title1: 'Documento',
+                              subTitle1: documento,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              title2: 'Nascimento',
+                              subTitle2: DateFormat('dd/MM/yyyy').format(
+                                  DateTime.parse(
+                                      bodyMorador['data_nascimento']))),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ConstsWidget.buildTextSubTitle(
+                                  context, 'Telefone'),
+                              ConstsWidget.buildTextTitle(
+                                  context, '($ddd) $telefone'),
+                            ],
+                          ),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          ConstsWidget.buildTextSubTitle(context, 'Email'),
+                          ConstsWidget.buildTextTitle(context, email),
+                          StatefulBuilder(builder: (context, setState) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ConstsWidget.buildCheckBox(context,
+                                    isChecked: acessa_sistema,
+                                    onChanged: (bool? value) {},
+                                    title: 'Permitir acesso ao sistema')
+                              ],
+                            );
+                          }),
+                          ConstsWidget.buildCustomButton(
+                              context, 'Editar Morador', onPressed: () {
+                            ConstsFuture.navigatorPageRoute(
+                                context,
+                                CadastroMorador(
+                                  idunidade: idunidade,
+                                  iddivisao: iddivisao,
+                                  idmorador: idmorador,
+                                  email: email,
+                                  nome_completo: nome_morador,
+                                  login: login,
+                                  numero: numero,
+                                  ativo: ativo,
+                                  nascimento: data_nascimento,
+                                  documento: documento,
+                                  ddd: ddd,
+                                  telefone: telefone,
+                                  acesso: acessa_sistema ? 1 : 0,
+                                ));
+                          })
+                        ]));
                   },
                 );
               } else {
