@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/repositories/shared_preferences.dart';
+import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
 import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
+import '../politica/politica_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController(text: 'fabianaamorim2135');
-  final passWordCtrl = TextEditingController(text: '123456');
+  final emailCtrl = TextEditingController();
+  final passWordCtrl = TextEditingController();
   bool isLoading = false;
   _startLoading() async {
     setState(() {
@@ -122,6 +124,47 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           },
                           title: 'Entrar',
+                        ),
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PoliticaScreen(hasDrawer: false),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Política de Privacidade',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TermoDeUsoScreen(
+                                      hasDrawer: false,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Termos de Uso',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
