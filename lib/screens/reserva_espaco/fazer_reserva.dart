@@ -7,15 +7,18 @@ import 'package:app_portaria/widgets/date_picker.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_all.dart';
 
 class FazerReserva extends StatefulWidget {
   final String nomeEspaco;
   final String descricaoEspaco;
+  final List dataReservada;
   final int idespaco;
   const FazerReserva(
       {required this.nomeEspaco,
+      required this.dataReservada,
       required this.descricaoEspaco,
       required this.idespaco,
       super.key});
@@ -83,7 +86,11 @@ class _FazerReservaState extends State<FazerReserva> {
                       textAlign: TextAlign.center, size: 16),
                 ),
                 ConstsWidget.buildPadding001(context,
-                    child: MyDatePicker(dataSelected: dataSelected)),
+                    child: MyDatePicker(
+                      dataSelected: dataSelected,
+                      type: DateTimePickerType.date,
+                      dataReservada: widget.dataReservada,
+                    )),
                 // ConstsWidget.buildPadding001(
                 //   context,
                 //   child: SizedBox(

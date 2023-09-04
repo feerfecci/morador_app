@@ -33,7 +33,8 @@ Future apiQuadroAvisos() async {
   if (resposta.statusCode == 200) {
     var jsonResposta = json.decode(resposta.body);
     if (!jsonResposta['erro']) {
-      comparaAvisos(jsonResposta);
+      comparaAvisos(jsonResposta)
+          .whenComplete(() => LocalPreferences.setDateLogin());
     }
 
     return json.decode(resposta.body);
@@ -42,20 +43,22 @@ Future apiQuadroAvisos() async {
   }
 }
 
-comparaAvisos(jsonResposta) {
+Future comparaAvisos(jsonResposta) async {
   List apiAvisos = jsonResposta['avisos'];
 
   LocalPreferences.getDateLogin().then((value) {
     for (var i = 0; i <= apiAvisos.length - 1; i++) {
-      DateTime dateValue = DateTime.parse(value);
-      DateTime dateAvisos = DateTime.parse(apiAvisos[i]['datahora']);
       if (value != null) {
+        DateTime dateValue = DateTime.parse(value);
+        DateTime dateAvisos = DateTime.parse(apiAvisos[i]['datahora']);
         if (dateAvisos.compareTo(dateValue) > 0 &&
             dateAvisos.compareTo(DateTime.now()) < 0) {
           if (!QuadroAvisosScreen.qntAvisos.contains(apiAvisos[i]['idaviso'])) {
             QuadroAvisosScreen.qntAvisos.add(apiAvisos[i]['idaviso']);
           }
         }
+      } else {
+        QuadroAvisosScreen.qntAvisos.add(apiAvisos[i]['idaviso']);
       }
     }
   });
@@ -70,7 +73,6 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LocalPreferences.setDateLogin();
     var size = MediaQuery.of(context).size;
     return RefreshIndicator(
       onRefresh: () async {

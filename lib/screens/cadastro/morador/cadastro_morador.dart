@@ -56,6 +56,7 @@ class CadastroMorador extends StatefulWidget {
 
 class _CadastroMoradorState extends State<CadastroMorador> {
   List listAtivo = [1, 0];
+  bool isGerarSenha = false;
   Object? dropdownValueAtivo;
   final formKeySenha = GlobalKey<FormState>();
   final senhaAtualCtrl = TextEditingController();
@@ -268,42 +269,43 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   //   },
                   // ),
 
-                  if (loginGerado == '')
-                    ConstsWidget.buildPadding001(
+                  // if (loginGerado == '')
+                  ConstsWidget.buildPadding001(
+                    context,
+                    child: ConstsWidget.buildCustomButton(
                       context,
-                      child: ConstsWidget.buildCustomButton(
-                        context,
-                        'Continuar',
-                        onPressed: () {
-                          var formValid =
-                              _formKeyMorador.currentState?.validate() ?? false;
-                          if (formValid) {
-                            _formKeyMorador.currentState?.save();
-                            final List<String> listaNome = [];
-                            List nomeEmLista =
-                                _formInfosMorador.nome_morador!.split(' ');
+                      'Gerar Login',
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        var formValid =
+                            _formKeyMorador.currentState?.validate() ?? false;
+                        if (formValid) {
+                          _formKeyMorador.currentState?.save();
+                          final List<String> listaNome = [];
+                          List nomeEmLista =
+                              _formInfosMorador.nome_morador!.split(' ');
 
-                            if (nomeDocAlterado) {
-                              buildCustomSnackBar(context,
-                                  titulo: 'Dados alterados',
-                                  texto: 'Alteramos o login');
-                            }
-
-                            for (var i = 0; i <= nomeEmLista.length - 1; i++) {
-                              if (nomeEmLista[i] != '') {
-                                listaNome.add(nomeEmLista[i]);
-                              }
-                            }
-                            setState(() {
-                              loginGerado =
-                                  '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}${widget.isDrawer ? 'r' : ''}';
-                              _formInfosMorador = _formInfosMorador.copyWith(
-                                  login: loginGerado);
-                            });
+                          if (nomeDocAlterado) {
+                            buildCustomSnackBar(context,
+                                titulo: 'Dados alterados',
+                                texto: 'Alteramos o login');
                           }
-                        },
-                      ),
+
+                          for (var i = 0; i <= nomeEmLista.length - 1; i++) {
+                            if (nomeEmLista[i] != '') {
+                              listaNome.add(nomeEmLista[i]);
+                            }
+                          }
+                          setState(() {
+                            loginGerado =
+                                '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}${widget.isDrawer ? 'r' : ''}';
+                            _formInfosMorador =
+                                _formInfosMorador.copyWith(login: loginGerado);
+                          });
+                        }
+                      },
                     ),
+                  ),
                 ],
               ),
               //Login Gerado
@@ -333,75 +335,42 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         ],
                       ),
                     ),
-                    loginGerado != '' && widget.idunidade == null
-                        ? Column(
-                            children: [
-                              buildMyTextFormObrigatorio(context,
-                                  title: 'Senha Login',
-                                  // readOnly:InfosMorador.!responsavel,
-                                  validator: Validatorless.multiple([
-                                    Validatorless.min(6,
-                                        'Necessário ter mais de 6 caracteres'),
-                                    Validatorless.required('Preencha')
-                                  ]), onSaved: (text) {
-                                _formInfosMorador =
-                                    _formInfosMorador.copyWith(senha: text);
-                              }),
-                              SizedBox(
-                                height: size.height * 0.02,
-                              ),
-                              ConstsWidget.buildTextTitle(context,
-                                  'Senha a seguir será usada para retiradas na Portaria',
-                                  color: Colors.red),
-                              buildMyTextFormObrigatorio(context,
-                                  title: 'Senha Retirada',
-                                  validator: Validatorless.multiple([
-                                    Validatorless.min(6,
-                                        'Necessário ter mais de 6 caracteres'),
-                                    Validatorless.required('Preencha')
-                                  ]),
-                                  // readOnly:InfosMorador.!responsavel,
-                                  onSaved: (text) {
-                                _formInfosMorador = _formInfosMorador.copyWith(
-                                    senhaRetirada: text);
-                              }),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ConstsWidget.buildPadding001(
-                                context,
-                                child: ConstsWidget.buildOutlinedButton(
-                                  context,
-                                  title: 'Senha Login',
-                                  onPressed: () {
-                                    trocarSenhaAlert(context,
-                                        formkeySenha: formKeySenha,
-                                        atualSenhaCtrl: senhaAtualCtrl,
-                                        title: ' Login',
-                                        novaSenhaCtrl: senhaNovaCtrl,
-                                        confirmSenhaCtrl: senhaConfirmCtrl);
-                                  },
-                                ),
-                              ),
-                              ConstsWidget.buildPadding001(
-                                context,
-                                child: ConstsWidget.buildCustomButton(
-                                  context,
-                                  'Senha Retirada',
-                                  onPressed: () {
-                                    trocarSenhaAlert(context,
-                                        formkeySenha: formKeyRetirada,
-                                        atualSenhaCtrl: retiradaAtualCtrl,
-                                        novaSenhaCtrl: retiradaNovaCtrl,
-                                        title: ' Retirada',
-                                        confirmSenhaCtrl: retiradaConfirmCtrl);
-                                  },
-                                ),
-                              ),
-                            ],
+                    if (widget.isDrawer || InfosMorador.login == widget.login)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ConstsWidget.buildPadding001(
+                            context,
+                            child: ConstsWidget.buildOutlinedButton(
+                              context,
+                              title: 'Senha Login',
+                              onPressed: () {
+                                trocarSenhaAlert(context,
+                                    formkeySenha: formKeySenha,
+                                    atualSenhaCtrl: senhaAtualCtrl,
+                                    title: ' Login',
+                                    novaSenhaCtrl: senhaNovaCtrl,
+                                    confirmSenhaCtrl: senhaConfirmCtrl);
+                              },
+                            ),
                           ),
+                          ConstsWidget.buildPadding001(
+                            context,
+                            child: ConstsWidget.buildCustomButton(
+                              context,
+                              'Senha Retirada',
+                              onPressed: () {
+                                trocarSenhaAlert(context,
+                                    formkeySenha: formKeyRetirada,
+                                    atualSenhaCtrl: retiradaAtualCtrl,
+                                    novaSenhaCtrl: retiradaNovaCtrl,
+                                    title: ' Retirada',
+                                    confirmSenhaCtrl: retiradaConfirmCtrl);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     // ListTile(
                     //   title: ConstsWidget.buildTextTitle(
                     //       context, 'Permitir acesso ao sistema'),
@@ -439,6 +408,15 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               _formInfosMorador.copyWith(acesso: salvaAcesso);
                         });
                       }, title: 'Permitir acesso ao sistema'),
+                    if (widget.idmorador != null)
+                      StatefulBuilder(builder: (context, setState) {
+                        return ConstsWidget.buildCheckBox(context,
+                            isChecked: isGerarSenha, onChanged: (bool? value) {
+                          setState(() {
+                            isGerarSenha = value!;
+                          });
+                        }, title: 'Gerar Senha e Enviar Acesso');
+                      }),
                   ],
                 ),
               if (loginGerado != '')
@@ -465,9 +443,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       String restoApi;
                       widget.idmorador == null
                           ? restoApi =
-                              'incluirMorador&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'
-                          : restoApi =
-                              'editarMorador&id=${widget.idmorador}&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}';
+                              'incluirMorador' /*'&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'*/
+                          : restoApi = 'editarMorador&id=${widget.idmorador}'
+                              '&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}&gerarsenha=${isGerarSenha ? 1 : 0}';
                       int isResponsavel;
                       InfosMorador.responsavel && widget.isDrawer
                           ? isResponsavel = 1

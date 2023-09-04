@@ -31,10 +31,6 @@ class LocalPreferences {
       _keyUserPassWord,
       senha,
     );
-    preferences.setString(
-      'DateLogin',
-      DateFormat('dd-MM-yyyy HH:mm').format(DateTime.now()).toString(),
-    );
   }
 
   static Future getUserLogin() async {
@@ -56,7 +52,7 @@ class LocalPreferences {
 
     preferences.setString(
       'DateLogin',
-      DateFormat('yyyy-MM-dd HH:mm:00').format(DateTime.now()),
+      DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     );
   }
 

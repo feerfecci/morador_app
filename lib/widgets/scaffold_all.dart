@@ -8,6 +8,7 @@ Widget buildScaffoldAll(context,
     {required Widget? body,
     Widget? floatingActionButton,
     bool? resizeToAvoidBottomInset,
+    bool hasDrawer = true,
     String title = ''}) {
   // ignore: unused_local_variable
   var size = MediaQuery.of(context).size;
@@ -22,7 +23,7 @@ Widget buildScaffoldAll(context,
       elevation: 0,
       iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
     ),
-    endDrawer: CustomDrawer(),
+    endDrawer: hasDrawer ? CustomDrawer() : null,
     body: ListView(
       children: [
         Padding(
@@ -33,4 +34,3 @@ Widget buildScaffoldAll(context,
     ),
   );
 }
-

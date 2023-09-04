@@ -3,26 +3,40 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 
 import '../consts/consts.dart';
 
 class MyDatePicker extends StatefulWidget {
   static String dataSelected = '';
-  final List? lista = null;
-  MyDatePicker({lista, required dataSelected, super.key});
+  final List? dataReservada;
+  final List? lista = [];
+  final DateTimePickerType type = DateTimePickerType.dateTime;
+  MyDatePicker(
+      {lista, required dataSelected, type, this.dataReservada, super.key});
 
   @override
   State<MyDatePicker> createState() => _MyDatePickerState();
 }
 
 class _MyDatePickerState extends State<MyDatePicker> {
+  List data_reservada = [];
+
+  @override
+  void initState() {
+    if (widget.dataReservada != null) {
+      data_reservada = widget.dataReservada!;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var enabled = widget.lista == null
-        ? true
-        : widget.lista!.isEmpty
-            ? false
-            : true;
+    // var enabled = widget.lista == null
+    //     ? true
+    //     : widget.lista!.isEmpty
+    //         ? false
+    //         : true;
     var size = MediaQuery.of(context).size;
     return DateTimePicker(
       decoration: InputDecoration(
@@ -40,15 +54,26 @@ class _MyDatePickerState extends State<MyDatePicker> {
           borderSide: BorderSide(color: Colors.black26),
         ),
       ),
-      type: DateTimePickerType.dateTime,
+      type: widget.type,
       selectableDayPredicate: (DateTime dateTime) {
-        if (dateTime == DateTime(2023, 8, 12)) {
-          return false;
+        if (data_reservada.isNotEmpty) {
+          for (var i = 0; i <= data_reservada.length - 1; i++) {
+            String dataRes = data_reservada[i];
+            if ('${dateTime.year}-${dateTime.month}-${dateTime.day}' ==
+                '${DateTime.parse(dataRes).year}-${DateTime.parse(dataRes).month}-${DateTime.parse(dataRes).day}') {
+              return false;
+            }
+          }
+        } else {
+          return true;
         }
+
         return true;
       },
       initialDate: DateTime.now(),
-      dateMask: 'dd/MM/yyyy - HH:mm',
+      dateMask: widget.type == DateTimePickerType.date
+          ? 'dd/MM/yyyy'
+          : 'dd/MM/yyyy HH:mm',
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
       style: TextStyle(
@@ -69,7 +94,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
           MyDatePicker.dataSelected = val;
         });
       },
-      enabled: enabled,
+      // enabled: enabled,
       // validator: (val) {
       //   setState(() => _valueToValidate2 = val ?? '');
       //   return null;

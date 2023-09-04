@@ -33,6 +33,7 @@ class InfosMorador {
   static bool ativo = false;
   static bool acessa_sistema = false;
   static bool convida_visita = true;
+  static bool aceitou_termos = true;
 }
 
 class Consts {

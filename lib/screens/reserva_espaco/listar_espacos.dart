@@ -89,6 +89,9 @@ class ListarEspacosState extends State<ListarEspacos> {
                           String? nome_espaco = apiEspacos['nome_espaco'];
                           int? idcondominio = apiEspacos['idcondominio'];
                           String? descricao = apiEspacos['descricao'];
+                          List datas_reservadas =
+                              apiEspacos['datas_reservadas'];
+
                           return MyBoxShadow(
                             child: Column(
                               children: [
@@ -131,6 +134,7 @@ class ListarEspacosState extends State<ListarEspacos> {
                                           context,
                                           FazerReserva(
                                               idespaco: idespaco!,
+                                              dataReservada: datas_reservadas,
                                               nomeEspaco:
                                                   nome_espaco.toString(),
                                               descricaoEspaco:

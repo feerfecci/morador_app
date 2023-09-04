@@ -36,7 +36,7 @@ class _AlertDialogAllState extends State<AlertDialogAll> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
       ),
-      title: Text(widget.title),
+      title: Center(child: Text(widget.title)),
       content: SizedBox(
         width: size.width * 0.8,
         child: Column(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:badges/badges.dart';
@@ -254,14 +256,18 @@ class ConstsWidget {
                         : size.width * 0.15);
               } else if (snapshot.hasData) {
                 isLoading == false;
-                return SizedBox(
-                  width: width != null ? size.width * width : null,
-                  height: height != null ? size.height * height : null,
-                  child: Image.network(
-                    iconApi,
-                    fit: BoxFit.cover,
-                  ),
-                );
+                try {
+                  return SizedBox(
+                    width: width != null ? size.width * width : null,
+                    height: height != null ? size.height * height : null,
+                    child: Image.network(
+                      iconApi,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                } on HttpException catch (e) {
+                  return Image.asset('assets/ico-error.png');
+                }
               } else {
                 isLoading == false;
                 return Image.asset('assets/ico-error.png');
