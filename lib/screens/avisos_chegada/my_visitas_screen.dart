@@ -34,7 +34,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
 
   Future apiVisitar() {
     return ConstsFuture.changeApi(
-        'lista_visitantes/?fn=listarVisitantes&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=45&confirmado=${filtrar == 0 ? 0 : 1}&autorizado=${filtrar == 0 ? 0 : filtrar == 1 ? 0 : 1}');
+        'lista_visitantes/?fn=listarVisitantes&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&confirmado=${filtrar == 0 ? 0 : 1}&autorizado=${filtrar == 0 ? 0 : filtrar == 1 ? 0 : 1}');
   }
 
   @override

@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     Model(
       indexOrder: 3,
       title: 'Visitas',
-      iconApi: '${Consts.iconApiPort}visitas.gif',
+      iconApi: '${Consts.iconApiPort}visitas.png',
       pageRoute: ChegadaScreen(tipo: 2),
     ),
     Model(
