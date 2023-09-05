@@ -45,15 +45,18 @@ class _CadastroCarrosState extends State<CadastroCarros> {
   Object? getDropTipoCarro;
   @override
   Widget build(BuildContext context) {
-    int tipo = 0;
+    int tipoApi = 0;
     if (widget.tipo == 'Carro e utilitário') {
-      tipo = 0;
-    } else if (widget.tipo == 'Moto') {
-      tipo = 1;
+      tipoApi = 0;
+      formInfosCarro = formInfosCarro.copyWith(tipo: 'Carro e utilitário');
+    } else if (widget.tipo == "Moto") {
+      tipoApi = 1;
+      formInfosCarro = formInfosCarro.copyWith(tipo: 'Moto');
     } else if (widget.tipo == 'Caminhão e Micro-ônibus') {
-      tipo = 2;
+      tipoApi = 2;
+      formInfosCarro = formInfosCarro.copyWith(tipo: 'Caminhão e Micro-ônibus');
     }
-    Object? dropTipoCarro = widget.idveiculo == null ? null : tipo;
+    Object? dropTipoCarro = widget.idveiculo == null ? null : tipoApi;
     var size = MediaQuery.of(context).size;
     Widget buildDropTipo() {
       return StatefulBuilder(builder: (context, setState) {
@@ -76,19 +79,19 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     alignment: Alignment.center,
                     value: dropTipoCarro,
                     items: listTipoCarro.map((e) {
-                      String tipo = '';
+                      String tipoTexto = '';
                       if (e == 0) {
-                        tipo = 'Carro e utilitário';
+                        tipoTexto = 'Carro e utilitário';
                       } else if (e == 1) {
-                        tipo = 'Moto';
+                        tipoTexto = 'Moto';
                       } else if (e == 2) {
-                        tipo = 'Caminhão e Micro-ônibus';
+                        tipoTexto = 'Caminhão e Micro-ônibus';
                       }
                       return DropdownMenuItem(
                         alignment: Alignment.center,
                         value: e,
                         child: Text(
-                          tipo,
+                          tipoTexto,
                         ),
                       );
                     }).toList(),

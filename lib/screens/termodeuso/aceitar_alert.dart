@@ -41,7 +41,7 @@ class AceitarTermosScreen extends StatefulWidget {
 
 politicaApi() async {
   final url = Uri.parse(
-      '${Consts.apiUnidade}politica_privacidade/?fn=mostrarTermo&idcond=${InfosMorador.idcondominio}');
+      '${Consts.apiUnidade}termo_uso/?fn=mostrarTermo&idcond=${InfosMorador.idcondominio}');
   var resposta = await http.get(url);
 
   if (resposta.statusCode == 200) {
@@ -71,7 +71,7 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                 );
               } else if (snapshot.hasData) {
                 if (!snapshot.data['erro']) {
-                  var texto = snapshot.data['politica_privacidade'][0]['texto'];
+                  var texto = snapshot.data['termo_uso'][0]['texto'];
                   return SafeArea(
                     child: SingleChildScrollView(
                       child: StatefulBuilder(builder: (context, setState) {
@@ -114,17 +114,17 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                ConstsWidget.buildOutlinedButton(
-                                  context,
-                                  title: '  Cancelar  ',
-                                  onPressed: () {
-                                    widget.idUnidade == null
-                                        ? Navigator.pop(context)
-                                        : ConstsFuture
-                                            .navigatorPopAndReplacement(
-                                                context, LoginScreen());
-                                  },
-                                ),
+                                // ConstsWidget.buildOutlinedButton(
+                                //   context,
+                                //   title: '  Cancelar  ',
+                                //   onPressed: () {
+                                //     widget.idUnidade == null
+                                //         ? Navigator.pop(context)
+                                //         : ConstsFuture
+                                //             .navigatorPopAndReplacement(
+                                //                 context, LoginScreen());
+                                //   },
+                                // ),
                                 ConstsWidget.buildCustomButton(
                                   context,
                                   '    Aceitar    ',
