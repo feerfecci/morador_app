@@ -62,21 +62,21 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
           horizontal: size.width * 0.05, vertical: size.height * 0.05),
       content: SizedBox(
         width: size.width * 0.98,
-        child: FutureBuilder<dynamic>(
-            future: politicaApi(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasData) {
-                if (!snapshot.data['erro']) {
-                  var texto = snapshot.data['termo_uso'][0]['texto'];
-                  return SafeArea(
-                    child: SingleChildScrollView(
-                      child: StatefulBuilder(builder: (context, setState) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          children: [
+            FutureBuilder<dynamic>(
+                future: politicaApi(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasData) {
+                    if (!snapshot.data['erro']) {
+                      var texto = snapshot.data['termo_uso'][0]['texto'];
+                      return SizedBox(
+                        height: size.height * 0.63,
+                        child: ListView(
                           children: [
                             // Padding(
                             //   padding: EdgeInsets.symmetric(
@@ -111,68 +111,86 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                // ConstsWidget.buildOutlinedButton(
-                                //   context,
-                                //   title: '  Cancelar  ',
-                                //   onPressed: () {
-                                //     widget.idUnidade == null
-                                //         ? Navigator.pop(context)
-                                //         : ConstsFuture
-                                //             .navigatorPopAndReplacement(
-                                //                 context, LoginScreen());
-                                //   },
-                                // ),
-                                ConstsWidget.buildCustomButton(
-                                  context,
-                                  '    Aceitar    ',
-                                  color: isChecked
-                                      ? Consts.kColorRed
-                                      : Colors.grey,
-                                  onPressed: isChecked
-                                      ? () {
-                                          ConstsFuture.changeApi(
-                                                  'termo_uso/?fn=aceitaTermo&idmorador=${InfosMorador.idmorador}')
-                                              .then((value) {
-                                            if (!value['erro']) {
-                                              widget.idUnidade == null
-                                                  ? ConstsFuture
-                                                      .navigatorPopAndPush(
-                                                          context, HomePage())
-                                                  : Navigator
-                                                      .pushAndRemoveUntil(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    HomePage(),
-                                                          ),
-                                                          (route) => false);
-                                            } else {
-                                              buildCustomSnackBar(context,
-                                                  titulo: 'Algo Saiu Mau!',
-                                                  texto: value['mensagem']);
-                                            }
-                                          });
-                                        }
-                                      : () {},
-                                )
-                              ],
-                            )
                           ],
-                        );
-                      }),
-                    ),
-                  );
-                } else {
-                  return PageVazia(title: snapshot.data['mensagem']);
-                }
-              } else {
-                return PageErro();
-              }
+                        ),
+                      );
+                    } else {
+                      return PageVazia(title: snapshot.data['mensagem']);
+                    }
+                  } else {
+                    return PageErro();
+                  }
+                }),
+            StatefulBuilder(builder: (context, setState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(
+                  //       vertical: size.height * 0.04),
+                  //   child: Image(
+                  //     image: NetworkImage(
+                  //         '${logado.arquivoAssets}logo-login-f.png'),
+                  //   ),
+                  // ),
+                  ConstsWidget.buildCheckBox(context, isChecked: isChecked,
+                      onChanged: (value) {
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  }, title: 'Li e aceito os termos'),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // ConstsWidget.buildOutlinedButton(
+                      //   context,
+                      //   title: '  Cancelar  ',
+                      //   onPressed: () {
+                      //     widget.idUnidade == null
+                      //         ? Navigator.pop(context)
+                      //         : ConstsFuture
+                      //             .navigatorPopAndReplacement(
+                      //                 context, LoginScreen());
+                      //   },
+                      // ),
+                      ConstsWidget.buildCustomButton(
+                        context,
+                        '    Aceitar    ',
+                        color: isChecked ? Consts.kColorRed : Colors.grey,
+                        onPressed: isChecked
+                            ? () {
+                                ConstsFuture.changeApi(
+                                        'termo_uso/?fn=aceitaTermo&idmorador=${InfosMorador.idmorador}')
+                                    .then((value) {
+                                  if (!value['erro']) {
+                                    widget.idUnidade == null
+                                        ? ConstsFuture.navigatorPopAndPush(
+                                            context, HomePage())
+                                        : Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => HomePage(),
+                                            ),
+                                            (route) => false);
+                                  } else {
+                                    buildCustomSnackBar(context,
+                                        titulo: 'Algo Saiu Mau!',
+                                        texto: value['mensagem']);
+                                  }
+                                });
+                              }
+                            : () {},
+                      )
+                    ],
+                  )
+                ],
+              );
             }),
+          ],
+        ),
       ),
     );
   }

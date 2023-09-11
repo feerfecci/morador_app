@@ -146,22 +146,21 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     children: [
                       SizedBox(
                         width: size.width * 0.37,
-                        child: buildMyTextFormObrigatorio(context,
+                        child: buildMyTextFormField(context,
                             initialValue: dataParsed,
                             // readOnly: !InfosMorador.responsavel,
                             title: 'Data de Nascimento',
                             keyboardType: TextInputType.number,
                             mask: '##/##/####',
                             hintText: '##/##/####', onSaved: (text) {
-                          if (text!.length >= 6) {
-                            var ano = text.substring(6);
-                            var mes = text.substring(3, 5);
-                            var dia = text.substring(0, 2);
-                            _formInfosMorador = _formInfosMorador.copyWith(
-                                nascimento: '$ano-$mes-$dia');
-                          } else {
-                            buildCustomSnackBar(context,
-                                titulo: 'Cuidado', texto: 'Complete a data');
+                          if (text != null) {
+                            if (text.length >= 6) {
+                              var ano = text.substring(6);
+                              var mes = text.substring(3, 5);
+                              var dia = text.substring(0, 2);
+                              _formInfosMorador = _formInfosMorador.copyWith(
+                                  nascimento: '$ano-$mes-$dia');
+                            }
                           }
                         }),
                       ),
@@ -172,7 +171,6 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           // readOnly: !InfosMorador.responsavel,
                           title: 'Documento',
                           initialValue: widget.documento,
-                          keyboardType: TextInputType.number,
                           hintText: 'RG, CPF',
                           onSaved: (text) {
                             if (text!.length >= 4) {
@@ -185,10 +183,6 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                                   });
                                 }
                               }
-                            } else {
-                              buildCustomSnackBar(context,
-                                  titulo: 'Cuidado',
-                                  texto: 'Complete o documento');
                             }
                             if (widget.idmorador != null) {
                               if (text != widget.documento) {
@@ -211,7 +205,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     children: [
                       SizedBox(
                         width: size.width * 0.16,
-                        child: buildMyTextFormObrigatorio(context,
+                        child: buildMyTextFormField(context,
                             initialValue: widget.ddd, onSaved: (text) {
                           _formInfosMorador =
                               _formInfosMorador.copyWith(ddd: text);
@@ -226,7 +220,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       ),
                       SizedBox(
                         width: size.width * 0.5,
-                        child: buildMyTextFormObrigatorio(
+                        child: buildMyTextFormField(
                           context,
                           initialValue: widget.telefone,
                           title: 'Telefone',
@@ -253,9 +247,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           _formInfosMorador.copyWith(email: text);
                     },
                     style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-                    validator: Validatorless.email('Não é um email válido'),
+                    validator: Validatorless.multiple([
+                      Validatorless.email('Não é um email válido'),
+                      Validatorless.required('Obrigatório'),
+                    ]),
                     decoration: buildTextFieldDecoration(context,
-                        title: 'Email', hintText: 'exemplo@exc.com'),
+                        title: 'Email', hintText: 'exemplo@exe.com'),
                   ),
 
                   // buildMyTextFormObrigatorio(
@@ -335,7 +332,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         ],
                       ),
                     ),
-                    if (widget.isDrawer || InfosMorador.login == widget.login)
+                    if (widget.isDrawer && InfosMorador.login == widget.login)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -408,7 +405,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               _formInfosMorador.copyWith(acesso: salvaAcesso);
                         });
                       }, title: 'Permitir acesso ao sistema'),
-                    if (widget.idmorador != null)
+                    if (widget.idmorador != null && !widget.isDrawer)
                       StatefulBuilder(builder: (context, setState) {
                         return ConstsWidget.buildCheckBox(context,
                             isChecked: isGerarSenha, onChanged: (bool? value) {
@@ -450,8 +447,18 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       InfosMorador.responsavel && widget.isDrawer
                           ? isResponsavel = 1
                           : isResponsavel = 0;
+                      String datanasc = _formInfosMorador.nascimento != ''
+                          ? '&datanasc=${_formInfosMorador.nascimento}'
+                          : '';
+                      String dddtelefone = _formInfosMorador.ddd != ''
+                          ? '&dddtelefone=${_formInfosMorador.ddd}'
+                          : '';
+                      String telefone = _formInfosMorador.telefone != ''
+                          ? '&telefone=${_formInfosMorador.telefone}'
+                          : '';
+
                       ConstsFuture.changeApi(
-                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}&datanasc=${_formInfosMorador.nascimento}&documento=${_formInfosMorador.documento}&dddtelefone=${_formInfosMorador.ddd}&telefone=${_formInfosMorador.telefone}&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
+                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
                           .then((value) {
                         if (!value['erro']) {
                           if (!widget.isDrawer) {

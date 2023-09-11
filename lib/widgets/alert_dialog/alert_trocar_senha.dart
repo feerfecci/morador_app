@@ -21,16 +21,6 @@ trocarSenhaAlert(
           child: Column(
             children: [
               buildMyTextFormObrigatorio(
-                context, title: 'Senha Atual',
-                validator: Validatorless.multiple([
-                  Validatorless.required('Confirme a senha'),
-                  Validatorless.min(6, 'Senha precisa ter 6 caracteres'),
-                ]),
-                controller: atualSenhaCtrl,
-                // onSaved: (text) => formInfosFunc =
-                //     formInfosFunc.copyWith(senha: text),
-              ),
-              buildMyTextFormObrigatorio(
                 context, title: 'Nova Senha',
                 validator: Validatorless.multiple([
                   Validatorless.required('Confirme a senha'),

@@ -11,6 +11,7 @@ import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_erro.dart';
 import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts.dart';
@@ -21,6 +22,7 @@ import '../../widgets/custom_drawer/custom_drawer.dart';
 import '../avisos_chegada/chegada_screen.dart';
 import '../quadro_avisos/quadro_avisos_screen.dart';
 import '../reserva_espaco/listar_espacos.dart';
+import '../termodeuso/aceitar_alert.dart';
 import 'card_home.dart';
 import '../correspondencia/correspondencia_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -111,6 +113,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   Future initPlatFormState() async {
+    NotificationDetails(
+        android: AndroidNotificationDetails('channelId', 'channelName',
+            sound: RawResourceAndroidNotificationSound('audio_avisos'),
+            importance: Importance.max,
+            playSound: true));
     OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
       OneSignal.shared.setExternalUserId(InfosMorador.idmorador.toString());
@@ -118,6 +125,9 @@ class _HomePageState extends State<HomePage> {
         'idmorador': InfosMorador.idmorador.toString(),
         'idunidade': InfosMorador.idunidade.toString(),
         'idcond': InfosMorador.idcondominio.toString(),
+      });
+      OneSignal.shared.setOnDidDisplayInAppMessageHandler((message) {
+        message.messageId;
       });
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
         if (openedResult.notification.buttons != null) {
@@ -175,7 +185,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<dynamic> apiPubli({required int local}) {
     return ConstsFuture.changeApi(
-        'publicidade/?fn=mostrarPublicidade&idcond=16&local=$local');
+        'publicidade/?fn=mostrarPublicidade&idcond=${InfosMorador.idcondominio}&local=$local');
   }
 
   @override
