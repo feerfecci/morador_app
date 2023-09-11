@@ -240,61 +240,34 @@ class ConstsWidget {
       {required String iconApi, double? width, double? height, String? title}) {
     var size = MediaQuery.of(context).size;
     bool isLoading = true;
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        FutureBuilder(
-            future: ConstsFuture.apiImageIcon(iconApi),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return ShimmerWidget(
-                    height: SplashScreen.isSmall
-                        ? size.height * 0.08
-                        : size.height * 0.068,
-                    width: SplashScreen.isSmall
-                        ? size.width * 0.14
-                        : size.width * 0.15);
-              } else if (snapshot.hasData) {
-                isLoading == false;
-                try {
-                  return SizedBox(
-                    width: width != null ? size.width * width : null,
-                    height: height != null ? size.height * height : null,
-                    child: Image.network(
-                      iconApi,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                } on HttpException catch (e) {
-                  return Image.asset('assets/ico-error.png');
-                }
-              } else {
-                isLoading == false;
-                return Image.asset('assets/ico-error.png');
-              }
-            }),
-        // if (title != null)
-        //   Container(
-        //     decoration: BoxDecoration(
-        //       color: Colors.grey.withOpacity(0.5),
-        //     ),
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         ConstsWidget.buildPadding001(
-        //           context,
-        //           child: ConstsWidget.buildTextTitle(
-        //             context,
-        //             title,
-        //             size: 20,
-        //             color: Colors.white,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   )
-      ],
-    );
+    return FutureBuilder(
+        future: ConstsFuture.apiImageIcon(iconApi),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ShimmerWidget(
+                height: SplashScreen.isSmall
+                    ? size.height * 0.08
+                    : size.height * 0.068,
+                width: SplashScreen.isSmall
+                    ? size.width * 0.14
+                    : size.width * 0.15);
+          } else if (snapshot.hasData) {
+            isLoading == false;
+            try {
+              return Image.network(
+                iconApi,
+                height: height != null ? size.height * height : null,
+                width: width != null ? size.width * width : null,
+                fit: BoxFit.fill,
+              );
+            } on HttpException catch (e) {
+              return Image.asset('assets/ico-error.png');
+            }
+          } else {
+            isLoading == false;
+            return Image.asset('assets/ico-error.png');
+          }
+        });
   }
 
   static Widget buildExpandedTile(BuildContext context,
@@ -335,8 +308,7 @@ class ConstsWidget {
         badgeAnimation: badges.BadgeAnimation.fade(toAnimate: false),
         badgeContent: Text(
           title,
-          style: TextStyle(
-              color: Theme.of(context).cardColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         position: position,
         badgeStyle: badges.BadgeStyle(

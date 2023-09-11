@@ -143,6 +143,9 @@ class ConstsFuture {
 
             return navigatorPopAndPush(context, LoginScreen());
           }
+          CorrespondenciaScreen.listaNovaCorresp3.clear();
+          CorrespondenciaScreen.listaNovaCorresp4.clear();
+          QuadroAvisosScreen.qntAvisos.clear();
 
           return apiListarCorrespondencias(3).whenComplete(() {
             apiListarCorrespondencias(4).whenComplete(() {
