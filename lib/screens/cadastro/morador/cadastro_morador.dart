@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import '../../../widgets/my_text_form_field.dart';
 import '../../../widgets/scaffold_all.dart';
 import '../../splash_screen/splash_screen.dart';
 import '../listar_total.dart';
+import 'package:diacritic/diacritic.dart';
 
 // ignore: must_be_immutable
 class CadastroMorador extends StatefulWidget {
@@ -23,7 +26,7 @@ class CadastroMorador extends StatefulWidget {
   bool ativo;
   String? nome_completo;
   String? login;
-  String nascimento;
+  String? nascimento;
   String? telefone;
   String? ddd;
   String? email;
@@ -55,6 +58,8 @@ class CadastroMorador extends StatefulWidget {
 }
 
 class _CadastroMoradorState extends State<CadastroMorador> {
+  bool isLoading = false;
+  bool isLoadingLogin = false;
   List listAtivo = [1, 0];
   bool isGerarSenha = false;
   Object? dropdownValueAtivo;
@@ -88,7 +93,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
 
   final _formKeyMorador = GlobalKey<FormState>();
   FormInfosMorador _formInfosMorador = FormInfosMorador();
-  String loginGerado = '';
+  String loginGerado2 = '';
   String dataLogin = '';
   bool nomeDocAlterado = false;
   bool isChecked = true;
@@ -96,10 +101,10 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   @override
   Widget build(BuildContext context) {
     @override
-    var dataParsed = widget.nascimento != ''
-        ? DateFormat('dd/MM/yyy').format(DateTime.parse(widget.nascimento))
-        : '';
-    var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
+    // var dataParsed = widget.nascimento != null
+        //     ? DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.nascimento!))
+        //     : '';
+        var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
     isChecked = acessoApi;
     var size = MediaQuery.of(context).size;
 
@@ -147,20 +152,23 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       SizedBox(
                         width: size.width * 0.37,
                         child: buildMyTextFormField(context,
-                            initialValue: dataParsed,
+                            initialValue: widget.nascimento,
                             // readOnly: !InfosMorador.responsavel,
                             title: 'Data de Nascimento',
                             keyboardType: TextInputType.number,
                             mask: '##/##/####',
                             hintText: '##/##/####', onSaved: (text) {
-                          if (text != null) {
-                            if (text.length >= 6) {
+                          if (text != '') {
+                            if (text!.length >= 6) {
                               var ano = text.substring(6);
                               var mes = text.substring(3, 5);
                               var dia = text.substring(0, 2);
                               _formInfosMorador = _formInfosMorador.copyWith(
                                   nascimento: '$ano-$mes-$dia');
                             }
+                          } else {
+                            _formInfosMorador =
+                                _formInfosMorador.copyWith(nascimento: "");
                           }
                         }),
                       ),
@@ -269,35 +277,40 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   // if (loginGerado == '')
                   ConstsWidget.buildPadding001(
                     context,
-                    child: ConstsWidget.buildCustomButton(
+                    child: ConstsWidget.buildLoadingButton(
                       context,
-                      'Gerar Login',
+                      title: 'Gerar Login',
+                      isLoading: isLoadingLogin,
                       onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
+                        setState(() {
+                          isLoadingLogin = true;
+                        });
                         var formValid =
                             _formKeyMorador.currentState?.validate() ?? false;
                         if (formValid) {
                           _formKeyMorador.currentState?.save();
-                          final List<String> listaNome = [];
-                          List nomeEmLista =
-                              _formInfosMorador.nome_morador!.split(' ');
-
-                          if (nomeDocAlterado) {
-                            buildCustomSnackBar(context,
-                                titulo: 'Dados alterados',
-                                texto: 'Alteramos o login');
-                          }
-
-                          for (var i = 0; i <= nomeEmLista.length - 1; i++) {
-                            if (nomeEmLista[i] != '') {
-                              listaNome.add(nomeEmLista[i]);
+                          gerarLogin(context,
+                                  nomeUsado: _formInfosMorador.nome_morador!,
+                                  nomeDocAlterado: nomeDocAlterado,
+                                  documento: _formInfosMorador.documento!)
+                              .then((value) {
+                            setState(() {
+                              isLoadingLogin = false;
+                            });
+                            if (value != '') {
+                              setState(() {
+                                loginGerado2 = value;
+                                _formInfosMorador = _formInfosMorador.copyWith(
+                                    login: loginGerado2);
+                              });
+                            } else {
+                              setState(() {
+                                isLoadingLogin = false;
+                              });
+                              buildCustomSnackBar(context,
+                                  titulo: 'Algo Saiu Mal',
+                                  texto: 'O login não foi gerado');
                             }
-                          }
-                          setState(() {
-                            loginGerado =
-                                '${listaNome.first.toString().toLowerCase()}${listaNome.last.toString().toLowerCase()}${_formInfosMorador.documento!.substring(0, 4)}${widget.isDrawer ? 'r' : ''}';
-                            _formInfosMorador =
-                                _formInfosMorador.copyWith(login: loginGerado);
                           });
                         }
                       },
@@ -307,7 +320,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
               ),
               //Login Gerado
 
-              if (loginGerado != '')
+              if (loginGerado2 != '')
                 Column(
                   children: [
                     MyBoxShadow(
@@ -416,13 +429,17 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       }),
                   ],
                 ),
-              if (loginGerado != '')
-                ConstsWidget.buildCustomButton(
+              if (loginGerado2 != '')
+                ConstsWidget.buildLoadingButton(
                   context,
-                  'Salvar',
+                  title: 'Salvar',
+                  isLoading: isLoading,
                   color: Consts.kColorRed,
                   icon: Icons.save_alt,
                   onPressed: () {
+                    setState(() {
+                      isLoading = true;
+                    });
                     var formValid =
                         _formKeyMorador.currentState?.validate() ?? false;
                     if (formValid) {
@@ -437,54 +454,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         InfosMorador.telefone = _formInfosMorador.telefone!;
                         InfosMorador.email = _formInfosMorador.email!;
                       }
-                      String restoApi;
-                      widget.idmorador == null
-                          ? restoApi =
-                              'incluirMorador' /*'&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'*/
-                          : restoApi = 'editarMorador&id=${widget.idmorador}'
-                              '&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}&gerarsenha=${isGerarSenha ? 1 : 0}';
-                      int isResponsavel;
-                      InfosMorador.responsavel && widget.isDrawer
-                          ? isResponsavel = 1
-                          : isResponsavel = 0;
-                      String datanasc = _formInfosMorador.nascimento != ''
-                          ? '&datanasc=${_formInfosMorador.nascimento}'
-                          : '';
-                      String dddtelefone = _formInfosMorador.ddd != ''
-                          ? '&dddtelefone=${_formInfosMorador.ddd}'
-                          : '';
-                      String telefone = _formInfosMorador.telefone != ''
-                          ? '&telefone=${_formInfosMorador.telefone}'
-                          : '';
-
-                      ConstsFuture.changeApi(
-                              'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
-                          .then((value) {
-                        if (!value['erro']) {
-                          if (!widget.isDrawer) {
-                            Navigator.pop(context);
-                            if (InfosMorador.responsavel) {
-                              ConstsFuture.navigatorPageRoute(
-                                  context,
-                                  ListaTotalUnidade(
-                                    idunidade: widget.idunidade,
-                                    tipoAbrir: 1,
-                                  ));
-                              setState(() {});
-                            } else {
-                              ConstsFuture.navigatorPageRoute(
-                                  context, HomePage());
-                            }
-                          }
-                          Navigator.pop(context);
-
-                          buildCustomSnackBar(context,
-                              titulo: 'Parabens', texto: value['mensagem']);
-                        } else {
-                          buildCustomSnackBar(context,
-                              titulo: 'Erro!', texto: value['mensagem']);
-                        }
-                      });
+                      salvarDadosMorador();
                     } else {
                       //print(formValid.toString());
                     }
@@ -495,6 +465,58 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         ),
       ),
     );
+  }
+
+  salvarDadosMorador() {
+    String restoApi;
+    widget.idmorador == null
+        ? restoApi =
+            'incluirMorador' /*'&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'*/
+        : restoApi = 'editarMorador&id=${widget.idmorador}'
+            '&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}&gerarsenha=${isGerarSenha ? 1 : 0}';
+    int isResponsavel;
+    InfosMorador.responsavel && widget.isDrawer
+        ? isResponsavel = 1
+        : isResponsavel = 0;
+    String datanasc = _formInfosMorador.nascimento != ''
+        ? '&datanasc=${_formInfosMorador.nascimento}'
+        : '';
+    String dddtelefone = _formInfosMorador.ddd != ''
+        ? '&dddtelefone=${_formInfosMorador.ddd}'
+        : '';
+    String telefone = _formInfosMorador.telefone != ''
+        ? '&telefone=${_formInfosMorador.telefone}'
+        : '';
+
+    ConstsFuture.changeApi(
+            'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
+        .then((value) {
+      if (!value['erro']) {
+        setState(() {
+          isLoading = false;
+        });
+        if (!widget.isDrawer) {
+          Navigator.pop(context);
+          if (InfosMorador.responsavel) {
+            ConstsFuture.navigatorPageRoute(
+                context,
+                ListaTotalUnidade(
+                  idunidade: widget.idunidade,
+                  tipoAbrir: 1,
+                ));
+            setState(() {});
+          } else {
+            ConstsFuture.navigatorPageRoute(context, HomePage());
+          }
+        }
+        Navigator.pop(context);
+
+        buildCustomSnackBar(context,
+            titulo: 'Parabens', texto: value['mensagem']);
+      } else {
+        buildCustomSnackBar(context, titulo: 'Erro!', texto: value['mensagem']);
+      }
+    });
   }
 
   Widget buildAtivoInativo2(
@@ -550,4 +572,29 @@ class _CadastroMoradorState extends State<CadastroMorador> {
       }),
     );
   }
+}
+
+Future gerarLogin(BuildContext context,
+    {required String nomeUsado,
+    required bool nomeDocAlterado,
+    required String documento}) async {
+  FocusManager.instance.primaryFocus?.unfocus();
+
+  final List<String> listaNome = [];
+  List nomeEmLista = nomeUsado.split(' ');
+
+  if (nomeDocAlterado) {
+    buildCustomSnackBar(context,
+        titulo: 'Dados alterados', texto: 'Alteramos o login');
+  }
+  nomeEmLista.map((e) {
+    if (e != '') {
+      listaNome.add(removeDiacritics(e).toLowerCase());
+    }
+  }).toSet();
+
+  String loginGerado =
+      '${listaNome.first}${listaNome.last}${documento.substring(0, 4)}';
+
+  return loginGerado;
 }

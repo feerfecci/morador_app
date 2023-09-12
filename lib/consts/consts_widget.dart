@@ -141,6 +141,7 @@ class ConstsWidget {
       required bool isLoading,
       required String title,
       double horizontal = 0,
+      IconData? icon,
       Color color = Consts.kColorAzul}) {
     var size = MediaQuery.of(context).size;
 
@@ -158,6 +159,15 @@ class ConstsWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  if (icon != null)
+                    Icon(
+                        size: SplashScreen.isSmall ? 20 : 24,
+                        icon,
+                        color: color),
+                  if (icon != null)
+                    SizedBox(
+                      width: size.width * 0.015,
+                    ),
                   Text(
                     title,
                     overflow: TextOverflow.ellipsis,

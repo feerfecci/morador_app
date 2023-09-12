@@ -83,7 +83,11 @@ class _ListarMoradorState extends State<ListarMorador> {
                     var telefone = bodyMorador['telefone'];
                     var email = bodyMorador['email'];
                     var acessa_sistema = bodyMorador['acessa_sistema'];
-                    var data_nascimento = bodyMorador['data_nascimento'];
+                    String? data_nascimento =
+                        bodyMorador['data_nascimento'] != "0000-00-00"
+                            ? DateFormat('dd/MM/yyyy').format(
+                                DateTime.parse(bodyMorador['data_nascimento']))
+                            : null;
 
                     return MyBoxShadow(
                         child: ConstsWidget.buildExpandedTile(context,
@@ -118,23 +122,48 @@ class _ListarMoradorState extends State<ListarMorador> {
                           //     subTitle1: ,
                           //     title2: ,
                           //     subTitle2: '($ddd) $telefone'),
-                          buildRowInfos(context,
-                              title1: 'Documento',
-                              subTitle1: documento,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              title2: 'Nascimento',
-                              subTitle2: DateFormat('dd/MM/yyyy').format(
-                                  DateTime.parse(
-                                      bodyMorador['data_nascimento']))),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ConstsWidget.buildTextSubTitle(
-                                  context, 'Telefone'),
-                              ConstsWidget.buildTextTitle(
-                                  context, '($ddd) $telefone'),
-                            ],
+
+                          ConstsWidget.buildPadding001(
+                            context,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: data_nascimento == null
+                                  ? MainAxisAlignment.start
+                                  : MainAxisAlignment.spaceBetween,
+                              children: [
+                                if (data_nascimento != null)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ConstsWidget.buildTextSubTitle(
+                                          context, 'Nascimento'),
+                                      ConstsWidget.buildTextTitle(
+                                          context, data_nascimento),
+                                    ],
+                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ConstsWidget.buildTextSubTitle(
+                                        context, 'Documento'),
+                                    ConstsWidget.buildTextTitle(
+                                        context, documento),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
+                          if (ddd != '' || telefone != '')
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstsWidget.buildTextSubTitle(
+                                    context, 'Telefone'),
+                                ConstsWidget.buildTextTitle(
+                                    context, '($ddd) $telefone'),
+                              ],
+                            ),
                           SizedBox(
                             height: size.height * 0.01,
                           ),
