@@ -163,7 +163,7 @@ class ConstsWidget {
                     Icon(
                         size: SplashScreen.isSmall ? 20 : 24,
                         icon,
-                        color: color),
+                        color: Colors.white),
                   if (icon != null)
                     SizedBox(
                       width: size.width * 0.015,

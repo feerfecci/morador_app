@@ -193,7 +193,7 @@ class _ListarMoradorState extends State<ListarMorador> {
                                   login: login,
                                   numero: numero,
                                   ativo: ativo,
-                                  nascimento: data_nascimento,
+                                  nascimento: bodyMorador['data_nascimento'],
                                   documento: documento,
                                   ddd: ddd,
                                   telefone: telefone,

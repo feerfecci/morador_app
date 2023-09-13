@@ -172,6 +172,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                     correspInfos['status_entrega'];
                                 var nome_portador =
                                     correspInfos['nome_portador'];
+                                var quantidade = correspInfos['quantidade'];
                                 var documento_portador =
                                     correspInfos['documento_portador'];
 
@@ -195,6 +196,19 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                             context,
                                             '$descricao - $datahora_cadastro'),
                                       ),
+                                      if (quantidade != '1')
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ConstsWidget.buildTextSubTitle(
+                                                context, 'Quantidade: '),
+                                            ConstsWidget.buildTextTitle(
+                                                context, quantidade,
+                                                textAlign: TextAlign.center,
+                                                size: 18),
+                                          ],
+                                        ),
                                       if (loadingRetirada)
                                         Center(
                                             child: ShimmerWidget(
@@ -241,7 +255,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                           protocolo != '' &&
                                           statusCorresp)
                                         ConstsWidget.buildTextTitle(context,
-                                            'Retirada com protocolo por $nome_portador'),
+                                            'Retirada com protocolo  por $nome_portador'),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           !statusCorresp)

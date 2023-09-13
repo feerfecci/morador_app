@@ -64,7 +64,8 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
                   color: Theme.of(context).iconTheme.color,
                 ),
                 borderRadius: BorderRadius.circular(16),
-                hint: Text('Selecione Um Aviso'),
+                hint: Text('Selecione Uma Resposta'),
+                alignment: Alignment.center,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w400,
@@ -111,7 +112,11 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
       ),
-      title: Text('Responda a Portaria'),
+      title: Text(
+        'Responda a Portaria',
+        textAlign: TextAlign.center,
+      ),
+      // alignment: Alignment.center,
       content: SizedBox(
         width: size.width * 0.8,
         child: Column(
@@ -120,7 +125,8 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
             buildDropRespDelivery(),
             ConstsWidget.buildCustomButton(
               context,
-              'Avisar',
+              'Responder',
+              color: Consts.kColorRed,
               onPressed: () {
                 ConstsFuture.changeApi(
                         'respostas/index.php?fn=enviarRespostas&idcond=${InfosMorador.idcondominio}&idmsg=$dropRespostas&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}')

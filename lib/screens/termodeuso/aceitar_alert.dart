@@ -102,15 +102,6 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                                     fontWeight: FontWeight.bold)
                               },
                             ),
-                            ConstsWidget.buildCheckBox(context,
-                                isChecked: isChecked, onChanged: (value) {
-                              setState(() {
-                                isChecked = value!;
-                              });
-                            }, title: 'Li e aceito os termos'),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
                           ],
                         ),
                       );

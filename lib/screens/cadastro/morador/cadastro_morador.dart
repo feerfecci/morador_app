@@ -152,7 +152,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       SizedBox(
                         width: size.width * 0.37,
                         child: buildMyTextFormField(context,
-                            initialValue: widget.nascimento,
+                            initialValue: DateFormat('dd/MM/yyyy')
+                                .format(DateTime.parse(widget.nascimento!)),
                             // readOnly: !InfosMorador.responsavel,
                             title: 'Data de Nascimento',
                             keyboardType: TextInputType.number,
@@ -455,6 +456,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         InfosMorador.email = _formInfosMorador.email!;
                       }
                       salvarDadosMorador();
+                      setState(() {
+                        isLoading = false;
+                      });
                     } else {
                       //print(formValid.toString());
                     }
@@ -468,12 +472,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   }
 
   salvarDadosMorador() {
-    String restoApi;
+    String fnApi;
     widget.idmorador == null
-        ? restoApi =
-            'incluirMorador' /*'&senha=${_formInfosMorador.senha}&senha_retirada=${_formInfosMorador.senhaRetirada}'*/
-        : restoApi = 'editarMorador&id=${widget.idmorador}'
-            '&senha=${senhaNovaCtrl.text}&senha_retirada=${retiradaNovaCtrl.text}&gerarsenha=${isGerarSenha ? 1 : 0}';
+        ? fnApi = 'incluirMorador'
+        : fnApi = 'editarMorador&id=${widget.idmorador}'
+            '&gerarsenha=${isGerarSenha ? 1 : 0}';
     int isResponsavel;
     InfosMorador.responsavel && widget.isDrawer
         ? isResponsavel = 1
@@ -489,12 +492,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         : '';
 
     ConstsFuture.changeApi(
-            'moradores/?fn=$restoApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
+            'moradores/?fn=$fnApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
         .then((value) {
       if (!value['erro']) {
-        setState(() {
-          isLoading = false;
-        });
         if (!widget.isDrawer) {
           Navigator.pop(context);
           if (InfosMorador.responsavel) {
@@ -507,6 +507,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
             setState(() {});
           } else {
             ConstsFuture.navigatorPageRoute(context, HomePage());
+          }
+        } else {
+          if (senhaNovaCtrl.text.isNotEmpty || retiradaNovaCtrl.text.isEmpty) {
+            ConstsFuture.changeApi(
+                'moradores/?fn=mudarSenhas&idmorador=${InfosMorador.idmorador}${senhaNovaCtrl.text.isNotEmpty ? '&senha=${senhaNovaCtrl.text}' : ''}${retiradaNovaCtrl.text.isNotEmpty ? '&senha_retirada=${retiradaNovaCtrl.text}' : ''}');
           }
         }
         Navigator.pop(context);
@@ -583,10 +588,10 @@ Future gerarLogin(BuildContext context,
   final List<String> listaNome = [];
   List nomeEmLista = nomeUsado.split(' ');
 
-  if (nomeDocAlterado) {
-    buildCustomSnackBar(context,
-        titulo: 'Dados alterados', texto: 'Alteramos o login');
-  }
+  // if (nomeDocAlterado) {
+  //   buildCustomSnackBar(context,
+  //       titulo: 'Dados alterados', texto: 'Alteramos o login');
+  // }
   nomeEmLista.map((e) {
     if (e != '') {
       listaNome.add(removeDiacritics(e).toLowerCase());

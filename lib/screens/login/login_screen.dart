@@ -5,8 +5,10 @@ import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
 import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:validatorless/validatorless.dart';
 import '../../consts/consts_widget.dart';
 import '../politica/politica_screen.dart';
+import 'esqueci_senha.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailCtrl = TextEditingController();
+  final loginCtrl = TextEditingController();
   final passWordCtrl = TextEditingController();
   bool isLoading = false;
   _startLoading() async {
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
 
-    ConstsFuture.efetuaLogin(context, emailCtrl.text, passWordCtrl.text)
+    ConstsFuture.efetuaLogin(context, loginCtrl.text, passWordCtrl.text)
         .then((value) {
       setState(() {
         isLoading = false;
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               size: 19),
                         ),
                         buildMyTextFormObrigatorio(context,
-                            controller: emailCtrl,
+                            controller: loginCtrl,
                             keyboardType: TextInputType.emailAddress,
                             title: 'Login',
                             autofillHints: [AutofillHints.email],
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (formValid) {
                               if (isChecked) {
                                 await LocalPreferences.setUserLogin(
-                                        emailCtrl.text, passWordCtrl.text)
+                                        loginCtrl.text, passWordCtrl.text)
                                     .then((value) => null);
                                 _startLoading();
                               } else {
@@ -160,6 +162,26 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Text(
                                 'Termos de Uso',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EsqueciSenhaScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Esqueci minha senha',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.blue),
                               ),
