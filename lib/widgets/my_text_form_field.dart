@@ -17,7 +17,7 @@ Widget buildMyTextFormField(BuildContext context,
     TextEditingController? controller,
     String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
-  var size = MediaQuery.of(context).size;
+  // var size = MediaQuery.of(context).size;
   return ConstsWidget.buildPadding001(
     context,
     child: TextFormField(
@@ -96,9 +96,9 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
     TextCapitalization textCapitalization = TextCapitalization.none,
     Iterable<String>? autofillHints,
     TextEditingController? controller,
-    String? Function(String?)? validator  ,
+    String? Function(String?)? validator,
     final void Function(String? text)? onSaved}) {
-  var size = MediaQuery.of(context).size;
+  // var size = MediaQuery.of(context).size;
   return ConstsWidget.buildPadding001(
     context,
     child: TextFormField(

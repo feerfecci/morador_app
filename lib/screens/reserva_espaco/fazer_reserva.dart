@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:app_portaria/screens/reserva_espaco/listar_espacos.dart';
 import 'package:app_portaria/widgets/date_picker.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/my_text_form_field.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +63,7 @@ class _FazerReservaState extends State<FazerReserva> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     return buildScaffoldAll(
       context,
       title: widget.nomeEspaco,

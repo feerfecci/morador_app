@@ -1,9 +1,7 @@
-import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class PageErro extends StatefulWidget {
-  PageErro({super.key});
+  const PageErro({super.key});
 
   @override
   State<PageErro> createState() => _PageErroState();

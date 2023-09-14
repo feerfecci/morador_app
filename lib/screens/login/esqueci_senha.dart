@@ -2,12 +2,8 @@ import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../widgets/my_text_form_field.dart';

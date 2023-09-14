@@ -1,11 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:intl/intl.dart';
-
-import '../consts/consts.dart';
 
 class MyDatePicker extends StatefulWidget {
   static String dataSelected = '';

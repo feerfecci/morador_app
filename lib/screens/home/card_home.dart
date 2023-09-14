@@ -3,7 +3,6 @@ import 'package:app_portaria/screens/quadro_avisos/quadro_avisos_screen.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
 import '../../widgets/my_box_shadow.dart';

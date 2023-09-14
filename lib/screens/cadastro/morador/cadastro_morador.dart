@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'dart:async';
-
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ import '../../../consts/consts.dart';
 import '../../../consts/consts_future.dart';
 import '../../../consts/consts_widget.dart';
 import '../../../forms/form_morador.dart';
-import '../../../widgets/header.dart';
 import '../../../widgets/my_box_shadow.dart';
 import '../../../widgets/my_text_form_field.dart';
 import '../../../widgets/scaffold_all.dart';

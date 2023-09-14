@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 import 'package:app_portaria/screens/cadastro/morador/listar_morador.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
@@ -30,18 +29,18 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildFiltroCadastro(String title, int tipoLista) {
-      return ConstsWidget.buildCustomButton(
-        context,
-        title,
-        onPressed: () {
-          // isCheckedMorador = true;
-          // isCheckedCarros = false;
-          // isCheckedFuncionarios = false;
-          setState(() {});
-        },
-      );
-    }
+    // Widget buildFiltroCadastro(String title, int tipoLista) {
+    //   return ConstsWidget.buildCustomButton(
+    //     context,
+    //     title,
+    //     onPressed: () {
+    //       // isCheckedMorador = true;
+    //       // isCheckedCarros = false;
+    //       // isCheckedFuncionarios = false;
+    //       setState(() {});
+    //     },
+    //   );
+    // }
 
     return ConstsWidget.buildRefreshIndicator(
       context,

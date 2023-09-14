@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 import 'dart:convert';
 import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/avisos_chegada/add_visita.screen.dart';
 import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_erro.dart';

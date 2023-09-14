@@ -271,6 +271,7 @@ class ConstsWidget {
                 fit: BoxFit.fill,
               );
             } on HttpException catch (e) {
+              print(e);
               return Image.asset('assets/ico-error.png');
             }
           } else {

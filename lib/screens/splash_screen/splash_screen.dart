@@ -8,7 +8,6 @@ import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
 import '../../consts/consts_future.dart';
-import '../correspondencia/correspondencia_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static bool isSmall = false;
@@ -22,8 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   bool load = false;
   startLoginApp() async {
     LocalPreferences.getUserLogin().then((value) async {
-      List cache = value;
-
       if (value[0] == null || value[1] == null) {
         return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
       } else if (value[0] != null || value[1] != null) {

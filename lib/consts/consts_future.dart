@@ -1,20 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../repositories/shared_preferences.dart';
 import '../screens/termodeuso/aceitar_alert.dart';
-import '../screens/avisos_chegada/chegada_screen.dart';
 import '../screens/correspondencia/correspondencia_screen.dart';
 import '../screens/home/dropAptos.dart';
 import '../screens/quadro_avisos/quadro_avisos_screen.dart';
-import '../widgets/alert_dialog/alert_resp_port.dart';
 import '../widgets/snack_bar.dart';
 import 'consts.dart';
 

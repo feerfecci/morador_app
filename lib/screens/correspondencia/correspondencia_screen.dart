@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
-import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/page_erro.dart';
 import 'package:app_portaria/widgets/page_vazia.dart';
@@ -43,9 +42,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
         launchSolicitarRetirada(correspRetirar.join(",")).whenComplete(() {
           correspRetirar.map((e) {
             if (widget.tipoAviso == 3) {
-              // print(CorrespondenciaScreen.listaNovaCorresp3);
               CorrespondenciaScreen.listaNovaCorresp3.remove(int.parse(e));
-              // print(CorrespondenciaScreen.listaNovaCorresp3);
             } else {
               CorrespondenciaScreen.listaNovaCorresp4.remove(int.parse(e));
             }
@@ -197,16 +194,23 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                             '$descricao - $datahora_cadastro'),
                                       ),
                                       if (quantidade != '1')
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                        Column(
                                           children: [
-                                            ConstsWidget.buildTextSubTitle(
-                                                context, 'Quantidade: '),
-                                            ConstsWidget.buildTextTitle(
-                                                context, quantidade,
-                                                textAlign: TextAlign.center,
-                                                size: 18),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ConstsWidget.buildTextSubTitle(
+                                                    context, 'Quantidade: '),
+                                                ConstsWidget.buildTextTitle(
+                                                    context, quantidade,
+                                                    textAlign: TextAlign.center,
+                                                    size: 18),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.01,
+                                            ),
                                           ],
                                         ),
                                       if (loadingRetirada)
@@ -248,14 +252,16 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                                   255, 43, 135, 219)),
                                         ),
                                       if (protocolo == 'Senha' && statusCorresp)
-                                        ConstsWidget.buildTextTitle(context,
-                                            'Retirada com senha do usuario',
-                                            color: Colors.red),
+                                        ConstsWidget.buildTextTitle(
+                                          context,
+                                          'Retirada com senha por $nome_portador',
+                                        ),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           statusCorresp)
                                         ConstsWidget.buildTextTitle(context,
-                                            'Retirada com protocolo  por $nome_portador'),
+                                            'Retirada com protocolo por $nome_portador',
+                                            color: Colors.red),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           !statusCorresp)

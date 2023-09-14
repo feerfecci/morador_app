@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
+
 import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/consts/consts_widget.dart';
@@ -9,8 +11,6 @@ import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 
 class MyVisitasScreen extends StatefulWidget {
@@ -40,7 +40,6 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
   @override
   void initState() {
     apiVisitar();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -299,22 +298,20 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                           //   ],
                                           // ),
 
-                                          if (nome_convidado != null)
-                                            ConstsWidget.buildPadding001(
-                                              context,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ConstsWidget
-                                                      .buildTextSubTitle(
-                                                          context,
-                                                          'Email Cadastrado'),
-                                                  ConstsWidget.buildTextTitle(
-                                                      context, email!),
-                                                ],
-                                              ),
+                                          ConstsWidget.buildPadding001(
+                                            context,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                ConstsWidget.buildTextSubTitle(
+                                                    context,
+                                                    'Email Cadastrado'),
+                                                ConstsWidget.buildTextTitle(
+                                                    context, email!),
+                                              ],
                                             ),
+                                          ),
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,

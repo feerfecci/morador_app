@@ -2,7 +2,6 @@
 
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';

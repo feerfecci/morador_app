@@ -1,15 +1,12 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, non_constant_identifier_names
 import 'dart:convert';
 
 import 'package:app_portaria/consts/consts_widget.dart';
-import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/page_erro.dart';
-import 'package:app_portaria/widgets/page_vazia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -22,7 +19,6 @@ import '../../widgets/custom_drawer/custom_drawer.dart';
 import '../avisos_chegada/chegada_screen.dart';
 import '../quadro_avisos/quadro_avisos_screen.dart';
 import '../reserva_espaco/listar_espacos.dart';
-import '../termodeuso/aceitar_alert.dart';
 import 'card_home.dart';
 import '../correspondencia/correspondencia_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -208,6 +204,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  @override
   void dispose() {
     super.dispose();
     apiQuadroAvisos();
@@ -436,17 +433,18 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           title: ConstsWidget.buildTextTitle(
               context, InfosMorador.nome_completo,
-              size: 20, textAlign: TextAlign.center),
+              size: SplashScreen.isSmall ? 18 : 20,
+              textAlign: TextAlign.center),
           backgroundColor: Colors.transparent,
           iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
           leading: Padding(
               padding: EdgeInsets.only(
                   left: size.width * 0.025,
                   top: SplashScreen.isSmall
-                      ? size.height * 0.012
-                      : size.height * 0.01,
+                      ? size.height * 0.02
+                      : size.height * 0.012,
                   bottom: SplashScreen.isSmall
-                      ? size.height * 0.015
+                      ? size.height * 0.005
                       : size.height * 0.01),
               child: ConstsWidget.buildFutureImage(context,
                   iconApi: 'https://a.portariaapp.com/img/logo_azul.png')

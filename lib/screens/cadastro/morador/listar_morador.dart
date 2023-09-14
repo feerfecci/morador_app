@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
-import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +11,6 @@ import '../../../consts/consts_widget.dart';
 import '../../../widgets/my_box_shadow.dart';
 import '../../../widgets/page_erro.dart';
 import '../../../widgets/page_vazia.dart';
-import '../../../widgets/row_infos.dart';
 import 'cadastro_morador.dart';
 
 class ListarMorador extends StatefulWidget {

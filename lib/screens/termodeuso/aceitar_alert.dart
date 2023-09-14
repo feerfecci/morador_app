@@ -1,14 +1,8 @@
 import 'dart:convert';
-
 import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/screens/login/login_screen.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_html/flutter_html.dart';
-
 import 'package:http/http.dart' as http;
 import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';
@@ -33,7 +27,7 @@ showDialogAceitar(BuildContext context, {int? idUnidade}
 
 class AceitarTermosScreen extends StatefulWidget {
   final int? idUnidade;
-  AceitarTermosScreen({required this.idUnidade, super.key});
+  const AceitarTermosScreen({required this.idUnidade, super.key});
 
   @override
   State<AceitarTermosScreen> createState() => _AceitarTermosScreenState();

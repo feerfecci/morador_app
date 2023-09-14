@@ -7,6 +7,7 @@ import '../../widgets/page_vazia.dart';
 import '../../widgets/scaffold_all.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+// ignore: must_be_immutable
 class PoliticaScreen extends StatefulWidget {
   bool hasDrawer;
   PoliticaScreen({this.hasDrawer = true, super.key});
