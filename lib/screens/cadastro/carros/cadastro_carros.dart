@@ -211,7 +211,9 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                             titulo: 'Parabens', texto: value['mensagem']);
                       } else {
                         buildCustomSnackBar(context,
-                            titulo: 'Erro!', texto: value['mensagem']);
+                            hasError: true,
+                            titulo: 'Algo Saiu Mau!',
+                            texto: value['mensagem']);
                       }
                     });
                   } else {

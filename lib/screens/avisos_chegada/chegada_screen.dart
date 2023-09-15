@@ -61,10 +61,11 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildOutlinedButton(
                         context,
-                        title: '   Adicionar Visita   ',
+                        title: '    Minhas Visitas   ',
+                        color: Colors.grey,
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
-                              context, AddVisitaScreen());
+                              context, MyVisitasScreen());
                         },
                       ),
                     ),
@@ -72,10 +73,10 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildCustomButton(
                         context,
-                        '   Minhas Visitas   ',
+                        '   Convidar Visita    ',
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
-                              context, MyVisitasScreen());
+                              context, AddVisitaScreen());
                         },
                       ),
                     ),

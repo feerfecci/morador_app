@@ -2,11 +2,14 @@
 import 'dart:convert';
 
 import 'package:app_portaria/consts/consts_widget.dart';
+import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
+import 'package:app_portaria/screens/reserva_espaco/listar_reserva.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
+import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -126,28 +129,37 @@ class _HomePageState extends State<HomePage> {
         message.messageId;
       });
       OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        if (openedResult.notification.buttons != null) {
-          if (openedResult.notification.buttons!.first.id == 'delivery') {
-            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-            alertRespondeDelivery(context, tipoAviso: 5);
-          } else if (openedResult.notification.buttons!.first.id == 'visita') {
-            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-            alertRespondeDelivery(context, tipoAviso: 6);
-          }
-        } else {
-          if (openedResult.notification.additionalData!.values.first ==
-              'corresp') {
-            ConstsFuture.navigatorPageRoute(
-                context, CorrespondenciaScreen(tipoAviso: 3));
-          } else if (openedResult.notification.additionalData!.values.first ==
-              'aviso') {
-            ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
-          } else if (openedResult.notification.additionalData!.values.first ==
-              'mercadorias') {
-            ConstsFuture.navigatorPageRoute(
-                context, CorrespondenciaScreen(tipoAviso: 4));
-          }
+        // if (openedResult.notification.buttons != null) {
+        //   if (openedResult.notification.buttons!.first.id == 'delivery') {
+        //     ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+        //     alertRespondeDelivery(context, tipoAviso: 5);
+        //   } else if (openedResult.notification.buttons!.first.id == 'visita') {
+        //     ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+        //     alertRespondeDelivery(context, tipoAviso: 6);
+        //   }
+        // } else {
+        if (openedResult.notification.additionalData!.values.last ==
+            'corresp') {
+          ConstsFuture.navigatorPageRoute(
+              context, CorrespondenciaScreen(tipoAviso: 3));
+        } else if (openedResult.notification.additionalData!.values.last ==
+            'aviso') {
+          ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
+        } else if (openedResult.notification.additionalData!.values.last ==
+            'mercadorias') {
+          ConstsFuture.navigatorPageRoute(
+              context, CorrespondenciaScreen(tipoAviso: 4));
+        } else if (openedResult.notification.additionalData!.values.last ==
+            'reserva_espacos') {
+          ConstsFuture.navigatorPageRoute(context, ListarReservas());
+        } else if (openedResult.notification.additionalData!.values.last ==
+            'visita') {
+          ConstsFuture.navigatorPageRoute(context, MyVisitasScreen());
+        } else if (openedResult.notification.additionalData!.values.last ==
+            'delivery') {
+          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
         }
+        // }
 
         //correp
       });
@@ -510,7 +522,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   if (InfosMorador.qtd_publicidade != 0)
-                    buildBanerPubli(local: 1, usarList: teleforsList1),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                        buildBanerPubli(local: 1, usarList: teleforsList1),
+                      ],
+                    ),
                   if (InfosMorador.qtd_publicidade != 0)
                     GridView.count(
                       crossAxisCount: 2,

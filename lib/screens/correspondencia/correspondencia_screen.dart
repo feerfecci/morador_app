@@ -42,9 +42,17 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
         launchSolicitarRetirada(correspRetirar.join(",")).whenComplete(() {
           correspRetirar.map((e) {
             if (widget.tipoAviso == 3) {
-              CorrespondenciaScreen.listaNovaCorresp3.remove(int.parse(e));
+              setState(
+                () {
+                  CorrespondenciaScreen.listaNovaCorresp3.remove(int.parse(e));
+                },
+              );
             } else {
-              CorrespondenciaScreen.listaNovaCorresp4.remove(int.parse(e));
+              setState(
+                () {
+                  CorrespondenciaScreen.listaNovaCorresp4.remove(int.parse(e));
+                },
+              );
             }
           }).toSet();
           setState(() {
@@ -126,6 +134,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                         // //print(correspRetirar)
                         : buildCustomSnackBar(context,
                             titulo: 'Atenção',
+                            hasError: true,
                             texto: 'Selecione um ou mais itens para retirada');
                   }),
                 ),
@@ -238,7 +247,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                                             .toString());
                                               },
                                             );
-                                          }, title: 'Solicitar Retirar');
+                                          }, title: 'Solicitar Retirada');
                                         }),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
@@ -252,15 +261,14 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                                   255, 43, 135, 219)),
                                         ),
                                       if (protocolo == 'Senha' && statusCorresp)
-                                        ConstsWidget.buildTextTitle(
-                                          context,
-                                          'Retirada com senha por $nome_portador',
-                                        ),
+                                        ConstsWidget.buildTextTitle(context,
+                                            'Retirada com Senha por $nome_portador',
+                                            color: Consts.kColorAzul),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           statusCorresp)
                                         ConstsWidget.buildTextTitle(context,
-                                            'Retirada com protocolo por $nome_portador',
+                                            'Retirada com Protocolo por $nome_portador',
                                             color: Colors.red),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&

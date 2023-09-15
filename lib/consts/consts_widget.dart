@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'consts.dart';
 import 'consts_future.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ConstsWidget {
   static Widget buildPadding001(BuildContext context,
@@ -102,7 +103,7 @@ class ConstsWidget {
       Color? backgroundColor = Colors.transparent,
       double fontSize = 18,
       IconData? icon,
-      double vertical = 0.021,
+      double vertical = 0.0235,
       double horizontal = 0.024}) {
     var size = MediaQuery.of(context).size;
     return OutlinedButton(
@@ -112,7 +113,7 @@ class ConstsWidget {
         padding: EdgeInsets.symmetric(
             vertical: size.height * vertical,
             horizontal: size.width * horizontal),
-        side: BorderSide(width: size.width * 0.005, color: Colors.blue),
+        side: BorderSide(width: size.width * 0.005, color: color),
         shape: StadiumBorder(),
       ),
       onPressed: onPressed,
@@ -129,7 +130,7 @@ class ConstsWidget {
             context,
             title,
             size: SplashScreen.isSmall ? fontSize - 2 : fontSize,
-            color: Colors.blue,
+            color: color,
           ),
         ],
       ),
@@ -249,36 +250,15 @@ class ConstsWidget {
   static Widget buildFutureImage(BuildContext context,
       {required String iconApi, double? width, double? height, String? title}) {
     var size = MediaQuery.of(context).size;
-    bool isLoading = true;
-    return FutureBuilder(
-        future: ConstsFuture.apiImageIcon(iconApi),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ShimmerWidget(
-                height: SplashScreen.isSmall
-                    ? size.height * 0.08
-                    : size.height * 0.068,
-                width: SplashScreen.isSmall
-                    ? size.width * 0.14
-                    : size.width * 0.15);
-          } else if (snapshot.hasData) {
-            isLoading == false;
-            try {
-              return Image.network(
-                iconApi,
-                height: height != null ? size.height * height : null,
-                width: width != null ? size.width * width : null,
-                fit: BoxFit.fill,
-              );
-            } on HttpException catch (e) {
-              print(e);
-              return Image.asset('assets/ico-error.png');
-            }
-          } else {
-            isLoading == false;
-            return Image.asset('assets/ico-error.png');
-          }
-        });
+    // bool isLoading = true;
+    return CachedNetworkImage(
+      imageUrl: iconApi,
+      height: height != null ? size.height * height : null,
+      width: width != null ? size.width * width : null,
+      fit: BoxFit.fill,
+      fadeInDuration: Duration.zero,
+      fadeOutDuration: Duration.zero,
+    );
   }
 
   static Widget buildExpandedTile(BuildContext context,
@@ -310,7 +290,7 @@ class ConstsWidget {
   }
 
   static Widget buildBadge(BuildContext context,
-      {required String title,
+      {required int title,
       required bool showBadge,
       required Widget? child,
       BadgePosition? position}) {
@@ -318,7 +298,11 @@ class ConstsWidget {
         showBadge: showBadge,
         badgeAnimation: badges.BadgeAnimation.fade(toAnimate: false),
         badgeContent: Text(
-          title,
+          title > 99
+              ? '+99'
+              : title == 0
+                  ? ''
+                  : title.toString(),
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         position: position,

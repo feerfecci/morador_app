@@ -163,6 +163,7 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                                   } else {
                                     buildCustomSnackBar(context,
                                         titulo: 'Algo Saiu Mau!',
+                                        hasError: true,
                                         texto: value['mensagem']);
                                   }
                                 });

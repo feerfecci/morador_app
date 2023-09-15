@@ -40,10 +40,12 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
     });
     if (emailCtrl.text != '') {
       buildCustomSnackBar(context,
-          titulo: 'Cuidado', texto: 'Adicione o email à lista');
+          hasError: true, titulo: 'Cuidado', texto: 'Adicione o email à lista');
     } else if (MyDatePicker.dataSelected == '') {
       buildCustomSnackBar(context,
-          titulo: 'Cuidado', texto: 'Adicione uma Data de Visita');
+          hasError: true,
+          titulo: 'Cuidado',
+          texto: 'Adicione uma Data de Visita');
     } else {
       forEnviaConvite().then((value) {
         contemErro = retornoListErro.contains(true);
@@ -59,7 +61,9 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
           });
         } else {
           buildCustomSnackBar(context,
-              titulo: 'Que pena!', texto: 'Algum email não foi enviado');
+              hasError: true,
+              titulo: 'Que pena!',
+              texto: 'Algum email não foi enviado');
         }
       });
     }
@@ -201,6 +205,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                             } else {
                               buildCustomSnackBar(context,
                                   titulo: 'Cuidado',
+                                  hasError: true,
                                   texto: 'Selecione pelo menos uma email');
                             }
                           },
@@ -315,6 +320,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                                 } else {
                                   buildCustomSnackBar(context,
                                       titulo: 'Cuidado',
+                                      hasError: true,
                                       texto: 'Preencha os dados');
                                 }
                               },

@@ -1,3 +1,4 @@
+import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,17 +64,33 @@ Widget buildMyTextFormField(BuildContext context,
 }
 
 InputDecoration buildTextFieldDecoration(BuildContext context,
-    {required String title, String? hintText}) {
+    {required String title, String? hintText, bool isobrigatorio = false}) {
   var size = MediaQuery.of(context).size;
   return InputDecoration(
     contentPadding: EdgeInsets.symmetric(
         horizontal: size.width * 0.035, vertical: size.height * 0.023),
     filled: true,
     fillColor: Theme.of(context).canvasColor,
-    label: Text(
-      title,
-      style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-    ),
+    label: isobrigatorio
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
+              ),
+              Text(
+                ' *',
+                style: TextStyle(
+                    fontSize: SplashScreen.isSmall ? 14 : 16,
+                    color: Consts.kColorRed),
+              ),
+            ],
+          )
+        : Text(
+            title,
+            style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
+          ),
     hintText: hintText,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
@@ -128,8 +145,8 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
       style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
       validator: validator ??
           Validatorless.multiple([Validatorless.required(mensagem)]),
-      decoration:
-          buildTextFieldDecoration(context, title: title, hintText: hintText),
+      decoration: buildTextFieldDecoration(context,
+          title: title, hintText: hintText, isobrigatorio: true),
     ),
   );
 }
@@ -163,6 +180,19 @@ Widget buildFormPassword(BuildContext context,
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(color: Colors.black26)),
           hintText: 'Digite sua Senha',
+          label: RichText(
+              text: TextSpan(
+                  text: 'Digite sua Senha',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: SplashScreen.isSmall ? 14 : 16),
+                  children: [
+                TextSpan(
+                    text: ' *',
+                    style: TextStyle(
+                        color: Consts.kColorRed,
+                        fontSize: SplashScreen.isSmall ? 14 : 16))
+              ])),
           suffixIcon: GestureDetector(
             onTap: onTap,
             child: isObscure

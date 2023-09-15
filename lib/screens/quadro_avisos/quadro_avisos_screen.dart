@@ -46,20 +46,22 @@ Future comparaAvisos(jsonResposta) async {
   List apiAvisos = jsonResposta['avisos'];
 
   LocalPreferences.getDateLogin().then((value) {
-    for (var i = 0; i <= apiAvisos.length - 1; i++) {
+    List listApiAvisos = apiAvisos;
+    listApiAvisos.map((e) {
       if (value != null) {
         DateTime dateValue = DateTime.parse(value);
-        DateTime dateAvisos = DateTime.parse(apiAvisos[i]['datahora']);
-        if (dateAvisos.compareTo(dateValue) > 0 &&
-            dateAvisos.compareTo(DateTime.now()) < 0) {
-          if (!QuadroAvisosScreen.qntAvisos.contains(apiAvisos[i]['idaviso'])) {
-            QuadroAvisosScreen.qntAvisos.add(apiAvisos[i]['idaviso']);
+        DateTime dateAvisos = DateTime.parse(e['datahora']);
+
+        if (!QuadroAvisosScreen.qntAvisos.contains(e['idaviso'])) {
+          if (dateAvisos.compareTo(dateValue) > 0 &&
+              dateAvisos.compareTo(DateTime.now()) < 0) {
+            QuadroAvisosScreen.qntAvisos.add(e['idaviso']);
           }
         }
       } else {
-        QuadroAvisosScreen.qntAvisos.add(apiAvisos[i]['idaviso']);
+        QuadroAvisosScreen.qntAvisos.add(e['idaviso']);
       }
-    }
+    }).toSet();
   });
 }
 

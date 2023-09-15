@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../consts/consts.dart';
 import '../consts/consts_widget.dart';
 
 buildCustomSnackBar(BuildContext context,
-    {required String titulo, required String texto}) {
+    {required String titulo, required String texto, bool hasError = false}) {
   ScaffoldMessenger.of(context).clearSnackBars();
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     dismissDirection: DismissDirection.endToStart,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
     ),
-    // action: SnackBarAction(
-    //     label: 'entendi',
-    //     onPressed: (() {
-    //       ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    //     })),
-
     showCloseIcon: true,
     closeIconColor: Colors.white,
     elevation: 8,
-
     duration: Duration(seconds: 4),
-    backgroundColor: Colors.blue,
+    backgroundColor: hasError ? Consts.kColorRed : Consts.kColorVerde,
     behavior: SnackBarBehavior.floating,
     content: Column(
       mainAxisSize: MainAxisSize.min,

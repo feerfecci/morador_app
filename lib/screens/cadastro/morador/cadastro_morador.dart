@@ -98,10 +98,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   @override
   Widget build(BuildContext context) {
     @override
-    // var dataParsed = widget.nascimento != null
-        //     ? DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.nascimento!))
-        //     : '';
-        var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
+    var acessoApi = _formInfosMorador.acesso == 0 ? false : true;
     isChecked = acessoApi;
     var size = MediaQuery.of(context).size;
 
@@ -116,6 +113,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         child: MyBoxShadow(
           child: Column(
             children: [
+              ConstsWidget.buildTextSubTitle(
+                  context, '(*) Preenchimento Obrigatório',
+                  color: Consts.kColorRed),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -149,8 +149,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       SizedBox(
                         width: size.width * 0.37,
                         child: buildMyTextFormField(context,
-                            initialValue: DateFormat('dd/MM/yyyy')
-                                .format(DateTime.parse(widget.nascimento!)),
+                            initialValue: widget.nascimento != '0000-00-00' &&
+                                    widget.nascimento != ''
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.parse(widget.nascimento!))
+                                : null,
                             // readOnly: !InfosMorador.responsavel,
                             title: 'Data de Nascimento',
                             keyboardType: TextInputType.number,
@@ -258,7 +261,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       Validatorless.required('Obrigatório'),
                     ]),
                     decoration: buildTextFieldDecoration(context,
-                        title: 'Email', hintText: 'exemplo@exe.com'),
+                        isobrigatorio: true,
+                        title: 'Email',
+                        hintText: 'exemplo@exe.com'),
                   ),
 
                   // buildMyTextFormObrigatorio(
@@ -280,12 +285,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       title: 'Gerar Login',
                       isLoading: isLoadingLogin,
                       onPressed: () {
-                        setState(() {
-                          isLoadingLogin = true;
-                        });
                         var formValid =
                             _formKeyMorador.currentState?.validate() ?? false;
                         if (formValid) {
+                          setState(() {
+                            isLoadingLogin = true;
+                          });
                           _formKeyMorador.currentState?.save();
                           gerarLogin(context,
                                   nomeUsado: _formInfosMorador.nome_morador!,
@@ -307,6 +312,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               });
                               buildCustomSnackBar(context,
                                   titulo: 'Algo Saiu Mal',
+                                  hasError: true,
                                   texto: 'O login não foi gerado');
                             }
                           });
@@ -516,7 +522,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         buildCustomSnackBar(context,
             titulo: 'Parabens', texto: value['mensagem']);
       } else {
-        buildCustomSnackBar(context, titulo: 'Erro!', texto: value['mensagem']);
+        buildCustomSnackBar(
+          context,
+          titulo: 'Erro!',
+          texto: value['mensagem'],
+          hasError: true,
+        );
       }
     });
   }

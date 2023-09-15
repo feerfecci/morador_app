@@ -119,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             } else {
                               buildCustomSnackBar(context,
                                   titulo: 'Login Errado',
+                                  hasError: true,
                                   texto:
                                       'Tente Verificar os dados preenchidos');
                             }

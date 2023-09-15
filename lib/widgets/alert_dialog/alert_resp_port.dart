@@ -137,7 +137,9 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
                         titulo: 'Obrigado!', texto: value['mensagem']);
                   } else {
                     buildCustomSnackBar(context,
-                        titulo: 'Algo de Errado!', texto: 'Tente Novamente!');
+                        hasError: true,
+                        titulo: 'Algo de Errado!',
+                        texto: 'Tente Novamente!');
                   }
                 });
               },

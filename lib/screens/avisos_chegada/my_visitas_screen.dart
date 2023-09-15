@@ -179,6 +179,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                         } else {
                                           buildCustomSnackBar(context,
                                               titulo: 'Algo saiu mau!',
+                                              hasError: true,
                                               texto: value['mensagem']);
                                         }
                                       });
@@ -190,6 +191,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                       } else {
                         buildCustomSnackBar(context,
                             titulo: 'Cuidado!',
+                            hasError: true,
                             texto: 'Selecione pelo menos uma solicitação');
                       }
                     },

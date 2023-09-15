@@ -45,10 +45,10 @@ Widget buildCardHome(BuildContext context,
             position: badges.BadgePosition.topEnd(
                 top: -size.height * 0.01, end: -size.width * 0.15),
             title: title == 'Caixas'
-                ? CorrespondenciaScreen.listaNovaCorresp4.length.toString()
+                ? CorrespondenciaScreen.listaNovaCorresp4.length
                 : title == 'Cartas'
-                    ? CorrespondenciaScreen.listaNovaCorresp3.length.toString()
-                    : QuadroAvisosScreen.qntAvisos.length.toString(),
+                    ? CorrespondenciaScreen.listaNovaCorresp3.length
+                    : QuadroAvisosScreen.qntAvisos.length,
             showBadge: title == 'Caixas' &&
                     CorrespondenciaScreen.listaNovaCorresp4.isNotEmpty
                 ? true

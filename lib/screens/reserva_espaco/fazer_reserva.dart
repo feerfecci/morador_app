@@ -56,7 +56,7 @@ class _FazerReservaState extends State<FazerReserva> {
         });
       } else {
         buildCustomSnackBar(context,
-            titulo: 'Algo Saiu Mal', texto: value['mensagem']);
+            hasError: true, titulo: 'Algo Saiu Mal', texto: value['mensagem']);
       }
     });
   }
@@ -113,7 +113,9 @@ class _FazerReservaState extends State<FazerReserva> {
                       startReserva();
                     } else {
                       buildCustomSnackBar(context,
-                          titulo: 'Cuidado!', texto: 'Selecione uma data');
+                          hasError: true,
+                          titulo: 'Cuidado!',
+                          texto: 'Selecione uma data');
                     }
                   },
                   isLoading: isLoading,

@@ -135,7 +135,9 @@ class ConstsFuture {
                 apiInfos['datahora_ultima_atualizacao'];
           } else {
             buildCustomSnackBar(context,
-                titulo: "Algo deu errado!!", texto: 'Você não tem acesso!');
+                hasError: true,
+                titulo: "Algo deu errado!!",
+                texto: 'Você não tem acesso!');
 
             return navigatorPopAndPush(context, LoginScreen());
           }
@@ -168,7 +170,9 @@ class ConstsFuture {
           ConstsFuture.navigatorPopAndPush(context, LoginScreen());
           LocalPreferences.removeUserLogin();
           buildCustomSnackBar(context,
-              titulo: "Algo deu errado!!", texto: apiBody['mensagem']);
+              hasError: true,
+              titulo: "Algo deu errado!!",
+              texto: apiBody['mensagem']);
         }
       }
     });

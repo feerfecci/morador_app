@@ -2,6 +2,7 @@ import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';
 import '../my_text_form_field.dart';
 import 'alert_all.dart';
@@ -61,6 +62,7 @@ trocarSenhaAlert(
                     ConstsWidget.buildCustomButton(
                       context,
                       'Salvar',
+                      color: Consts.kColorRed,
                       onPressed: () {
                         var validSenha =
                             formkeySenha.currentState?.validate() ?? false;

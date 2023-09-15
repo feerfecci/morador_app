@@ -45,6 +45,23 @@ class _EsqueciSenhaScreenState extends State<EsqueciSenhaScreen> {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
+                    FutureBuilder(
+                      future: ConstsFuture.apiImageIcon(
+                          'https://a.portariaapp.com/img/logo_azul.png'),
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          height: size.height * 0.2,
+                          width: size.width * 0.5,
+                          child: snapshot.data,
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.01),
+                      child: ConstsWidget.buildTextTitle(
+                          context, 'Portaria App | Condômino',
+                          size: 19),
+                    ),
                     Container(
                         alignment: Alignment.center,
                         height: size.height * 0.1,
@@ -87,7 +104,8 @@ class _EsqueciSenhaScreenState extends State<EsqueciSenhaScreen> {
                     ),
                     ConstsWidget.buildCustomButton(
                       context,
-                      'Recurar Senha',
+                      'Recuperar Senha',
+                      color: Consts.kColorRed,
                       onPressed: () {
                         var validForm =
                             formKey.currentState?.validate() ?? false;
@@ -102,6 +120,7 @@ class _EsqueciSenhaScreenState extends State<EsqueciSenhaScreen> {
                             } else {
                               buildCustomSnackBar(context,
                                   titulo: 'Algo Saiu Mau!',
+                                  hasError: true,
                                   texto: value['mensagem']);
                             }
                           });
