@@ -408,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: ConstsWidget.buildFutureImage(context,
+                        child: ConstsWidget.buildCachedImage(context,
                             title: 'Ver mais $idpublidade', iconApi: arquivo),
                       ),
                     );
@@ -458,7 +458,7 @@ class _HomePageState extends State<HomePage> {
                   bottom: SplashScreen.isSmall
                       ? size.height * 0.005
                       : size.height * 0.01),
-              child: ConstsWidget.buildFutureImage(context,
+              child: ConstsWidget.buildCachedImage(context,
                   iconApi: 'https://a.portariaapp.com/img/logo_azul.png')
 
               //  FutureBuilder(

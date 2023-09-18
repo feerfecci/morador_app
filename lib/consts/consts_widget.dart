@@ -99,7 +99,9 @@ class ConstsWidget {
   static Widget buildOutlinedButton(BuildContext context,
       {required String title,
       required void Function()? onPressed,
-      Color color = Consts.kButtonColor,
+      Color colorBorder = Consts.kButtonColor,
+      Color colorIcon = Consts.kButtonColor,
+      Color colorFont = Consts.kButtonColor,
       Color? backgroundColor = Colors.transparent,
       double fontSize = 18,
       IconData? icon,
@@ -113,7 +115,7 @@ class ConstsWidget {
         padding: EdgeInsets.symmetric(
             vertical: size.height * vertical,
             horizontal: size.width * horizontal),
-        side: BorderSide(width: size.width * 0.005, color: color),
+        side: BorderSide(width: size.width * 0.005, color: colorBorder),
         shape: StadiumBorder(),
       ),
       onPressed: onPressed,
@@ -121,7 +123,11 @@ class ConstsWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null)
-            Icon(size: SplashScreen.isSmall ? 20 : 24, icon, color: color),
+            Icon(
+              size: SplashScreen.isSmall ? 20 : 24,
+              icon,
+              color: colorIcon,
+            ),
           if (icon != null)
             SizedBox(
               width: size.width * 0.015,
@@ -130,7 +136,7 @@ class ConstsWidget {
             context,
             title,
             size: SplashScreen.isSmall ? fontSize - 2 : fontSize,
-            color: color,
+            color: colorFont,
           ),
         ],
       ),
@@ -247,7 +253,7 @@ class ConstsWidget {
         child: child);
   }
 
-  static Widget buildFutureImage(BuildContext context,
+  static Widget buildCachedImage(BuildContext context,
       {required String iconApi, double? width, double? height, String? title}) {
     var size = MediaQuery.of(context).size;
     // bool isLoading = true;
@@ -258,6 +264,11 @@ class ConstsWidget {
       fit: BoxFit.fill,
       fadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
+      placeholder: (context, url) => ShimmerWidget(
+          height:
+              SplashScreen.isSmall ? size.height * 0.06 : size.height * 0.068,
+          width: size.width * 0.15),
+      errorWidget: (context, url, error) => Image.asset('ico-error.png'),
     );
   }
 

@@ -59,7 +59,7 @@ Widget buildCardHome(BuildContext context,
                             QuadroAvisosScreen.qntAvisos.isNotEmpty
                         ? true
                         : false,
-            child: ConstsWidget.buildFutureImage(context,
+            child: ConstsWidget.buildCachedImage(context,
                 iconApi: iconApi,
                 height: SplashScreen.isSmall ? 0.08 : 0.066,
                 width: SplashScreen.isSmall ? 0.14 : 0.14),
@@ -83,7 +83,7 @@ Widget buildCardHome(BuildContext context,
           //   badgeStyle: badges.BadgeStyle(
           //     badgeColor: Consts.kColorRed,
           //   ),
-          //   child: ConstsWidget.buildFutureImage(context,
+          //   child: ConstsWidget.buildCachedImage(context,
           //       iconApi: iconApi,
           //       height: SplashScreen.isSmall ? 0.08 : 0.066,
           //       width: SplashScreen.isSmall ? 0.14 : 0.14),

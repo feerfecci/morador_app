@@ -62,7 +62,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       child: ConstsWidget.buildOutlinedButton(
                         context,
                         title: '    Minhas Visitas   ',
-                        color: Colors.grey,
+                        // color: Colors.grey,
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
                               context, MyVisitasScreen());
