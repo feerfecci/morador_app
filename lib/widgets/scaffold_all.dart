@@ -9,19 +9,27 @@ Widget buildScaffoldAll(context,
     Widget? floatingActionButton,
     bool? resizeToAvoidBottomInset,
     bool hasDrawer = true,
+    Widget? bottomNavigationBar,
     String title = ''}) {
   // ignore: unused_local_variable
   var size = MediaQuery.of(context).size;
   return Scaffold(
     resizeToAvoidBottomInset: resizeToAvoidBottomInset,
     floatingActionButton: floatingActionButton,
+    bottomNavigationBar: bottomNavigationBar,
     appBar: AppBar(
       centerTitle: true,
-      title: ConstsWidget.buildTextTitle(context, title,
-          size: SplashScreen.isSmall ? 20 : 24),
+      title: Column(
+        children: [
+          ConstsWidget.buildTextTitle(context, title,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+              size: SplashScreen.isSmall ? 20 : 24),
+        ],
+      ),
       backgroundColor: Colors.transparent,
       elevation: 0,
-      iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
+      iconTheme:
+          IconThemeData(color: Theme.of(context).textTheme.bodyLarge!.color),
     ),
     endDrawer: hasDrawer ? CustomDrawer() : null,
     body: ListView(

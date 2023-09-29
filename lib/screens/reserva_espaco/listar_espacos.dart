@@ -65,7 +65,7 @@ class ListarEspacosState extends State<ListarEspacos> {
                     top: size.height * 0.005, bottom: size.height * 0.02),
                 child: ConstsWidget.buildCustomButton(
                     context, 'Minhas Solicitações',
-                    icon: Icons.content_paste_go,
+                    // icon: Icons.content_paste_go,
                     color: Consts.kColorAzul,
                     onPressed: () => ConstsFuture.navigatorPageRoute(
                         context, ListarReservas())),
@@ -86,7 +86,7 @@ class ListarEspacosState extends State<ListarEspacos> {
                               snapshot.data['lista_espacos'][index];
                           bool? ativo = apiEspacos['ativo'];
                           int? idespaco = apiEspacos['idespaco'];
-                          String? nome_espaco = apiEspacos['nome_espaco'];
+                          String nome_espaco = apiEspacos['nome_espaco'];
                           int? idcondominio = apiEspacos['idcondominio'];
                           String? descricao = apiEspacos['descricao'];
                           List datas_reservadas =
@@ -98,29 +98,25 @@ class ListarEspacosState extends State<ListarEspacos> {
                                 // buildTextoEspaco(
                                 //   titulo: 'id:',
                                 //   texto: idespaco.toString(),
+                                // // ),
+                                // buildTextoEspaco(
+                                //   titulo: 'Nome do Espaço',
+                                //   texto: nome_espaco.toString(),
                                 // ),
-                                buildTextoEspaco(
-                                  titulo: 'Nome do Espaço',
-                                  texto: nome_espaco.toString(),
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                SizedBox(
+                                  width: size.height * 0.9,
+                                  child: ConstsWidget.buildTextTitle(
+                                      context, nome_espaco,
+                                      size: 20, textAlign: TextAlign.center),
                                 ),
                                 ConstsWidget.buildPadding001(
                                   context,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      ConstsWidget.buildTextTitle(
-                                          context, 'Informações',
-                                          size: 18),
-                                      SizedBox(
-                                        height: size.height * 0.005,
-                                      ),
-                                      ConstsWidget.buildTextSubTitle(
-                                          context, descricao!,
-                                          textAlign: TextAlign.center,
-                                          size: 16),
-                                    ],
-                                  ),
+                                  child: ConstsWidget.buildTextSubTitle(
+                                      context, descricao!,
+                                      textAlign: TextAlign.center, size: 16),
                                 ),
                                 ConstsWidget.buildPadding001(
                                   context,
@@ -128,17 +124,17 @@ class ListarEspacosState extends State<ListarEspacos> {
                                     context,
                                     'Solicitar Reserva',
                                     color: Consts.kColorRed,
-                                    icon: Icons.calendar_month_outlined,
+                                    // icon: Icons.calendar_month_outlined,
                                     onPressed: () {
                                       ConstsFuture.navigatorPageRoute(
-                                          context,
-                                          FazerReserva(
-                                              idespaco: idespaco!,
-                                              dataReservada: datas_reservadas,
-                                              nomeEspaco:
-                                                  nome_espaco.toString(),
-                                              descricaoEspaco:
-                                                  descricao.toString()));
+                                        context,
+                                        FazerReserva(
+                                          idespaco: idespaco!,
+                                          dataReservada: datas_reservadas,
+                                          nomeEspaco: nome_espaco.toString(),
+                                          descricaoEspaco: descricao.toString(),
+                                        ),
+                                      );
                                     },
                                   ),
                                 )

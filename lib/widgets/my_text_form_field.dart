@@ -39,27 +39,7 @@ Widget buildMyTextFormField(BuildContext context,
           context,
           title: title,
           hintText: hintText,
-        )
-
-        //  InputDecoration(
-        //   contentPadding:
-        //       EdgeInsets.only(left: size.width * 0.02, top: size.height * 0.05),
-        //   filled: true,
-        //   fillColor: Theme.of(context).canvasColor,
-        //   label: Text(
-        //     title,
-        //     style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-        //   ),
-        //   hintText: hintText,
-        //   border: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(16),
-        //   ),
-        //   enabledBorder: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(16),
-        //     borderSide: BorderSide(color: Colors.black26),
-        //   ),
-        // ),
-        ),
+        )),
   );
 }
 
@@ -75,10 +55,8 @@ InputDecoration buildTextFieldDecoration(BuildContext context,
         ? Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                title,
-                style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-              ),
+              ConstsWidget.buildTextSubTitle(context, title,
+                  size: SplashScreen.isSmall ? 14 : 16),
               Text(
                 ' *',
                 style: TextStyle(
@@ -87,17 +65,15 @@ InputDecoration buildTextFieldDecoration(BuildContext context,
               ),
             ],
           )
-        : Text(
-            title,
-            style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-          ),
+        : ConstsWidget.buildTextSubTitle(context, title,
+            size: SplashScreen.isSmall ? 14 : 16),
     hintText: hintText,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: Colors.black26),
+      borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
     ),
   );
 }
@@ -110,6 +86,7 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
     String? initialValue,
     bool readOnly = false,
     String? mask,
+    int? maxLength,
     TextCapitalization textCapitalization = TextCapitalization.none,
     Iterable<String>? autofillHints,
     TextEditingController? controller,
@@ -119,7 +96,7 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
   return ConstsWidget.buildPadding001(
     context,
     child: TextFormField(
-      controller: controller,
+      controller: controller, maxLength: maxLength,
       initialValue: initialValue, textCapitalization: textCapitalization,
       keyboardType: keyboardType,
       inputFormatters: [
@@ -166,7 +143,7 @@ Widget buildFormPassword(BuildContext context,
         autofillHints: autofillHints,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: Validatorless.multiple([
-          Validatorless.required('Senha é obrigatório'),
+          Validatorless.required('Preencha com sua senha de acesso'),
           Validatorless.min(6, 'Mínimo de 6 caracteres')
         ]),
         obscureText: isObscure,
@@ -178,14 +155,16 @@ Widget buildFormPassword(BuildContext context,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.black26)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.primary)),
           hintText: 'Digite sua Senha',
           label: RichText(
               text: TextSpan(
                   text: 'Digite sua Senha',
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: SplashScreen.isSmall ? 14 : 16),
+                    fontSize: SplashScreen.isSmall ? 14 : 16,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
+                  ),
                   children: [
                 TextSpan(
                     text: ' *',
@@ -196,8 +175,10 @@ Widget buildFormPassword(BuildContext context,
           suffixIcon: GestureDetector(
             onTap: onTap,
             child: isObscure
-                ? Icon(Icons.visibility_off_outlined)
-                : Icon(Icons.visibility_outlined),
+                ? Icon(Icons.visibility_off_outlined,
+                    color: Theme.of(context).textTheme.bodyLarge!.color)
+                : Icon(Icons.visibility_outlined,
+                    color: Theme.of(context).textTheme.bodyLarge!.color),
           ),
         ),
       ),

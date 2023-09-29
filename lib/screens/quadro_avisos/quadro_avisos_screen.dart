@@ -129,89 +129,58 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                             titulo,
                             textAlign: TextAlign.center,
                           ),
+                          expandedAlignment: Alignment.centerLeft,
                           children: [
-                            ConstsWidget.buildPadding001(
-                              context,
-                              child: ConstsWidget.buildTextSubTitle(
-                                  context, texto,
-                                  textAlign: TextAlign.center, size: 14),
-                            ),
-                            ConstsWidget.buildTextSubTitle(context, datahora),
                             SizedBox(
-                              height: size.height * 0.01,
-                            ),
-                            if (arquivo != '')
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                      width: size.width * 0.005,
-                                      color: Colors.blue),
-                                  shape: StadiumBorder(),
-                                ),
-                                onPressed: () {
-                                  launchUrl(Uri.parse(arquivo),
-                                      mode: LaunchMode
-                                          .externalNonBrowserApplication);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.023),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ConstsWidget.buildTextSubTitle(
-                                        context,
-                                        'Ver Anexo',
-                                        size: 18,
-                                        color: Colors.blue,
-                                      ),
-                                    ],
+                              width: size.width * 0.8,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ConstsWidget.buildTextSubTitle(
+                                    context,
+                                    texto,
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
+                                  ConstsWidget.buildTextSubTitle(
+                                      context, datahora),
+                                  SizedBox(
+                                    height: size.height * 0.01,
+                                  ),
+                                  if (arquivo != '')
+                                    OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: BorderSide(
+                                            width: size.width * 0.005,
+                                            color: Colors.blue),
+                                        shape: StadiumBorder(),
+                                      ),
+                                      onPressed: () {
+                                        launchUrl(Uri.parse(arquivo),
+                                            mode: LaunchMode
+                                                .externalNonBrowserApplication);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: size.height * 0.023),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ConstsWidget.buildTextSubTitle(
+                                              context,
+                                              'Ver Anexo',
+                                              size: 18,
+                                              color: Colors.blue,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
+                            )
                           ],
-                        )
-
-                            // child: ListTile(
-                            //   // leading: SizedBox(
-                            //   //   width: size.height * 0.1,
-                            //   //   child: Column(
-                            //   //     mainAxisAlignment: MainAxisAlignment.center,
-                            //   //     crossAxisAlignment: CrossAxisAlignment.center,
-                            //   //     children: [
-                            //   //       txt_tipo == 'Manutenção'
-                            //   //           ? Center(
-                            //   //               child: Icon(
-                            //   //                 Icons.engineering,
-                            //   //                 size: 40,
-                            //   //               ),
-                            //   //             )
-                            //   //           : Icon(
-                            //   //               Icons.warning,
-                            //   //               size: 40,
-                            //   //             ),
-                            //   //       ConstsWidget.buildTextSubTitle(
-                            //   //           context, txt_tipo)
-                            //   //     ],
-                            //   //   ),
-                            //   // ),
-                            //   title:
-                            //       ConstsWidget.buildTextTitle(context, titulo),
-                            //   subtitle: Padding(
-                            //     padding: EdgeInsets.symmetric(
-                            //         vertical: size.height * 0.01),
-                            //     child: Column(
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: [
-                            //         ConstsWidget.buildTextSubTitle(
-                            //             context, texto),
-                            //         ConstsWidget.buildTextSubTitle(
-                            //             context, datahora),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            ),
+                        )),
                       );
                     },
                   );

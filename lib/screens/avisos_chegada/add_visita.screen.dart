@@ -57,7 +57,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
           buildCustomSnackBar(context,
               titulo: 'Muito Bem', texto: 'Aviso(s) enviado(s) com sucesso');
           setState(() {
-            MyDatePicker.dataSelected == '';
+            MyDatePicker.dataSelected = '';
           });
         } else {
           buildCustomSnackBar(context,
@@ -219,12 +219,15 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                 ),
                 ConstsWidget.buildPadding001(
                   context,
-                  child: ConstsWidget.buildTextTitle(
-                      context, 'Informações do horário da visita'),
+                  child:
+                      ConstsWidget.buildTextTitle(context, 'Horário da Visita'),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
                 ),
                 MyDatePicker(
-                    dataSelected: dataSelected,
-                    lista: listEmailVisita), // Column(
+                    dataSelected: dataSelected, lista: listEmailVisita),
+                // Column(
                 //   children: [
                 //     // Row(
                 //     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -283,6 +286,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                       ),
                       ConstsWidget.buildPadding001(
                         context,
+                        vertical: 0.02,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -294,9 +298,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                                 Navigator.pop(context);
                               },
                             ),
-                            SizedBox(
-                              width: size.width * 0.02,
-                            ),
+                            Spacer(),
                             ConstsWidget.buildLoadingButton(
                               context,
                               color: Consts.kColorRed,

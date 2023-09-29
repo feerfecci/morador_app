@@ -4,7 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalPreferences {
   static const _keyUserUser = 'user';
   static const _keyUserPassWord = 'senha';
+  static const _keyIdUnidade = 'idmorador';
 
+//ORDERCARS
   static Future setOrderCards(model, {required int qualModel}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String key = qualModel == 1 ? 'indexList' : 'indexList2';
@@ -21,6 +23,7 @@ class LocalPreferences {
     return indexLista;
   }
 
+//INFO LOGIN
   static Future setUserLogin(String user, String senha) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(
@@ -45,8 +48,22 @@ class LocalPreferences {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove(_keyUserUser);
     preferences.remove(_keyUserPassWord);
+    preferences.remove(_keyIdUnidade);
   }
 
+//Set IdUnidade
+  static Future setIdLogin(String? idUnidade) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString(_keyIdUnidade, idUnidade ?? '');
+  }
+
+  static Future getIdLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? cacheIdUnidade = preferences.getString(_keyIdUnidade);
+    return cacheIdUnidade;
+  }
+
+//DATE LOGIN
   static Future setDateLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 

@@ -90,11 +90,17 @@ class ListarReservasState extends State<ListarReservas> {
                               children: [
                                 Row(
                                   children: [
-                                    buildTextReserva(
-                                      titulo: 'Nome do Espaço',
-                                      texto: nome_espaco.toString(),
+                                    // buildTextReserva(
+                                    //   titulo: 'Nome do Espaço',
+                                    //   texto: nome_espaco.toString(),
+                                    // ),
+                                    SizedBox(
+                                      width: size.width * 0.64,
+                                      child: ConstsWidget.buildTextTitle(
+                                        context,
+                                        nome_espaco,
+                                      ),
                                     ),
-                                    Spacer(),
                                     Container(
                                       decoration: BoxDecoration(
                                           color: status == 0
@@ -118,13 +124,13 @@ class ListarReservasState extends State<ListarReservas> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     buildTextReserva(
-                                      titulo: 'Data',
-                                      width: 0.3,
+                                      titulo: 'Data da Reserva',
+                                      width: 0.4,
                                       texto: data_reserva.toString(),
                                     ),
                                     buildTextReserva(
                                       titulo: 'Reservado por',
-                                      width: 0.6,
+                                      width: 0.5,
                                       texto: nome_morador.toString(),
                                     ),
                                   ],

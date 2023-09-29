@@ -38,11 +38,12 @@ class CadastroCarros extends StatefulWidget {
   State<CadastroCarros> createState() => _CadastroCarrosState();
 }
 
+// Object? getDropTipoCarro;
+
 class _CadastroCarrosState extends State<CadastroCarros> {
   final keyFormCarros = GlobalKey<FormState>();
   FormInfosCarro formInfosCarro = FormInfosCarro();
   List listTipoCarro = [0, 1, 2];
-  Object? getDropTipoCarro;
   @override
   Widget build(BuildContext context) {
     int tipoApi = 0;
@@ -124,7 +125,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                       textAlign: TextAlign.center,
                     ),
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                         fontWeight: FontWeight.w400,
                         fontSize: 18),
                   ),
@@ -140,89 +141,102 @@ class _CadastroCarrosState extends State<CadastroCarros> {
       context,
       title: widget.idveiculo == null ? 'Adicionar Veículo' : 'Editar Veículo',
       resizeToAvoidBottomInset: true,
-      body: Form(
-        key: keyFormCarros,
-        child: MyBoxShadow(
-          child: Column(
-            children: [
-              buildDropTipo(),
-              buildMyTextFormObrigatorio(
-                context,
-                title: 'Marca',
-                initialValue: widget.marca,
-                textCapitalization: TextCapitalization.words,
-                onSaved: (text) =>
-                    formInfosCarro = formInfosCarro.copyWith(marca: text),
+      body: MyBoxShadow(
+        child: Column(
+          children: [
+            ConstsWidget.buildCamposObrigatorios(context),
+            buildDropTipo(),
+            Form(
+              key: keyFormCarros,
+              child: Column(
+                children: [
+                  buildMyTextFormObrigatorio(
+                    context,
+                    title: 'Marca',
+                    initialValue: widget.marca,
+                    textCapitalization: TextCapitalization.words,
+                    onSaved: (text) =>
+                        formInfosCarro = formInfosCarro.copyWith(marca: text),
+                  ),
+                  buildMyTextFormObrigatorio(
+                    context,
+                    title: 'Modelo',
+                    initialValue: widget.modelo,
+                    textCapitalization: TextCapitalization.words,
+                    onSaved: (text) =>
+                        formInfosCarro = formInfosCarro.copyWith(modelo: text),
+                  ),
+                  buildMyTextFormObrigatorio(
+                    context,
+                    initialValue: widget.cor,
+                    textCapitalization: TextCapitalization.words,
+                    title: 'Cor',
+                    onSaved: (text) =>
+                        formInfosCarro = formInfosCarro.copyWith(cor: text),
+                  ),
+                  buildMyTextFormObrigatorio(
+                    initialValue: widget.placa,
+                    context,
+                    title: 'Placa',
+                    textCapitalization: TextCapitalization.characters,
+                    // keyboardType: TextInputType.name,
+                    // mask: '#######',
+                    onSaved: (text) =>
+                        formInfosCarro = formInfosCarro.copyWith(placa: text),
+                  ),
+                  buildMyTextFormField(
+                    context,
+                    initialValue: widget.vaga,
+                    title: 'Vaga',
+                    // mask: '#######',
+                    onSaved: (text) =>
+                        formInfosCarro = formInfosCarro.copyWith(vaga: text),
+                  ),
+                ],
               ),
-              buildMyTextFormObrigatorio(
-                context,
-                title: 'Modelo',
-                initialValue: widget.modelo,
-                textCapitalization: TextCapitalization.words,
-                onSaved: (text) =>
-                    formInfosCarro = formInfosCarro.copyWith(modelo: text),
-              ),
-              buildMyTextFormObrigatorio(
-                context,
-                initialValue: widget.cor,
-                textCapitalization: TextCapitalization.words,
-                title: 'Cor',
-                onSaved: (text) =>
-                    formInfosCarro = formInfosCarro.copyWith(cor: text),
-              ),
-              buildMyTextFormObrigatorio(
-                initialValue: widget.placa,
-                context,
-                title: 'Placa',
-                onSaved: (text) =>
-                    formInfosCarro = formInfosCarro.copyWith(placa: text),
-              ),
-              buildMyTextFormField(
-                context,
-                initialValue: widget.vaga,
-                title: 'Vaga',
-                onSaved: (text) =>
-                    formInfosCarro = formInfosCarro.copyWith(vaga: text),
-              ),
-              ConstsWidget.buildCustomButton(
-                context,
-                icon: Icons.save_alt,
-                'Salvar',
-                onPressed: () {
-                  var formValid =
-                      keyFormCarros.currentState?.validate() ?? false;
-                  if (formValid) {
-                    keyFormCarros.currentState?.save();
-                    String editOrAdd = widget.idveiculo == null
-                        ? 'incluirVeiculosUnidade&'
-                        : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
-                    ConstsFuture.changeApi(
-                            'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
-                        .then((value) {
-                      if (!value['erro']) {
-                        ConstsFuture.navigatorPopAndReplacement(
-                            context,
-                            ListaTotalUnidade(
-                              idunidade: widget.idunidade,
-                              tipoAbrir: 2,
-                            ));
-                        setState(() {});
-                        buildCustomSnackBar(context,
-                            titulo: 'Parabens', texto: value['mensagem']);
-                      } else {
-                        buildCustomSnackBar(context,
-                            hasError: true,
-                            titulo: 'Algo Saiu Mau!',
-                            texto: value['mensagem']);
-                      }
-                    });
-                  } else {
-                    //print('object');
-                  }
-                },
-              )
-            ],
-          ),
+            ),
+            ConstsWidget.buildCustomButton(
+              context,
+              // icon: Icons.save_alt,
+              'Salvar',
+              color: Consts.kColorRed,
+              onPressed: () {
+                var formValid = keyFormCarros.currentState?.validate() ?? false;
+                FocusManager.instance.primaryFocus!.unfocus();
+                if (formValid && formInfosCarro.tipo != null) {
+                  keyFormCarros.currentState?.save();
+                  String editOrAdd = widget.idveiculo == null
+                      ? 'incluirVeiculosUnidade&'
+                      : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
+                  ConstsFuture.changeApi(
+                          'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
+                      .then((value) {
+                    if (!value['erro']) {
+                      ConstsFuture.navigatorPopAndReplacement(
+                          context,
+                          ListaTotalUnidade(
+                            idunidade: widget.idunidade,
+                            tipoAbrir: 2,
+                          ));
+                      setState(() {});
+                      buildCustomSnackBar(context,
+                          titulo: 'Sucesso', texto: value['mensagem']);
+                    } else {
+                 return     buildCustomSnackBar(context,
+                          hasError: true,
+                          titulo: 'Algo saiu mal!',
+                          texto: value['mensagem']);
+                    }
+                  });
+                } else {buildCustomSnackBar(context,
+                          hasError: true,
+                          titulo: 'Algo saiu mau!',
+                          texto: 'Escolha um tipo de veículos');
+                    }
+                }
+              },
+            )
+          ],
         ),
       ),
     );

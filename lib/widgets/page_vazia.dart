@@ -22,7 +22,8 @@ class _PageVaziaState extends State<PageVazia> {
         ),
         Padding(
           padding: EdgeInsets.all(8.0),
-          child: ConstsWidget.buildTextTitle(context, widget.title),
+          child: ConstsWidget.buildTextTitle(context, widget.title,
+              textAlign: TextAlign.center),
         ),
       ],
     );

@@ -7,12 +7,15 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../repositories/shared_preferences.dart';
+import '../screens/cadastro/morador/cadastro_morador.dart';
 import '../screens/termodeuso/aceitar_alert.dart';
 import '../screens/correspondencia/correspondencia_screen.dart';
 import '../screens/home/dropAptos.dart';
 import '../screens/quadro_avisos/quadro_avisos_screen.dart';
+import '../widgets/alert_dialog/alert_all.dart';
 import '../widgets/snack_bar.dart';
 import 'consts.dart';
+import 'consts_widget.dart';
 
 class ConstsFuture {
   static Future navigatorPageRoute(BuildContext context, Widget route) {
@@ -48,12 +51,73 @@ class ConstsFuture {
   }
 
   static Future efetuaLogin(context, String user, String senha,
-      {int? idUnidade}) async {
+      {String? idUnidade, bool reLogin = false}) async {
+    alertSenhaPadrao() {
+      if (!InfosMorador.senha_alterada) {
+        return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialogAll(
+              title: Stack(
+                alignment: Alignment.center,
+                children: [
+                  ConstsWidget.buildTextTitle(context, 'Senha Padrão',
+                      textAlign: TextAlign.center),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.close)),
+                    ],
+                  )
+                ],
+              ),
+              children: [
+                ConstsWidget.buildTextTitle(context,
+                    'Sua senha é a padrão. Acesse seu Perfil para trocar para uma senha personalizada e garantir sua segurança',
+                    textAlign: TextAlign.center),
+                SizedBox(
+                  height: 10,
+                ),
+                ConstsWidget.buildCustomButton(
+                  context,
+                  'Trocar Senha',
+                  onPressed: () => ConstsFuture.navigatorPopAndPush(
+                      context,
+                      CadastroMorador(
+                        idmorador: InfosMorador.idmorador,
+                        iddivisao: InfosMorador.iddivisao,
+                        idunidade: InfosMorador.idunidade,
+                        numero: InfosMorador.numero,
+                        login: InfosMorador.login,
+                        documento: InfosMorador.documento,
+                        acesso: InfosMorador.acessa_sistema ? 1 : 0,
+                        ativo: InfosMorador.ativo,
+                        ddd: InfosMorador.dddtelefone,
+                        telefone: InfosMorador.telefone,
+                        email: InfosMorador.email,
+                        nascimento: InfosMorador.data_nascimento,
+                        nome_completo: InfosMorador.nome_completo,
+                        isDrawer: true,
+                      )),
+                )
+              ]),
+        );
+      }
+    }
+
     CorrespondenciaScreen.listaNovaCorresp3.clear();
     CorrespondenciaScreen.listaNovaCorresp4.clear();
     InfosMorador.user = user;
     criptoSenha(senha).then((senhaCrip) async {
-      InfosMorador.senhaCripto = idUnidade == null ? senhaCrip : senha;
+      InfosMorador.senhaCripto = idUnidade == null
+          ? senhaCrip
+          : reLogin
+              ? senhaCrip
+              : senha;
       // Timer(Duration(hours: 1), () {
       //   LocalPreferences.removeUserLogin();
       // });
@@ -65,29 +129,26 @@ class ConstsFuture {
         bool erro = apiBody['erro'];
         if (!erro && apiBody['mensagem'] != "") {
           if (idUnidade == null) DropAptos.listAptos = apiBody['login'];
+          // if (DropAptos.listAptos.length != 1) {
+          //   DropAptos.listAptos.map((e) {
+          //     String? getIdMorador;
+          //     LocalPreferences.getIdLogin().then((value) {
+          //       getIdMorador == value;
+          //     });
+          //     if (DropAptos.listAptos.contains(getIdMorador)) {
+          //       print(e);
+          //     }
+          //   }).toSet();
+          // }
+
           var apiInfos = apiBody['login'][0];
           if (apiInfos['acessa_sistema'] == null ||
               apiInfos['acessa_sistema']) {
-            //login morador
-            // if(apiBody['login'].length){
-            // }
             if (idUnidade == null) {
+              InfosMorador.listIdMorador.clear();
+              InfosMorador.qntApto = 0;
               InfosMorador.qntApto = apiBody['login'].length;
-              // for (i; i < InfosMorador.qntApto - 1; i++) {
-              //   //print('passou for $i');
-              //   InfosMorador.listIdMorador.add(apiBody['login'][i]
-              //           ['responsavel']
-              //       ? apiBody['login'][i]['id'].toString()
-              //       : apiBody['login'][i]['idunidade'].toString());
-              //   InfosMorador.listIdCond
-              //       .add(apiBody['login'][i]['idcondominio'].toString());
-              //   InfosMorador.listIdUnidade
-              //       .add(apiBody['login'][i]['idunidade'].toString());
-              // },
-              OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
-
               for (var i = 0; i < InfosMorador.qntApto; i++) {
-                ////print('passou for $i');
                 InfosMorador.listIdMorador.add(!apiBody['login'][i]
                         ['responsavel']
                     ? apiBody['login'][i]['id'].toString()
@@ -96,13 +157,8 @@ class ConstsFuture {
                     .add(apiBody['login'][i]['idcondominio'].toString());
                 InfosMorador.listIdUnidade
                     .add(apiBody['login'][i]['idunidade'].toString());
-
-                //    //print('id morador: ${InfosMorador.listIdMorador[i]}');
-                //    //print('id unidade: ${InfosMorador.listIdUnidade[i]}');
-                //    //print('id cond: ${InfosMorador.listIdCond[i]}');
               }
             }
-
             InfosMorador.responsavel = apiInfos['responsavel'];
             InfosMorador.idmorador = !apiInfos['responsavel']
                 ? apiInfos['id']
@@ -133,6 +189,8 @@ class ConstsFuture {
             InfosMorador.aceitou_termos = apiInfos['aceitou_termos'];
             InfosMorador.datahora_ultima_atualizacao =
                 apiInfos['datahora_ultima_atualizacao'];
+            InfosMorador.senha_alterada = apiInfos['senha_alterada'];
+            LocalPreferences.setIdLogin('${InfosMorador.idunidade}');
           } else {
             buildCustomSnackBar(context,
                 hasError: true,
@@ -149,7 +207,14 @@ class ConstsFuture {
             apiListarCorrespondencias(4).whenComplete(() {
               apiQuadroAvisos().whenComplete(() {
                 if (!InfosMorador.aceitou_termos) {
-                  return showDialogAceitar(context, idUnidade: idUnidade);
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AceitarTermosScreen(
+                            idUnidade:
+                                idUnidade != null ? int.parse(idUnidade) : 0);
+                      });
                 } else {
                   idUnidade == null
                       ? ConstsFuture.navigatorPopAndPush(context, HomePage())
@@ -159,6 +224,7 @@ class ConstsFuture {
                             builder: (context) => HomePage(),
                           ),
                           (route) => false);
+                  alertSenhaPadrao();
                 }
               });
             });

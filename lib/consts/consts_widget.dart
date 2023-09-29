@@ -23,14 +23,17 @@ class ConstsWidget {
   }
 
   static Widget buildTextTitle(BuildContext context, String title,
-      {textAlign, Color? color, double size = 18, TextOverflow? overflow}) {
+      {textAlign,
+      Color? color,
+      double size = 18,
+      TextOverflow overflow = TextOverflow.ellipsis}) {
     return Text(
       title,
       maxLines: 20,
       textAlign: textAlign,
       overflow: overflow,
       style: TextStyle(
-        color: color ?? Theme.of(context).colorScheme.primary,
+        color: color ?? Theme.of(context).textTheme.bodyLarge!.color,
         fontSize: SplashScreen.isSmall ? (size - 4) : size,
         fontWeight: FontWeight.bold,
       ),
@@ -44,7 +47,7 @@ class ConstsWidget {
       maxLines: 20,
       textAlign: textAlign,
       style: TextStyle(
-          color: color ?? Theme.of(context).colorScheme.primary,
+          color: color ?? Theme.of(context).textTheme.bodyLarge!.color,
           fontSize: SplashScreen.isSmall ? (size - 4) : size,
           fontWeight: FontWeight.normal,
           height: 1.4),
@@ -52,43 +55,39 @@ class ConstsWidget {
   }
 
   static Widget buildCustomButton(BuildContext context, String title,
-      {IconData? icon,
-      double? altura,
+      {double? altura,
       Color? color = Consts.kColorAzul,
+      double rowSpacing = 0.00,
+      Color? colorText = Colors.white,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Consts.borderButton))),
+          backgroundColor: color, shape: StadiumBorder()),
       onPressed: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+        padding: EdgeInsets.symmetric(
+            vertical: SplashScreen.isSmall
+                ? size.height * 0.035
+                : size.height * 0.025),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
           children: [
-            if (icon != null)
-              Row(
-                children: [
-                  Icon(
-                      size: SplashScreen.isSmall ? 20 : 24,
-                      icon,
-                      color: Colors.white),
-                  SizedBox(
-                    width: size.width * 0.015,
-                  ),
-                ],
-              ),
+            SizedBox(
+              width: size.height * rowSpacing,
+            ),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
-                color: Colors.white,
+                color: colorText,
                 fontSize: SplashScreen.isSmall ? 14 : 18,
                 fontWeight: FontWeight.w500,
               ),
+            ),
+            SizedBox(
+              width: size.height * rowSpacing,
             ),
           ],
         ),
@@ -103,9 +102,8 @@ class ConstsWidget {
       Color colorIcon = Consts.kButtonColor,
       Color colorFont = Consts.kButtonColor,
       Color? backgroundColor = Colors.transparent,
+      double rowSpacing = 0.00,
       double fontSize = 18,
-      IconData? icon,
-      double vertical = 0.0235,
       double horizontal = 0.024}) {
     var size = MediaQuery.of(context).size;
     return OutlinedButton(
@@ -113,7 +111,9 @@ class ConstsWidget {
         alignment: Alignment.center,
         backgroundColor: backgroundColor,
         padding: EdgeInsets.symmetric(
-            vertical: size.height * vertical,
+            vertical: SplashScreen.isSmall
+                ? size.height * 0.035
+                : size.height * 0.025,
             horizontal: size.width * horizontal),
         side: BorderSide(width: size.width * 0.005, color: colorBorder),
         shape: StadiumBorder(),
@@ -122,21 +122,20 @@ class ConstsWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (icon != null)
-            Icon(
-              size: SplashScreen.isSmall ? 20 : 24,
-              icon,
-              color: colorIcon,
-            ),
-          if (icon != null)
-            SizedBox(
-              width: size.width * 0.015,
-            ),
-          ConstsWidget.buildTextSubTitle(
-            context,
+          SizedBox(
+            width: size.width * rowSpacing,
+          ),
+          Text(
             title,
-            size: SplashScreen.isSmall ? fontSize - 2 : fontSize,
-            color: colorFont,
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: colorFont,
+              fontSize: SplashScreen.isSmall ? 14 : 18,
+              // fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(
+            width: size.width * rowSpacing,
           ),
         ],
       ),
@@ -148,14 +147,15 @@ class ConstsWidget {
       required bool isLoading,
       required String title,
       double horizontal = 0,
-      IconData? icon,
       Color color = Consts.kColorAzul}) {
     var size = MediaQuery.of(context).size;
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.025,
+                vertical: SplashScreen.isSmall
+                    ? size.height * 0.035
+                    : size.height * 0.025,
                 horizontal: size.width * horizontal),
             backgroundColor: color,
             shape: RoundedRectangleBorder(
@@ -164,17 +164,7 @@ class ConstsWidget {
         child: !isLoading
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
                 children: [
-                  if (icon != null)
-                    Icon(
-                        size: SplashScreen.isSmall ? 20 : 24,
-                        icon,
-                        color: Colors.white),
-                  if (icon != null)
-                    SizedBox(
-                      width: size.width * 0.015,
-                    ),
                   Text(
                     title,
                     overflow: TextOverflow.ellipsis,
@@ -223,19 +213,17 @@ class ConstsWidget {
       {required bool isChecked,
       required void Function(bool? value)? onChanged,
       required String title,
+      double? width,
       MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center}) {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        buildTextTitle(context, title),
-        Transform.scale(
-          scale: 1.3,
-          child: Checkbox(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            value: isChecked,
-            onChanged: onChanged,
-          ),
+        SizedBox(width: width, child: buildTextTitle(context, title)),
+        Checkbox(
+          // shape:
+          //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          value: isChecked,
+          onChanged: onChanged,
         ),
       ],
     );
@@ -286,6 +274,7 @@ class ConstsWidget {
       child: ExpansionTile(
         // trailing: Icon(Icons.arrow_downward),
         onExpansionChanged: onExpansionChanged,
+        iconColor: Theme.of(context).textTheme.bodyLarge!.color,
         subtitle: subtitle == null
             ? null
             : titleCenter
@@ -314,12 +303,29 @@ class ConstsWidget {
               : title == 0
                   ? ''
                   : title.toString(),
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: title < 99
+                  ? SplashScreen.isSmall
+                      ? 12
+                      : 16
+                  : SplashScreen.isSmall
+                      ? 10
+                      : 14),
         ),
         position: position,
         badgeStyle: badges.BadgeStyle(
           badgeColor: Consts.kColorRed,
         ),
         child: child);
+  }
+
+  static Widget buildCamposObrigatorios(BuildContext context) {
+    return ConstsWidget.buildPadding001(
+      context,
+      child: ConstsWidget.buildTextSubTitle(context, '(*) Campo Obrigatório',
+          color: Consts.kColorRed),
+    );
   }
 }

@@ -91,7 +91,14 @@ Widget buildCardHome(BuildContext context,
           SizedBox(
             height: size.height * 0.01,
           ),
-          ConstsWidget.buildTextTitle(context, title),
+          SizedBox(
+              width: size.width * 0.9,
+              child: ConstsWidget.buildTextTitle(
+                context,
+                title,
+                textAlign: TextAlign.center,
+                // size: 16,
+              )),
         ],
       ),
     ),

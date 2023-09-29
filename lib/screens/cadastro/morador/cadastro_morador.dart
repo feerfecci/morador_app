@@ -2,6 +2,8 @@
 import 'dart:async';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
+import 'package:app_portaria/widgets/date_picker.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +19,16 @@ import '../../splash_screen/splash_screen.dart';
 import '../listar_total.dart';
 import 'package:diacritic/diacritic.dart';
 
+import 'listar_morador.dart';
+
 // ignore: must_be_immutable
 class CadastroMorador extends StatefulWidget {
+  static TextEditingController senhaNovaCtrl = TextEditingController();
+  static TextEditingController senhaConfirmCtrl = TextEditingController();
+  static TextEditingController retiradaNovaCtrl = TextEditingController();
+  static TextEditingController retiradaConfirmCtrl = TextEditingController();
+  static int isSenhaLoginAll = 0;
+  static int isSenhaRetiradaAll = 0;
   int? idmorador;
   bool ativo;
   String? nome_completo;
@@ -60,15 +70,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   List listAtivo = [1, 0];
   bool isGerarSenha = false;
   Object? dropdownValueAtivo;
-  final formKeySenha = GlobalKey<FormState>();
-  final senhaAtualCtrl = TextEditingController();
-  final senhaNovaCtrl = TextEditingController();
-  final senhaConfirmCtrl = TextEditingController();
 
   final formKeyRetirada = GlobalKey<FormState>();
-  final retiradaAtualCtrl = TextEditingController();
-  final retiradaNovaCtrl = TextEditingController();
-  final retiradaConfirmCtrl = TextEditingController();
+  String loginGerado2 = '';
 
   @override
   void initState() {
@@ -80,17 +84,21 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     _formInfosMorador = _formInfosMorador.copyWith(telefone: widget.telefone);
     _formInfosMorador = _formInfosMorador.copyWith(ddd: widget.ddd);
     _formInfosMorador = _formInfosMorador.copyWith(email: widget.email);
-    _formInfosMorador =
-        _formInfosMorador.copyWith(nascimento: widget.nascimento);
+    // _formInfosMorador =
+    //     _formInfosMorador.copyWith(nascimento: widget.nascimento);
     _formInfosMorador = _formInfosMorador.copyWith(documento: widget.documento);
     _formInfosMorador = _formInfosMorador.copyWith(acesso: widget.acesso);
     _formInfosMorador = _formInfosMorador.copyWith(idunidade: widget.idunidade);
     _formInfosMorador = _formInfosMorador.copyWith(iddivisao: widget.iddivisao);
+    loginGerado2 = !InfosMorador.senha_alterada && widget.idunidade != null
+        ? InfosMorador.login
+        : '';
+    MyDatePicker.dataSelected = widget.nascimento ?? '';
   }
 
   final _formKeyMorador = GlobalKey<FormState>();
   FormInfosMorador _formInfosMorador = FormInfosMorador();
-  String loginGerado2 = '';
+
   String dataLogin = '';
   bool nomeDocAlterado = false;
   bool isChecked = true;
@@ -113,14 +121,18 @@ class _CadastroMoradorState extends State<CadastroMorador> {
         child: MyBoxShadow(
           child: Column(
             children: [
-              ConstsWidget.buildTextSubTitle(
-                  context, '(*) Preenchimento Obrigatório',
-                  color: Consts.kColorRed),
+              ConstsWidget.buildPadding001(
+                context,
+                child: ConstsWidget.buildTextSubTitle(
+                    context, '(*) Campo Obrigatório',
+                    color: Consts.kColorRed),
+              ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (InfosMorador.responsavel)
-                    buildAtivoInativo2(
+                  if (!widget.isDrawer)
+                    buildDropAtivoInativo(
                       context,
                     ),
                   // if (widget.idmorador == null)
@@ -143,36 +155,42 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     },
                   ),
                   // if (widget.idmorador == null)
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: size.width * 0.37,
-                        child: buildMyTextFormField(context,
-                            initialValue: widget.nascimento != '0000-00-00' &&
-                                    widget.nascimento != ''
-                                ? DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.parse(widget.nascimento!))
-                                : null,
-                            // readOnly: !InfosMorador.responsavel,
-                            title: 'Data de Nascimento',
-                            keyboardType: TextInputType.number,
-                            mask: '##/##/####',
-                            hintText: '##/##/####', onSaved: (text) {
-                          if (text != '') {
-                            if (text!.length >= 6) {
-                              var ano = text.substring(6);
-                              var mes = text.substring(3, 5);
-                              var dia = text.substring(0, 2);
-                              _formInfosMorador = _formInfosMorador.copyWith(
-                                  nascimento: '$ano-$mes-$dia');
-                            }
-                          } else {
-                            _formInfosMorador =
-                                _formInfosMorador.copyWith(nascimento: "");
-                          }
-                        }),
-                      ),
+                          width: size.width * 0.37,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: SplashScreen.isSmall
+                                    ? size.height * 0.01
+                                    : size.height * 0.007,
+                              ),
+                              MyDatePicker(
+                                dataSelected:
+                                    widget.nascimento != '0000-00-00' &&
+                                            widget.nascimento != ''
+                                        ? DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(widget.nascimento!))
+                                        : null,
+                                hintText:
+                                    MyDatePicker.dataSelected != '0000-00-00' &&
+                                            MyDatePicker.dataSelected != ''
+                                        ? DateFormat('dd/MM/yyyy')
+                                            .format(DateTime.parse(
+                                                MyDatePicker.dataSelected))
+                                            .toString()
+                                        : MyDatePicker.dataSelected,
+                                type: DateTimePickerType.date,
+                                aniversario: true,
+                              ),
+                            ],
+                          )),
                       SizedBox(
                         width: size.width * 0.5,
                         child: buildMyTextFormObrigatorio(
@@ -180,7 +198,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           // readOnly: !InfosMorador.responsavel,
                           title: 'Documento',
                           initialValue: widget.documento,
-                          hintText: 'RG, CPF',
+                          hintText: 'CPF', maxLength: 20,
+
                           onSaved: (text) {
                             if (text!.length >= 4) {
                               _formInfosMorador =
@@ -228,13 +247,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         width: size.width * 0.1,
                       ),
                       SizedBox(
-                        width: size.width * 0.5,
+                        width: size.width * 0.65,
                         child: buildMyTextFormField(
                           context,
                           initialValue: widget.telefone,
                           title: 'Telefone',
                           keyboardType: TextInputType.number,
-                          mask: '# ########',
                           hintText: '9 11223344',
                           onSaved: (text) {
                             _formInfosMorador =
@@ -245,81 +263,70 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ],
                   ),
 
-                  TextFormField(
-                    initialValue: widget.email,
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    textAlign: TextAlign.start,
-                    textInputAction: TextInputAction.next,
-                    onSaved: (text) {
-                      _formInfosMorador =
-                          _formInfosMorador.copyWith(email: text);
-                    },
-                    style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
-                    validator: Validatorless.multiple([
-                      Validatorless.email('Não é um email válido'),
-                      Validatorless.required('Obrigatório'),
-                    ]),
-                    decoration: buildTextFieldDecoration(context,
-                        isobrigatorio: true,
-                        title: 'Email',
-                        hintText: 'exemplo@exe.com'),
-                  ),
-
-                  // buildMyTextFormObrigatorio(
-                  //   context,
-                  //   title: 'Email',
-                  //   initialValue: widget.email,validator: ,
-                  //   hintText: 'exemplo@exc.com',
-                  //   onSaved: (text) {
-                  //     _formInfosMorador =
-                  //         _formInfosMorador.copyWith(email: text);
-                  //   },
-                  // ),
-
-                  // if (loginGerado == '')
                   ConstsWidget.buildPadding001(
                     context,
-                    child: ConstsWidget.buildLoadingButton(
+                    child: buildMyTextFormObrigatorio(
                       context,
-                      title: 'Gerar Login',
-                      isLoading: isLoadingLogin,
-                      onPressed: () {
-                        var formValid =
-                            _formKeyMorador.currentState?.validate() ?? false;
-                        if (formValid) {
-                          setState(() {
-                            isLoadingLogin = true;
-                          });
-                          _formKeyMorador.currentState?.save();
-                          gerarLogin(context,
-                                  nomeUsado: _formInfosMorador.nome_morador!,
-                                  nomeDocAlterado: nomeDocAlterado,
-                                  documento: _formInfosMorador.documento!)
-                              .then((value) {
+                      initialValue: widget.email,
+                      keyboardType: TextInputType.emailAddress,
+                      onSaved: (text) {
+                        _formInfosMorador =
+                            _formInfosMorador.copyWith(email: text);
+                      },
+                      title: 'Email',
+                      hintText: 'exemplo@exe.com',
+                      validator: Validatorless.multiple([
+                        Validatorless.email('Não é um email válido'),
+                        Validatorless.required('Obrigatório'),
+                      ]),
+                    ),
+                  ),
+
+                  if (loginGerado2 == '')
+                    ConstsWidget.buildPadding001(
+                      context,
+                      child: ConstsWidget.buildLoadingButton(
+                        context,
+                        title: 'Gerar Login',
+                        isLoading: isLoadingLogin,
+                        color: Consts.kColorVerde,
+                        onPressed: () {
+                          var formValid =
+                              _formKeyMorador.currentState?.validate() ?? false;
+                          FocusManager.instance.primaryFocus!.unfocus();
+                          if (formValid) {
                             setState(() {
-                              isLoadingLogin = false;
+                              isLoadingLogin = true;
                             });
-                            if (value != '') {
-                              setState(() {
-                                loginGerado2 = value;
-                                _formInfosMorador = _formInfosMorador.copyWith(
-                                    login: loginGerado2);
-                              });
-                            } else {
+                            _formKeyMorador.currentState?.save();
+                            gerarLogin(context,
+                                    nomeUsado: _formInfosMorador.nome_morador!,
+                                    nomeDocAlterado: nomeDocAlterado,
+                                    documento: _formInfosMorador.documento!)
+                                .then((value) {
                               setState(() {
                                 isLoadingLogin = false;
                               });
-                              buildCustomSnackBar(context,
-                                  titulo: 'Algo Saiu Mal',
-                                  hasError: true,
-                                  texto: 'O login não foi gerado');
-                            }
-                          });
-                        }
-                      },
+                              if (value != '') {
+                                setState(() {
+                                  loginGerado2 = value;
+                                  _formInfosMorador = _formInfosMorador
+                                      .copyWith(login: loginGerado2);
+                                });
+                              } else {
+                                setState(() {
+                                  isLoadingLogin = false;
+                                });
+                                buildCustomSnackBar(context,
+                                    titulo: 'Algo saiu mal',
+                                    hasError: true,
+                                    texto: 'O login não foi gerado');
+                              }
+                            });
+                          }
+                        },
+                      ),
                     ),
-                  ),
                 ],
               ),
               //Login Gerado
@@ -355,31 +362,30 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         children: [
                           ConstsWidget.buildPadding001(
                             context,
-                            child: ConstsWidget.buildOutlinedButton(
+                            vertical: 0.02,
+                            child: ConstsWidget.buildCustomButton(
                               context,
-                              title: 'Senha Login',
+                              'Senha Login',
+                              rowSpacing: 0.025,
                               onPressed: () {
-                                trocarSenhaAlert(context,
-                                    formkeySenha: formKeySenha,
-                                    atualSenhaCtrl: senhaAtualCtrl,
-                                    title: ' Login',
-                                    novaSenhaCtrl: senhaNovaCtrl,
-                                    confirmSenhaCtrl: senhaConfirmCtrl);
+                                trocarSenhaAlert(
+                                  context,
+                                  title: 'Login',
+                                );
                               },
                             ),
                           ),
                           ConstsWidget.buildPadding001(
                             context,
-                            child: ConstsWidget.buildCustomButton(
+                            child: ConstsWidget.buildOutlinedButton(
                               context,
-                              'Senha Retirada',
+                              title: 'Senha Retirada',
+                              rowSpacing: 0.025,
                               onPressed: () {
-                                trocarSenhaAlert(context,
-                                    formkeySenha: formKeyRetirada,
-                                    atualSenhaCtrl: retiradaAtualCtrl,
-                                    novaSenhaCtrl: retiradaNovaCtrl,
-                                    title: ' Retirada',
-                                    confirmSenhaCtrl: retiradaConfirmCtrl);
+                                trocarSenhaAlert(
+                                  context,
+                                  title: 'Retirada',
+                                );
                               },
                             ),
                           ),
@@ -439,13 +445,16 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   title: 'Salvar',
                   isLoading: isLoading,
                   color: Consts.kColorRed,
-                  icon: Icons.save_alt,
+                  // icon: Icons.save_alt,
                   onPressed: () {
-                    setState(() {
-                      isLoading = true;
-                    });
+                    // setState(() {
+                    //   isLoading = true;
+                    // });
                     var formValid =
                         _formKeyMorador.currentState?.validate() ?? false;
+                    FocusManager.instance.primaryFocus!.unfocus();
+                    print('login: ${CadastroMorador.isSenhaLoginAll}');
+                    print('retirada: ${CadastroMorador.isSenhaRetiradaAll}');
                     if (formValid) {
                       _formKeyMorador.currentState?.save();
                       if (widget.isDrawer) {
@@ -477,9 +486,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   salvarDadosMorador() {
     String fnApi;
     widget.idmorador == null
-        ? fnApi = 'incluirMorador'
-        : fnApi = 'editarMorador&id=${widget.idmorador}'
-            '&gerarsenha=${isGerarSenha ? 1 : 0}';
+        ? fnApi = 'incluirMorador&gerarsenha=1'
+        : fnApi =
+            'editarMorador&id=${widget.idmorador}&gerarsenha=${isGerarSenha ? 1 : 0}';
     int isResponsavel;
     InfosMorador.responsavel && widget.isDrawer
         ? isResponsavel = 1
@@ -507,20 +516,38 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   idunidade: widget.idunidade,
                   tipoAbrir: 1,
                 ));
-            setState(() {});
           } else {
             ConstsFuture.navigatorPageRoute(context, HomePage());
           }
         } else {
-          if (senhaNovaCtrl.text.isNotEmpty || retiradaNovaCtrl.text.isEmpty) {
+          if (CadastroMorador.senhaNovaCtrl.text != '' ||
+              CadastroMorador.retiradaNovaCtrl.text != '') {
             ConstsFuture.changeApi(
-                'moradores/?fn=mudarSenhas&idmorador=${InfosMorador.idmorador}${senhaNovaCtrl.text.isNotEmpty ? '&senha=${senhaNovaCtrl.text}' : ''}${retiradaNovaCtrl.text.isNotEmpty ? '&senha_retirada=${retiradaNovaCtrl.text}' : ''}');
+                    'moradores/?fn=mudarSenhas&mudasenhalogin=${CadastroMorador.isSenhaLoginAll}&mudasenharetirada=${CadastroMorador.isSenhaRetiradaAll}&login=$loginGerado2&idmorador=${InfosMorador.idmorador}${CadastroMorador.senhaNovaCtrl.text != '' ? '&senha=${CadastroMorador.senhaNovaCtrl.text}' : ''}${CadastroMorador.retiradaNovaCtrl.text.isNotEmpty ? '&senha_retirada=${CadastroMorador.retiradaNovaCtrl.text}' : ''}')
+                .then((value) {
+              CadastroMorador.senhaNovaCtrl.clear();
+              CadastroMorador.senhaConfirmCtrl.clear();
+              CadastroMorador.retiradaConfirmCtrl.clear();
+              CadastroMorador.retiradaNovaCtrl.clear();
+              CadastroMorador.isSenhaLoginAll = 0;
+              CadastroMorador.isSenhaRetiradaAll = 0;
+            });
           }
         }
         Navigator.pop(context);
-
-        buildCustomSnackBar(context,
-            titulo: 'Parabens', texto: value['mensagem']);
+        widget.isDrawer
+            ? ConstsFuture.navigatorPageRoute(context, HomePage())
+            : ConstsFuture.navigatorPopAndPush(
+                context,
+                ListaTotalUnidade(
+                  tipoAbrir: 0,
+                )).then((value) {
+                buildCustomSnackBar(context,
+                    titulo: 'Sucesso', texto: value['mensagem']);
+                setState(() {
+                  apiMoradores();
+                });
+              });
       } else {
         buildCustomSnackBar(
           context,
@@ -532,7 +559,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     });
   }
 
-  Widget buildAtivoInativo2(
+  Widget buildDropAtivoInativo(
     BuildContext context, {
     int seEditando = 0,
   }) {
@@ -551,6 +578,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
             alignedDropdown: true,
             child: DropdownButtonHideUnderline(
               child: DropdownButton(
+                isExpanded: true,
                 value: dropdownValueAtivo = _formInfosMorador.ativo,
                 icon: Padding(
                   padding: EdgeInsets.only(right: size.height * 0.03),
@@ -561,7 +589,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                 ),
                 elevation: 24,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                     fontWeight: FontWeight.w400,
                     fontSize: 18),
                 borderRadius: BorderRadius.circular(16),
@@ -575,7 +603,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                 items: listAtivo.map<DropdownMenuItem>((value) {
                   return DropdownMenuItem(
                     value: value,
-                    child: value == 0 ? Text('Inativo') : Text('Ativo'),
+                    child: value == 0
+                        ? Center(child: Text('Inativo'))
+                        : Center(child: Text('Ativo')),
                   );
                 }).toList(),
               ),

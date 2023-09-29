@@ -67,7 +67,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
                 hint: Text('Selecione Uma Resposta'),
                 alignment: Alignment.center,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
                 ),

@@ -61,7 +61,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildOutlinedButton(
                         context,
-                        title: '    Minhas Visitas   ',
+                        title: 'Minhas Visitas', rowSpacing: 0.045,
                         // color: Colors.grey,
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
@@ -69,16 +69,15 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                         },
                       ),
                     ),
-                    ConstsWidget.buildPadding001(
+                    ConstsWidget.buildCustomButton(
                       context,
-                      child: ConstsWidget.buildCustomButton(
-                        context,
-                        '   Convidar Visita    ',
-                        onPressed: () {
-                          ConstsFuture.navigatorPageRoute(
-                              context, AddVisitaScreen());
-                        },
-                      ),
+                      'Convidar Visita',
+                      rowSpacing: 0.015,
+                      color: Consts.kColorVerde,
+                      onPressed: () {
+                        ConstsFuture.navigatorPageRoute(
+                            context, AddVisitaScreen());
+                      },
                     ),
                   ],
                 ),
@@ -132,21 +131,57 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                                               ConstsWidget.buildPadding001(
                                                 context,
                                                 child: SizedBox(
-                                                  width: size.width * 0.9,
-                                                  child: ConstsWidget
-                                                      .buildTextSubTitle(
-                                                          context, texto,
-                                                          textAlign:
-                                                              TextAlign.center),
-                                                ),
+                                                    width: size.width * 0.9,
+                                                    child: RichText(
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        text: TextSpan(
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyLarge!
+                                                                    .color),
+                                                            text: texto,
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    ' - $datahora',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        20,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .bodyLarge!
+                                                                        .color),
+                                                              )
+                                                            ]))),
                                               ),
-                                              SizedBox(
-                                                child: ConstsWidget
-                                                    .buildTextSubTitle(
-                                                  context,
-                                                  datahora,
-                                                ),
-                                              ),
+                                              // Row(
+                                              //   children: [
+                                              //     ConstsWidget.buildPadding001(
+                                              //       context,
+                                              //       child: SizedBox(
+                                              //         width: size.width * 0.9,
+                                              //         child: ConstsWidget
+                                              //             .buildTextSubTitle(
+                                              //                 context, texto,
+                                              //                 textAlign:
+                                              //                     TextAlign
+                                              //                         .center),
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
+                                              // SizedBox(
+                                              //   child: ConstsWidget
+                                              //       .buildTextSubTitle(
+                                              //     context,
+                                              //     datahora,
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ],

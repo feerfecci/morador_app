@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, non_constant_identifier_names
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_portaria/consts/consts_widget.dart';
 import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
+import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
 import 'package:app_portaria/screens/reserva_espaco/listar_reserva.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     ),
     Model(
       indexOrder: 6,
-      title: 'Reserva de Espaços',
+      title: 'Reservar Espaços',
       iconApi: '${Consts.iconApiPort}reservas.png',
       pageRoute: ListarEspacos(),
     ),
@@ -110,63 +112,107 @@ class _HomePageState extends State<HomePage> {
       numberCall: '193',
     ),
   ];
+  int indexList = 0;
 
   Future initPlatFormState() async {
-    NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            sound: RawResourceAndroidNotificationSound('audio_avisos'),
-            importance: Importance.max,
-            playSound: true));
-    OneSignal.shared.setAppId("cb886dc8-9dc9-4297-9730-7de404a89716");
+    OneSignal.shared.setAppId('4ab8b6f9-4715-4cae-83ca-d315015fdc06');
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
-      OneSignal.shared.setExternalUserId(InfosMorador.idmorador.toString());
-      OneSignal.shared.sendTags({
-        'idmorador': InfosMorador.idmorador.toString(),
-        'idunidade': InfosMorador.idunidade.toString(),
-        'idcond': InfosMorador.idcondominio.toString(),
-      });
-      OneSignal.shared.setOnDidDisplayInAppMessageHandler((message) {
-        message.messageId;
-      });
-      OneSignal.shared.setNotificationOpenedHandler((openedResult) {
-        // if (openedResult.notification.buttons != null) {
-        //   if (openedResult.notification.buttons!.first.id == 'delivery') {
-        //     ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
-        //     alertRespondeDelivery(context, tipoAviso: 5);
-        //   } else if (openedResult.notification.buttons!.first.id == 'visita') {
-        //     ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-        //     alertRespondeDelivery(context, tipoAviso: 6);
-        //   }
-        // } else {
-        if (openedResult.notification.additionalData!.values.last ==
-            'corresp') {
-          ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 3));
-        } else if (openedResult.notification.additionalData!.values.last ==
-            'aviso') {
-          ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
-        } else if (openedResult.notification.additionalData!.values.last ==
-            'mercadorias') {
-          ConstsFuture.navigatorPageRoute(
-              context, CorrespondenciaScreen(tipoAviso: 4));
-        } else if (openedResult.notification.additionalData!.values.last ==
-            'reserva_espacos') {
-          ConstsFuture.navigatorPageRoute(context, ListarReservas());
-        } else if (openedResult.notification.additionalData!.values.last ==
-            'visita') {
-          ConstsFuture.navigatorPageRoute(context, MyVisitasScreen());
-        } else if (openedResult.notification.additionalData!.values.last ==
-            'delivery') {
-          ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
-        }
-        // }
+      for (var i = 0; i <= (InfosMorador.listIdCond.length - 1); i++) {
+        OneSignal.shared.deleteTags(['idcond', 'idmorador', 'idunidade']);
+        OneSignal.shared.deleteTags([
+          'idcond${InfosMorador.listIdCond[i]}',
+          'idmorador${InfosMorador.listIdMorador[i]}',
+          'idunidade${InfosMorador.listIdUnidade[i]}'
+        ]);
 
-        //correp
-      });
-      InfosMorador.email != ''
-          ? OneSignal.shared.setEmail(email: InfosMorador.email.toString())
-          : null;
+        OneSignal.shared.sendTags({
+          'idcond${InfosMorador.listIdCond[i]}': InfosMorador.listIdCond[i],
+          'idmorador${InfosMorador.listIdMorador[i]}':
+              InfosMorador.listIdMorador[i],
+          'idunidade${InfosMorador.listIdUnidade[i]}':
+              InfosMorador.listIdUnidade[i],
+        });
+      }
     });
+
+    OneSignal.shared.setNotificationOpenedHandler((openedResult) {
+      // String idUnidade = openedResult.notification.additionalData!['idunidade'];
+
+      ConstsFuture.efetuaLogin(
+              context, InfosMorador.login, InfosMorador.senhaCripto,
+              idUnidade: openedResult.notification.additionalData!['idunidade'])
+          .then((value) {
+        print(
+            'idunidade - ${openedResult.notification.additionalData!['rota']} - ${openedResult.notification.additionalData!['idunidade']}');
+        if (openedResult.notification.buttons != null) {
+          if (openedResult.notification.additionalData!['rota'] == 'delivery') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+
+            alertRespondeDelivery(context, tipoAviso: 5);
+          } else if (openedResult.notification.additionalData!['rota'] ==
+              'visita') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+            alertRespondeDelivery(context, tipoAviso: 6);
+          }
+        } else {
+          if (openedResult.notification.additionalData!['rota'] == 'corresp') {
+            ConstsFuture.navigatorPageRoute(
+                context,
+                CorrespondenciaScreen(
+                  tipoAviso: 3,
+                ));
+          } else if (openedResult.notification.additionalData!['rota'] ==
+              'aviso') {
+            ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
+          } else if (openedResult.notification.additionalData!['rota'] ==
+              'mercadorias') {
+            return ConstsFuture.navigatorPageRoute(
+                context, CorrespondenciaScreen(tipoAviso: 4));
+          } else if (openedResult.notification.additionalData!['rota'] ==
+              'reserva_espacos') {
+            ConstsFuture.navigatorPageRoute(context, ListarReservas());
+          } else if (openedResult.notification.additionalData!['rota'] ==
+              'previsitas') {
+            ConstsFuture.navigatorPageRoute(context, ListarReservas());
+          }
+        }
+      });
+    });
+
+    // OneSignal.shared.setOnDidDisplayInAppMessageHandler((message) {
+    //   print(message.toString());
+    // });
+    /*  OneSignal.Notifications.setNotificationOpenedHandler((openedResult) {
+        if (openedResult.notification.buttons != null) {
+          if (openedResult.notification.buttons!.first.id == 'delivery') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 1));
+            alertRespondeDelivery(context, tipoAviso: 5);
+          } else if (openedResult.notification.buttons!.first.id == 'visita') {
+            ConstsFuture.navigatorPageRoute(context, ChegadaScreen(tipo: 2));
+            alertRespondeDelivery(context, tipoAviso: 6);
+          }
+        } else {
+          if (openedResult.notification.additionalData!.values.last ==
+              'corresp') {
+            ConstsFuture.navigatorPageRoute(
+                context, CorrespondenciaScreen(tipoAviso: 3));
+          } else if (openedResult.notification.additionalData!.values.last ==
+              'aviso') {
+            ConstsFuture.navigatorPageRoute(context, QuadroAvisosScreen());
+          } else if (openedResult.notification.additionalData!.values.last ==
+              'mercadorias') {
+            ConstsFuture.navigatorPageRoute(
+                context, CorrespondenciaScreen(tipoAviso: 4));
+          } else if (openedResult.notification.additionalData!.values.last ==
+              'reserva_espacos') {
+            ConstsFuture.navigatorPageRoute(context, ListarReservas());
+          }
+        }
+      });
+    */
+    // InfosMorador.email != ''
+    //     ? OneSignal.User.addEmail(InfosMorador.email)
+    //     : null;
   }
 
   config() async {
@@ -324,25 +370,25 @@ class _HomePageState extends State<HomePage> {
                           if (hasWhats) {
                             launchUrl(Uri.parse('https://wa.me/+55$whatsapp'),
                                 mode: LaunchMode.externalApplication);
-                            print('Abrir whats');
                           } else {
-                            print('Abrir Telefone');
+                            launchUrl(
+                              Uri.parse('tel:${usarList.first}'),
+                            );
                           }
                         } else if (usarList.isEmpty &&
                             email == '' &&
                             site != '') {
                           launchUrl(Uri.parse(site),
                               mode: LaunchMode.externalApplication);
-                          print('Abrir link no google');
                         } else if (usarList.isEmpty &&
                             site == '' &&
                             email != '') {
                           launchUrl(Uri.parse('mailto:$email'),
                               mode: LaunchMode.externalApplication);
-                          print('Abrir o email');
                         } else {
                           showDialogAll(context,
-                              title: 'Entrar em contato',
+                              title: ConstsWidget.buildTextSubTitle(
+                                  context, 'Entrar em contato'),
                               barrierDismissible: true,
                               children: [
                                 Column(
@@ -446,6 +492,7 @@ class _HomePageState extends State<HomePage> {
           title: ConstsWidget.buildTextTitle(
               context, InfosMorador.nome_completo,
               size: SplashScreen.isSmall ? 18 : 20,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               textAlign: TextAlign.center),
           backgroundColor: Colors.transparent,
           iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
@@ -485,6 +532,7 @@ class _HomePageState extends State<HomePage> {
                   if (InfosMorador.qntApto == 1)
                     ConstsWidget.buildPadding001(
                       context,
+                      vertical: 0.02,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -521,12 +569,12 @@ class _HomePageState extends State<HomePage> {
                         pageRoute: ListaTotalUnidade(tipoAbrir: 1),
                       ),
                     ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
                   if (InfosMorador.qtd_publicidade != 0)
                     Column(
                       children: [
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
                         buildBanerPubli(local: 1, usarList: teleforsList1),
                       ],
                     ),

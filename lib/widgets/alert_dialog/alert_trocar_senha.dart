@@ -1,25 +1,58 @@
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';
+import '../../screens/cadastro/morador/cadastro_morador.dart';
 import '../my_text_form_field.dart';
 import 'alert_all.dart';
 
 trocarSenhaAlert(
   BuildContext context, {
-  required GlobalKey<FormState> formkeySenha,
-  required TextEditingController atualSenhaCtrl,
-  required TextEditingController novaSenhaCtrl,
-  required TextEditingController confirmSenhaCtrl,
   String? title,
 }) {
-  showDialogAll(context,
-      children: [
-        Form(
-          key: formkeySenha,
-          child: Column(
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialogTrocaSenha(title: title!));
+}
+
+class AlertDialogTrocaSenha extends StatefulWidget {
+  final String title;
+  AlertDialogTrocaSenha({required this.title, super.key});
+
+  @override
+  State<AlertDialogTrocaSenha> createState() => _AlertDialogTrocaSenhaState();
+}
+
+bool isChecked = false;
+
+class _AlertDialogTrocaSenhaState extends State<AlertDialogTrocaSenha> {
+  final formKeySenha = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.05, vertical: size.height * 0.05),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(13),
+      ),
+      title: Center(
+          child: Text(
+        'Senha Padrão',
+        style: TextStyle(fontSize: 20),
+      )),
+      content: SizedBox(
+        width: size.width * 0.8,
+        height: SplashScreen.isSmall ? size.height * 0.45 : size.height * 0.35,
+        child: Form(
+          key: formKeySenha,
+          child: ListView(
+            // shrinkWrap: true,
+            // physics: ClampingScrollPhysics(),
             children: [
               buildMyTextFormObrigatorio(
                 context, title: 'Nova Senha',
@@ -27,7 +60,9 @@ trocarSenhaAlert(
                   Validatorless.required('Confirme a senha'),
                   Validatorless.min(6, 'Senha precisa ter 6 caracteres'),
                 ]),
-                controller: novaSenhaCtrl,
+                controller: widget.title == 'Login'
+                    ? CadastroMorador.senhaNovaCtrl
+                    : CadastroMorador.retiradaNovaCtrl,
                 // onSaved: (text) => formInfosFunc =
                 //     formInfosFunc.copyWith(senha: text),
               ),
@@ -36,26 +71,61 @@ trocarSenhaAlert(
                 validator: Validatorless.multiple([
                   Validatorless.required('Confirme a senha'),
                   Validatorless.min(6, 'Senha precisa ter 6 caracteres'),
-                  Validatorless.compare(novaSenhaCtrl, 'Senhas não são iguais'),
+                  Validatorless.compare(
+                      widget.title == 'Login'
+                          ? CadastroMorador.senhaNovaCtrl
+                          : CadastroMorador.retiradaNovaCtrl,
+                      'Senhas não são iguais'),
                 ]),
-                controller: confirmSenhaCtrl,
+                controller: widget.title == 'Login'
+                    ? CadastroMorador.senhaConfirmCtrl
+                    : CadastroMorador.retiradaConfirmCtrl,
                 // onSaved: (text) => formInfosFunc =
                 //     formInfosFunc.copyWith(senha: text),
               ),
+              ConstsWidget.buildPadding001(context,
+                  child: ConstsWidget.buildCheckBox(context,
+                      isChecked: isChecked,
+                      width: size.width * 0.6, onChanged: (value) {
+                    setState(
+                      () {
+                        isChecked = value!;
+                        FocusManager.instance.primaryFocus!.unfocus();
+                        print(value);
+                        widget.title == 'Login'
+                            ? CadastroMorador.isSenhaLoginAll = value ? 1 : 0
+                            : CadastroMorador.isSenhaRetiradaAll =
+                                value ? 1 : 0;
+                        print('login: ${CadastroMorador.isSenhaLoginAll}');
+                        print(
+                            'retirada: ${CadastroMorador.isSenhaRetiradaAll}');
+                      },
+                    );
+                  }, title: 'Trocar em todas as unidade')),
               ConstsWidget.buildPadding001(
                 context,
+                horizontal: 0,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Spacer(),
                     ConstsWidget.buildOutlinedButton(
                       context,
                       title: 'Cancelar',
+                      rowSpacing: 0.06,
                       onPressed: () {
                         Navigator.pop(context);
-                        atualSenhaCtrl.clear();
-                        novaSenhaCtrl.clear();
-                        confirmSenhaCtrl.clear();
+                        widget.title == 'Login'
+                            ? CadastroMorador.senhaNovaCtrl.clear()
+                            : CadastroMorador.retiradaNovaCtrl.clear();
+
+                        widget.title == 'Login'
+                            ? CadastroMorador.senhaConfirmCtrl.clear()
+                            : CadastroMorador.senhaConfirmCtrl.clear();
+
+                        isChecked = false;
+                        widget.title == 'Login'
+                            ? CadastroMorador.isSenhaLoginAll = 0
+                            : CadastroMorador.isSenhaRetiradaAll = 0;
                       },
                     ),
                     Spacer(),
@@ -63,14 +133,29 @@ trocarSenhaAlert(
                       context,
                       'Salvar',
                       color: Consts.kColorRed,
+                      rowSpacing: 0.04,
                       onPressed: () {
                         var validSenha =
-                            formkeySenha.currentState?.validate() ?? false;
-                        if (validSenha &&
-                            novaSenhaCtrl.text == confirmSenhaCtrl.text) {
+                            formKeySenha.currentState?.validate() ?? false;
+                        FocusManager.instance.primaryFocus!.unfocus();
+
+                        if (validSenha && widget.title == 'Login'
+                            ? (CadastroMorador.senhaNovaCtrl.text ==
+                                    CadastroMorador.senhaConfirmCtrl.text &&
+                                CadastroMorador.senhaNovaCtrl.text.length > 6 &&
+                                CadastroMorador.senhaConfirmCtrl.text.length >
+                                    6)
+                            : (CadastroMorador.retiradaNovaCtrl.text ==
+                                    CadastroMorador.retiradaConfirmCtrl.text &&
+                                CadastroMorador.retiradaNovaCtrl.text.length >
+                                    6 &&
+                                CadastroMorador
+                                        .retiradaConfirmCtrl.text.length >
+                                    6)) {
+                          isChecked = false;
                           Navigator.pop(context);
                           buildCustomSnackBar(context,
-                              titulo: 'Senha Alterada!',
+                              titulo: 'Sucesso!',
                               texto: 'Prossiga para salvar os dados');
                         }
                       },
@@ -81,6 +166,7 @@ trocarSenhaAlert(
             ],
           ),
         ),
-      ],
-      title: title == null ? 'Trocar Senha' : 'Trocar Senha$title');
+      ),
+    );
+  }
 }

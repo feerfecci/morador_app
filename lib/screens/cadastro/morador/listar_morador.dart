@@ -45,8 +45,8 @@ class _ListarMoradorState extends State<ListarMorador> {
           child: ConstsWidget.buildCustomButton(
             context,
             color: Consts.kColorRed,
-            'Adicionar Morador',
-            icon: Icons.add,
+            'Adicionar Condômino',
+            // icon: Icons.add,
             onPressed: () {
               ConstsFuture.navigatorPageRoute(context, CadastroMorador());
             },
@@ -92,26 +92,49 @@ class _ListarMoradorState extends State<ListarMorador> {
                             expandedAlignment: Alignment.topLeft,
                             expandedCrossAxisAlignment:
                                 CrossAxisAlignment.start,
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: size.width * 0.55,
-                                  child: ConstsWidget.buildTextTitle(
-                                      context, nome_morador),
-                                ),
-                                ConstsWidget.buildAtivoInativo(context, ativo),
-                              ],
+                            title: SizedBox(
+                              width: size.width * 0.8,
+                              child: ConstsWidget.buildTextTitle(
+                                  context, nome_morador),
                             ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     SizedBox(
+                            //       width: size.width * 0.55,
+                            //       child: ConstsWidget.buildTextTitle(
+                            //           context, nome_morador),
+                            //     ),
+                            //     ConstsWidget.buildAtivoInativo(context, ativo),
+                            //   ],
+                            // ),
                             children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ConstsWidget.buildTextSubTitle(context, 'Login'),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ConstsWidget.buildTextSubTitle(
+                                      context, 'Login'),
+                                  SizedBox(
+                                    width: size.width * 0.7,
+                                    child: ConstsWidget.buildTextTitle(
+                                        context, login),
+                                  ),
+                                ],
+                              ),
                               SizedBox(
-                                  width: size.width * 0.9,
-                                  child: ConstsWidget.buildTextTitle(
-                                      context, login)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ConstsWidget.buildTextSubTitle(
+                                        context, 'Situação'),
+                                    ConstsWidget.buildAtivoInativo(
+                                        context, ativo),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
 
@@ -167,19 +190,25 @@ class _ListarMoradorState extends State<ListarMorador> {
                           ),
                           ConstsWidget.buildTextSubTitle(context, 'Email'),
                           ConstsWidget.buildTextTitle(context, email),
-                          StatefulBuilder(builder: (context, setState) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          ConstsWidget.buildPadding001(
+                            context,
+                            vertical: 0.03,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                ConstsWidget.buildCheckBox(context,
-                                    isChecked: acessa_sistema,
-                                    onChanged: (bool? value) {},
-                                    title: 'Permitir acesso ao sistema')
+                                ConstsWidget.buildTextTitle(
+                                    context, 'Permitir acesso ao sistema'),
+                                // ConstsWidget.buildCheckBox(context,
+                                //     isChecked: acessa_sistema,
+                                //     onChanged: (bool? value) {},
+                                //     title: 'Permitir acesso ao sistema'),
+                                ConstsWidget.buildAtivoInativo(
+                                    context, acessa_sistema),
                               ],
-                            );
-                          }),
+                            ),
+                          ),
                           ConstsWidget.buildCustomButton(
-                              context, 'Editar Morador', onPressed: () {
+                              context, 'Editar Condômino', onPressed: () {
                             ConstsFuture.navigatorPageRoute(
                                 context,
                                 CadastroMorador(

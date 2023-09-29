@@ -9,22 +9,18 @@ class ListaTotalUnidade extends StatefulWidget {
   final int? idunidade;
   final String? numero;
   final int? idvisisao;
-  final int? tipoAbrir;
+  static int? tipoAbrir;
   const ListaTotalUnidade(
-      {super.key,
-      this.idunidade,
-      this.numero,
-      this.idvisisao,
-      required this.tipoAbrir});
+      {super.key, this.idunidade, this.numero, this.idvisisao, tipoAbrir});
 
   @override
   State<ListaTotalUnidade> createState() => _ListaTotalUnidadeState();
 }
 
 bool isChecked = false;
+int filtrar = ListaTotalUnidade.tipoAbrir ?? 0;
 
 class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
-  int filtrar = 0;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -51,7 +47,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
       },
       child: buildScaffoldAll(
         context,
-        title: 'Cadastro',
+        title: 'Cadastros',
         body: Column(
           children: [
             ConstsWidget.buildPadding001(
@@ -59,30 +55,54 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ConstsWidget.buildOutlinedButton(
-                    context,
-                    title: '    Moradores    ',
-                    fontSize: 18,
-                    backgroundColor: filtrar == 0 ? Colors.grey[300] : null,
-                    onPressed: () {
-                      setState(() {
-                        filtrar = 0;
-                        isChecked = false;
-                      });
-                    },
-                  ),
-                  ConstsWidget.buildOutlinedButton(
-                    context,
-                    title: '        Veículos        ',
-                    fontSize: 18,
-                    backgroundColor: filtrar == 1 ? Colors.grey[300] : null,
-                    onPressed: () {
-                      setState(() {
-                        filtrar = 1;
-                        isChecked = false;
-                      });
-                    },
-                  ),
+                  filtrar == 0
+                      ? ConstsWidget.buildCustomButton(
+                          context,
+                          'Condôminos',
+                          rowSpacing: 0.03,
+                          onPressed: () {
+                            setState(() {
+                              filtrar = 1;
+                              isChecked = false;
+                            });
+                          },
+                        )
+                      : ConstsWidget.buildOutlinedButton(
+                          context,
+                          title: 'Condôminos',
+                          rowSpacing: 0.075,
+                          fontSize: 18,
+                          onPressed: () {
+                            setState(() {
+                              filtrar = 0;
+                              isChecked = false;
+                            });
+                          },
+                        ),
+                  filtrar == 1
+                      ? ConstsWidget.buildCustomButton(
+                          context,
+                          'Veículos',
+                          rowSpacing: 0.05,
+                          onPressed: () {
+                            setState(() {
+                              filtrar = 1;
+                              isChecked = false;
+                            });
+                          },
+                        )
+                      : ConstsWidget.buildOutlinedButton(
+                          context,
+                          title: 'Veículos',
+                          fontSize: 18,
+                          rowSpacing: 0.12,
+                          onPressed: () {
+                            setState(() {
+                              filtrar = 1;
+                              isChecked = false;
+                            });
+                          },
+                        ),
                 ],
               ),
             ),

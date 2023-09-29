@@ -6,6 +6,7 @@ import 'package:app_portaria/repositories/shared_preferences.dart';
 import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/login/login_screen.dart';
 import 'package:app_portaria/screens/politica/politica_screen.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,11 +38,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             iconColor: Theme.of(context).iconTheme.color,
             leading: Icon(
               leading,
-              size: 21,
+              size: SplashScreen.isSmall ? 18 : 21,
             ),
             title: ConstsWidget.buildTextTitle(context, title, size: 16),
             trailing: Icon(
-              size: 30,
+              size: SplashScreen.isSmall ? 25 : 30,
               trailing,
             ),
           ),
@@ -60,10 +61,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
               bottomLeft: Radius.circular(30),
             ),
           ),
-          child: Column(
+          child: ListView(
             children: [
               SizedBox(
-                height: size.height * 0.08,
+                height: SplashScreen.isSmall
+                    ? size.height * 0.12
+                    : size.height * 0.08,
                 width: size.width * 0.85,
                 child: DrawerHeader(
                   padding: EdgeInsets.symmetric(
@@ -159,9 +162,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 },
               ),
               ChangeThemeButton(),
-              Spacer(),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: EdgeInsets.symmetric(
+                    vertical: SplashScreen.isSmall
+                        ? size.height * 0.01
+                        : size.height * 0.035,
+                    horizontal: size.width * 0.02),
                 child: ConstsWidget.buildOutlinedButton(
                   context, title: 'Fechar Menu',
                   // icon: Icons.logout_outlined,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app_portaria/consts/consts_future.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,21 +10,6 @@ import '../../consts/consts_widget.dart';
 import '../../widgets/page_erro.dart';
 import '../../widgets/page_vazia.dart';
 import '../home/home_page.dart';
-
-showDialogAceitar(BuildContext context, {int? idUnidade}
-    // {
-    //   required String title,
-    // required List<Widget> children,
-    // bool barrierDismissible = false
-    // }
-    ) {
-  return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AceitarTermosScreen(idUnidade: idUnidade);
-      });
-}
 
 class AceitarTermosScreen extends StatefulWidget {
   final int? idUnidade;
@@ -69,7 +55,9 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                     if (!snapshot.data['erro']) {
                       var texto = snapshot.data['termo_uso'][0]['texto'];
                       return SizedBox(
-                        height: size.height * 0.63,
+                        height: SplashScreen.isSmall
+                            ? size.height * 0.57
+                            : size.height * 0.63,
                         child: ListView(
                           children: [
                             // Padding(
@@ -85,8 +73,10 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                               style: {
                                 'p': Style(
                                     fontSize: FontSize(16),
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color),
                                 'i': Style(
                                     fontSize: FontSize(16),
                                     fontStyle: FontStyle.italic),
@@ -143,7 +133,8 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                       // ),
                       ConstsWidget.buildCustomButton(
                         context,
-                        '    Aceitar    ',
+                        'Aceitar',
+                        rowSpacing: 0.13,
                         color: isChecked ? Consts.kColorRed : Colors.grey,
                         onPressed: isChecked
                             ? () {
@@ -162,7 +153,7 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                                             (route) => false);
                                   } else {
                                     buildCustomSnackBar(context,
-                                        titulo: 'Algo Saiu Mau!',
+                                        titulo: 'Algo saiu mal!',
                                         hasError: true,
                                         texto: value['mensagem']);
                                   }

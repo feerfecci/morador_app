@@ -124,7 +124,7 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      top: size.height * 0.005, bottom: size.height * 0.02),
+                      top: size.height * 0.005, bottom: size.height * 0.01),
                   child: ConstsWidget.buildLoadingButton(context,
                       title: 'Solicitar Retirada',
                       color: Color.fromARGB(255, 251, 80, 93),
@@ -188,40 +188,44 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                 var datahora_ultima_atualizacao =
                                     correspInfos['datahora_ultima_atualizacao'];
                                 return MyBoxShadow(
-                                    child: ConstsWidget.buildPadding001(
-                                  context,
                                   child: Column(
                                     children: [
-                                      ConstsWidget.buildTextTitle(
-                                          context, remetente,
-                                          textAlign: TextAlign.center,
-                                          size: 18),
                                       ConstsWidget.buildPadding001(
                                         context,
-                                        child: ConstsWidget.buildTextSubTitle(
-                                            context,
-                                            '$descricao - $datahora_cadastro'),
+                                        child: ConstsWidget.buildTextTitle(
+                                            context, remetente,
+                                            textAlign: TextAlign.center,
+                                            size: 18),
                                       ),
-                                      if (quantidade != '1')
-                                        Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                ConstsWidget.buildTextSubTitle(
-                                                    context, 'Quantidade: '),
-                                                ConstsWidget.buildTextTitle(
-                                                    context, quantidade,
-                                                    textAlign: TextAlign.center,
-                                                    size: 18),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: size.height * 0.01,
-                                            ),
-                                          ],
-                                        ),
+                                      // SizedBox(
+                                      //   height: size.height * 0.01,
+                                      // ),
+                                      ConstsWidget.buildTextSubTitle(context,
+                                          '$descricao - $datahora_cadastro',
+                                          textAlign: TextAlign.center),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      // if (quantidade != '1')
+                                      Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ConstsWidget.buildTextSubTitle(
+                                                  context, 'Quantidade: '),
+                                              ConstsWidget.buildTextTitle(
+                                                  context, quantidade,
+                                                  textAlign: TextAlign.center,
+                                                  size: 18),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.01,
+                                          ),
+                                        ],
+                                      ),
                                       if (loadingRetirada)
                                         Center(
                                             child: ShimmerWidget(
@@ -261,15 +265,24 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                                   255, 43, 135, 219)),
                                         ),
                                       if (protocolo == 'Senha' && statusCorresp)
-                                        ConstsWidget.buildTextTitle(context,
-                                            'Retirada com Senha por $nome_portador',
-                                            color: Consts.kColorAzul),
+                                        ConstsWidget.buildPadding001(
+                                          context,
+                                          child: ConstsWidget.buildTextTitle(
+                                              context,
+                                              'Retirada com Senha por $nome_portador',
+                                              textAlign: TextAlign.center,
+                                              color: Consts.kColorAzul),
+                                        ),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           statusCorresp)
-                                        ConstsWidget.buildTextTitle(context,
-                                            'Retirada com Protocolo por $nome_portador',
-                                            color: Colors.red),
+                                        ConstsWidget.buildPadding001(
+                                          context,
+                                          child: ConstsWidget.buildTextTitle(
+                                              context,
+                                              'Retirada com Protocolo por $nome_portador',
+                                              color: Colors.red),
+                                        ),
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           !statusCorresp)
@@ -280,12 +293,20 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                       if (protocolo != 'Senha' &&
                                           protocolo != '' &&
                                           !statusCorresp)
-                                        ConstsWidget.buildTextSubTitle(context,
-                                            'Pode utilizar a senha de retirada para validar a entrega',
-                                            color: Colors.red)
+                                        Column(
+                                          children: [
+                                            ConstsWidget.buildTextTitle(context,
+                                                'Pode utilizar a senha de retirada para validar a entrega',
+                                                textAlign: TextAlign.center,
+                                                color: Colors.red),
+                                            SizedBox(
+                                              height: size.height * 0.01,
+                                            )
+                                          ],
+                                        )
                                     ],
                                   ),
-                                ));
+                                );
                               });
                         } else {
                           return PageVazia(title: snapshot.data['mensagem']);

@@ -107,12 +107,13 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                   context,
                   child: ConstsWidget.buildCustomButton(
                     context,
-                    filtrar == 1 ? 'Confirmar' : 'Anular',
+                    filtrar == 1 ? 'Autorizar' : 'Anular',
                     color: Consts.kColorRed,
                     onPressed: () {
                       if (listIdVisita.isNotEmpty) {
                         showDialogAll(context,
-                            title: 'Confirmar Visita',
+                            title: ConstsWidget.buildTextSubTitle(
+                                context, 'Autorizar Visita'),
                             children: [
                               RichText(
                                   text: TextSpan(
@@ -125,7 +126,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                       children: [
                                     TextSpan(
                                       text: filtrar == 1
-                                          ? 'Confirmar '
+                                          ? 'Autorizar '
                                           : 'Anular ',
                                       style: TextStyle(
                                           fontSize: 20,
@@ -161,7 +162,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                   Spacer(),
                                   ConstsWidget.buildCustomButton(
                                     context,
-                                    filtrar == 1 ? 'Confirmar ' : 'Anular ',
+                                    filtrar == 1 ? 'Autorizar ' : 'Anular ',
                                     color: Consts.kColorRed,
                                     onPressed: () {
                                       // //print(listIdVisita);
@@ -178,7 +179,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                           setState(() {});
                                         } else {
                                           buildCustomSnackBar(context,
-                                              titulo: 'Algo saiu mau!',
+                                              titulo: 'Algo saiu mal!',
                                               hasError: true,
                                               texto: value['mensagem']);
                                         }
@@ -247,11 +248,11 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ConstsWidget.buildTextTitle(context,
+                                      ConstsWidget.buildTextSubTitle(context,
                                           'Já foi enviado convite para'),
                                       SizedBox(
                                         width: size.width * 0.9,
-                                        child: ConstsWidget.buildTextSubTitle(
+                                        child: ConstsWidget.buildTextTitle(
                                           context,
                                           email!,
                                         ),
@@ -272,9 +273,8 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: size.height * 0.01,
-                                    ),
+                                    // if (nome_convidado != null)
+
                                     // if (!confirmado && !autorizado)
                                     //   Column(
                                     //     children: [
@@ -325,9 +325,9 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                                   context, doc_convidado!),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: size.height * 0.01,
-                                          ),
+                                          // SizedBox(
+                                          //   height: size.height * 0.01,
+                                          // ),
                                           if (acompanhante != '')
                                             Column(
                                               crossAxisAlignment:
@@ -343,7 +343,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                         ],
                                       ),
                                     SizedBox(
-                                      height: size.height * 0.02,
+                                      height: size.height * 0.01,
                                     ),
                                     Column(
                                       crossAxisAlignment:

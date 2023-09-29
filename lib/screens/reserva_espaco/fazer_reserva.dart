@@ -32,13 +32,14 @@ class _FazerReservaState extends State<FazerReserva> {
   final keyReserva = GlobalKey<FormState>();
 
   bool isLoading = false;
+
   startReserva() {
     // var ano = dataCtrl.text.substring(6);
     //   var mes = dataCtrl.text.substring(3, 5);
     //   var dia = dataCtrl.text.substring(0, 2);
 
     ConstsFuture.changeApi(
-            'reserva_espacos/?fn=solicitarReserva&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idespaco=${widget.idespaco}&datareserva=${MyDatePicker.dataSelected}')
+            'reserva_espacos/?fn=solicitarReserva&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idespaco=${widget.idespaco}&datareserva=${MyDatePicker.dataSelected}:00')
         .then((value) {
       setState(() {
         isLoading = false;
@@ -56,9 +57,15 @@ class _FazerReservaState extends State<FazerReserva> {
         });
       } else {
         buildCustomSnackBar(context,
-            hasError: true, titulo: 'Algo Saiu Mal', texto: value['mensagem']);
+            hasError: true, titulo: 'Algo saiu mal', texto: value['mensagem']);
       }
     });
+  }
+
+  @override
+  void initState() {
+    MyDatePicker.dataSelected = '';
+    super.initState();
   }
 
   @override
@@ -86,7 +93,7 @@ class _FazerReservaState extends State<FazerReserva> {
                 ConstsWidget.buildPadding001(context,
                     child: MyDatePicker(
                       dataSelected: dataSelected,
-                      type: DateTimePickerType.date,
+                      // type: DateTimePickerType.date,
                       dataReservada: widget.dataReservada,
                     )),
                 // ConstsWidget.buildPadding001(

@@ -31,7 +31,7 @@ Widget buildHeaderPage(
                   //   style: TextStyle(
                   //       fontSize: 40,
                   //       fontWeight: FontWeight.bold,
-                  //       color: Theme.of(context).colorScheme.primary),
+                  //       color: Theme.of(context).textTheme.bodyLarge!.color),
                   // ),
                   if (titulo != null)
                     ConstsWidget.buildTextTitle(context, titulo,
@@ -46,7 +46,7 @@ Widget buildHeaderPage(
                   //   subTitulo,
                   //   style: TextStyle(
                   //       fontSize: 20,
-                  //       color: Theme.of(context).colorScheme.primary),
+                  //       color: Theme.of(context).textTheme.bodyLarge!.color),
                   // ),
                 ],
               ),

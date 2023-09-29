@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 showDialogAll(BuildContext context,
-    {required String title,
+    {required Widget title,
     required List<Widget> children,
     bool barrierDismissible = false}) {
   return showDialog(
@@ -16,7 +16,7 @@ showDialogAll(BuildContext context,
 }
 
 class AlertDialogAll extends StatefulWidget {
-  final String title;
+  final Widget title;
   final List<Widget> children;
   const AlertDialogAll(
       {required this.title, required this.children, super.key});
@@ -36,7 +36,9 @@ class _AlertDialogAllState extends State<AlertDialogAll> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
       ),
-      title: Center(child: Text(widget.title)),
+      title: Center(
+        child: widget.title,
+      ),
       content: SizedBox(
         width: size.width * 0.8,
         child: Column(
