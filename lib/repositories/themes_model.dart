@@ -33,7 +33,7 @@ ThemeData themeDark(BuildContext context) {
   return ThemeData(
     snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.white, actionTextColor: Colors.black),
-    shadowColor: Color.fromARGB(0, 27, 27, 27),
+    shadowColor: Color.fromARGB(19, 240, 240, 240),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       unselectedItemColor: Colors.white38,
       selectedItemColor: Colors.white,
@@ -44,7 +44,7 @@ ThemeData themeDark(BuildContext context) {
     iconTheme: IconThemeData(color: Colors.white),
     primaryIconTheme: IconThemeData(color: Colors.white),
     colorScheme: ColorScheme.dark(
-      primary: Colors.white70,
+      primary: Colors.white24,
     ),
     scaffoldBackgroundColor: Colors.grey.shade900,
     dialogBackgroundColor: Colors.blueGrey[1000],

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/cadastro/carros/cadastro_carros.dart';
 import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
-import 'package:app_portaria/widgets/row_infos.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../../../consts/consts.dart';
@@ -36,6 +35,39 @@ class _ListarCarrosState extends State<ListarCarros> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    Widget buildRowInfos(BuildContext context,
+        {required String title1,
+        required String subTitle1,
+        required String title2,
+        required String subTitle2,
+        MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start}) {
+      return ConstsWidget.buildPadding001(
+        context,
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstsWidget.buildTextSubTitle(context, title1),
+                  ConstsWidget.buildTextTitle(context, subTitle1),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ConstsWidget.buildTextSubTitle(context, title2),
+                ConstsWidget.buildTextTitle(context, subTitle2),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
       children: [
         ConstsWidget.buildPadding001(
@@ -76,24 +108,24 @@ class _ListarCarrosState extends State<ListarCarros> {
                     String vaga = apiVeiculos['vaga'];
                     String datahora = apiVeiculos['datahora'];
                     return MyBoxShadow(
-                      child: ConstsWidget.buildExpandedTile(
-                        context,
-                        title: buildRowInfos(context,
-                            title1: 'Tipo',
-                            subTitle1: tipo,
-                            title2: 'Marca',
-                            subTitle2: marca),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          buildRowInfos(context,
+                              title1: 'Tipo',
+                              subTitle1: tipo,
+                              title2: 'Marca',
+                              subTitle2: marca),
                           buildRowInfos(context,
                               title1: 'Modelo',
                               subTitle1: modelo,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               title2: 'Cor',
                               subTitle2: cor),
                           buildRowInfos(context,
                               title1: 'Placa',
                               subTitle1: placa,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               title2: 'Vaga',
                               subTitle2: vaga),
                           SizedBox(

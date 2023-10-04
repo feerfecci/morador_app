@@ -48,7 +48,7 @@ class ConstsWidget {
       textAlign: textAlign,
       style: TextStyle(
           color: color ?? Theme.of(context).textTheme.bodyLarge!.color,
-          fontSize: SplashScreen.isSmall ? (size - 4) : size,
+          fontSize: SplashScreen.isSmall ? (size - 2) : size,
           fontWeight: FontWeight.normal,
           height: 1.4),
     );
@@ -57,7 +57,7 @@ class ConstsWidget {
   static Widget buildCustomButton(BuildContext context, String title,
       {double? altura,
       Color? color = Consts.kColorAzul,
-      double rowSpacing = 0.00,
+      double rowSpacing = 0,
       Color? colorText = Colors.white,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
@@ -72,6 +72,7 @@ class ConstsWidget {
                 : size.height * 0.025),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
             SizedBox(
               width: size.height * rowSpacing,
@@ -82,7 +83,7 @@ class ConstsWidget {
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: colorText,
-                fontSize: SplashScreen.isSmall ? 14 : 18,
+                fontSize: SplashScreen.isSmall ? 16 : 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -104,7 +105,7 @@ class ConstsWidget {
       Color? backgroundColor = Colors.transparent,
       double rowSpacing = 0.00,
       double fontSize = 18,
-      double horizontal = 0.024}) {
+      double horizontal = 0.025}) {
     var size = MediaQuery.of(context).size;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
@@ -113,7 +114,7 @@ class ConstsWidget {
         padding: EdgeInsets.symmetric(
             vertical: SplashScreen.isSmall
                 ? size.height * 0.035
-                : size.height * 0.025,
+                : size.height * 0.022,
             horizontal: size.width * horizontal),
         side: BorderSide(width: size.width * 0.005, color: colorBorder),
         shape: StadiumBorder(),
@@ -130,7 +131,7 @@ class ConstsWidget {
             style: TextStyle(
               overflow: TextOverflow.ellipsis,
               color: colorFont,
-              fontSize: SplashScreen.isSmall ? 14 : 18,
+              fontSize: SplashScreen.isSmall ? 16 : 18,
               // fontWeight: FontWeight.w500,
             ),
           ),

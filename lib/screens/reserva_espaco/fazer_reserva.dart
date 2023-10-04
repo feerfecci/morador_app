@@ -83,7 +83,6 @@ class _FazerReservaState extends State<FazerReserva> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ConstsWidget.buildTextTitle(context, 'Descrição', size: 18),
                 ConstsWidget.buildPadding001(
                   context,
                   child: ConstsWidget.buildTextSubTitle(

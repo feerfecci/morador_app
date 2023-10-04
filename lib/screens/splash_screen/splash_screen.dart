@@ -21,13 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   bool load = false;
   startLoginApp() async {
     LocalPreferences.getUserLogin().then((value) async {
-      String? idUnidade;
-      LocalPreferences.getIdLogin().then((getIdUnidade) {
-        setState(() {
-          idUnidade = getIdUnidade;
-        });
-      });
-
       if (value[0] == null || value[1] == null) {
         return ConstsFuture.navigatorPopAndPush(context, LoginScreen());
       } else if (value[0] != null || value[1] != null) {
@@ -38,11 +31,17 @@ class _SplashScreenState extends State<SplashScreen> {
         final hasBiometrics = await LocalBiometrics.hasBiometric();
 
         if (!hasBiometrics) {
-          return ConstsFuture.efetuaLogin(context, value[0], value[1],
-              reLogin: idUnidade == null ? false : true);
+          return ConstsFuture.efetuaLogin(
+            context,
+            value[0],
+            value[1],
+          );
         } else if (hasBiometrics && auth) {
-          return ConstsFuture.efetuaLogin(context, value[0], value[1],
-              reLogin: idUnidade == null ? false : true);
+          return ConstsFuture.efetuaLogin(
+            context,
+            value[0],
+            value[1],
+          );
         }
       } else {
         return ConstsFuture.navigatorPopAndPush(context, LoginScreen());

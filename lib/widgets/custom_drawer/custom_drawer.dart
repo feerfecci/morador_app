@@ -11,6 +11,7 @@ import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts_widget.dart';
+import '../alert_dialog/alert_trocar_senha.dart';
 import 'change_theme_button.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -32,13 +33,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
         void Function()? onPressed}) {
       return ConstsWidget.buildPadding001(
         context,
+        vertical: 0.009,
         child: GestureDetector(
           onTap: onPressed,
           child: ListTile(
             iconColor: Theme.of(context).iconTheme.color,
             leading: Icon(
               leading,
-              size: SplashScreen.isSmall ? 18 : 21,
+              size: SplashScreen.isSmall ? 20 : 30,
             ),
             title: ConstsWidget.buildTextTitle(context, title, size: 16),
             trailing: Icon(
@@ -77,7 +79,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),
                       ),
-                      color: Colors.blue),
+                      color: Consts.kColorAzul),
                   child: Text(
                     'Menu',
                     textAlign: TextAlign.center,
@@ -113,6 +115,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 },
               ),
               buidListTile(
+                title: 'Unificar Condomínios',
+                leading: Icons.lock_person_outlined,
+                onPressed: () => trocarSenhaAlert(context, isChecked: true),
+              ),
+              buidListTile(
                 title: 'Seja um Representante',
                 leading: Icons.business_center_outlined,
                 onPressed: () => launchUrl(
@@ -121,16 +128,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     mode: LaunchMode.externalNonBrowserApplication),
               ),
               buidListTile(
-                title: 'Termos de uso',
-                leading: Icons.supervised_user_circle,
-                onPressed: () => ConstsFuture.navigatorPageRoute(
-                    context, TermoDeUsoScreen()),
-              ),
-              buidListTile(
                 title: 'Política de privacidade',
                 leading: Icons.privacy_tip_outlined,
                 onPressed: () =>
                     ConstsFuture.navigatorPageRoute(context, PoliticaScreen()),
+              ),
+              buidListTile(
+                title: 'Termos de uso',
+                leading: Icons.assignment_outlined,
+                onPressed: () => ConstsFuture.navigatorPageRoute(
+                    context, TermoDeUsoScreen()),
               ),
               buidListTile(
                 title: 'Indicar para Amigos',
@@ -161,16 +168,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   LocalPreferences.removeUserLogin();
                 },
               ),
-              ChangeThemeButton(),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
+              ConstsWidget.buildPadding001(context,
+                  vertical: 0.008, child: ChangeThemeButton()),
+              // SizedBox(
+              //   height: size.height * 0.03,
+              // ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: SplashScreen.isSmall
-                        ? size.height * 0.01
-                        : size.height * 0.035,
-                    horizontal: size.width * 0.02),
+                padding: EdgeInsets.only(
+                  top: SplashScreen.isSmall
+                      ? size.height * 0.01
+                      : size.height * 0.0,
+                  right: size.width * 0.02,
+                  left: size.width * 0.02,
+                ),
                 child: ConstsWidget.buildOutlinedButton(
                   context, title: 'Fechar Menu',
                   // icon: Icons.logout_outlined,

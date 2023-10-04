@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:app_portaria/screens/home/home_page.dart';
@@ -7,12 +9,15 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../repositories/shared_preferences.dart';
+import '../screens/avisos_chegada/chegada_screen.dart';
 import '../screens/cadastro/morador/cadastro_morador.dart';
+import '../screens/reserva_espaco/listar_reserva.dart';
 import '../screens/termodeuso/aceitar_alert.dart';
 import '../screens/correspondencia/correspondencia_screen.dart';
 import '../screens/home/dropAptos.dart';
 import '../screens/quadro_avisos/quadro_avisos_screen.dart';
 import '../widgets/alert_dialog/alert_all.dart';
+import '../widgets/alert_dialog/alert_resp_port.dart';
 import '../widgets/snack_bar.dart';
 import 'consts.dart';
 import 'consts_widget.dart';
@@ -50,11 +55,18 @@ class ConstsFuture {
     return senhacripto;
   }
 
-  static Future efetuaLogin(context, String user, String senha,
-      {String? idUnidade, bool reLogin = false}) async {
-    alertSenhaPadrao() {
+  static String allComplete = '';
+  static Future efetuaLogin(
+    context,
+    String user,
+    String senha, {
+    String? idUnidade,
+    bool reLogin = false,
+    OSNotificationOpenedResult? openedResult,
+  }) async {
+    Future<bool> alertSenhaPadrao() async {
       if (!InfosMorador.senha_alterada) {
-        return showDialog(
+        showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) => AlertDialogAll(
@@ -106,23 +118,21 @@ class ConstsFuture {
                 )
               ]),
         );
+        return true;
       }
+      return true;
     }
 
     CorrespondenciaScreen.listaNovaCorresp3.clear();
     CorrespondenciaScreen.listaNovaCorresp4.clear();
     InfosMorador.user = user;
     criptoSenha(senha).then((senhaCrip) async {
-      InfosMorador.senhaCripto = idUnidade == null
-          ? senhaCrip
-          : reLogin
-              ? senhaCrip
-              : senha;
+      InfosMorador.senhaCripto = idUnidade == null ? senhaCrip : senha;
       // Timer(Duration(hours: 1), () {
       //   LocalPreferences.removeUserLogin();
       // });
       var url = Uri.parse(
-          'https://a.portariaapp.com/api/login-morador/?fn=login-morador&usuario=$user&senha=${idUnidade == null ? senhaCrip : InfosMorador.senhaCripto}${idUnidade != null ? '&idunidade=$idUnidade' : ''}');
+          'https://a.portariaapp.com/api/login-morador/?fn=login-morador&usuario=$user&senha=${InfosMorador.senhaCripto}${idUnidade != null ? '&idunidade=$idUnidade' : ''}');
       var resposta = await http.get(url);
       if (resposta.statusCode == 200) {
         var apiBody = json.decode(resposta.body);
@@ -145,9 +155,11 @@ class ConstsFuture {
           if (apiInfos['acessa_sistema'] == null ||
               apiInfos['acessa_sistema']) {
             if (idUnidade == null) {
-              InfosMorador.listIdMorador.clear();
               InfosMorador.qntApto = 0;
               InfosMorador.qntApto = apiBody['login'].length;
+              InfosMorador.listIdMorador.clear();
+              InfosMorador.listIdCond.clear();
+              InfosMorador.listIdUnidade.clear();
               for (var i = 0; i < InfosMorador.qntApto; i++) {
                 InfosMorador.listIdMorador.add(!apiBody['login'][i]
                         ['responsavel']
@@ -190,7 +202,6 @@ class ConstsFuture {
             InfosMorador.datahora_ultima_atualizacao =
                 apiInfos['datahora_ultima_atualizacao'];
             InfosMorador.senha_alterada = apiInfos['senha_alterada'];
-            LocalPreferences.setIdLogin('${InfosMorador.idunidade}');
           } else {
             buildCustomSnackBar(context,
                 hasError: true,
@@ -203,7 +214,7 @@ class ConstsFuture {
           CorrespondenciaScreen.listaNovaCorresp4.clear();
           QuadroAvisosScreen.qntAvisos.clear();
 
-          return apiListarCorrespondencias(3).whenComplete(() {
+          apiListarCorrespondencias(3).whenComplete(() {
             apiListarCorrespondencias(4).whenComplete(() {
               apiQuadroAvisos().whenComplete(() {
                 if (!InfosMorador.aceitou_termos) {
@@ -216,15 +227,72 @@ class ConstsFuture {
                                 idUnidade != null ? int.parse(idUnidade) : 0);
                       });
                 } else {
-                  idUnidade == null
-                      ? ConstsFuture.navigatorPopAndPush(context, HomePage())
-                      : Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                          (route) => false);
-                  alertSenhaPadrao();
+                  if (idUnidade == null && !reLogin) {
+                    ConstsFuture.navigatorPopAndPush(context, HomePage());
+
+                    alertSenhaPadrao();
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ),
+                    );
+                    if (reLogin && openedResult != null) {
+                      if (openedResult.notification.buttons != null) {
+                        if (openedResult.notification.additionalData!['rota'] ==
+                            'delivery') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, ChegadaScreen(tipo: 1));
+
+                          alertRespondeDelivery(context, tipoAviso: 5);
+                        } else if (openedResult
+                                .notification.additionalData!['rota'] ==
+                            'visita') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, ChegadaScreen(tipo: 2));
+                          alertRespondeDelivery(context, tipoAviso: 6);
+                        }
+                      } else {
+                        if (openedResult.notification.additionalData!['rota'] ==
+                            'corresp') {
+                          ConstsFuture.navigatorPageRoute(
+                              context,
+                              CorrespondenciaScreen(
+                                tipoAviso: 3,
+                              ));
+                        } else if (openedResult
+                                .notification.additionalData!['rota'] ==
+                            'aviso') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, QuadroAvisosScreen());
+                        } else if (openedResult
+                                .notification.additionalData!['rota'] ==
+                            'mercadorias') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, CorrespondenciaScreen(tipoAviso: 4));
+                        } else if (openedResult
+                                .notification.additionalData!['rota'] ==
+                            'reserva_espacos') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, ListarReservas());
+                        } else if (openedResult
+                                .notification.additionalData!['rota'] ==
+                            'previsitas') {
+                          ConstsFuture.navigatorPageRoute(
+                              context, ListarReservas());
+                        }
+                      }
+                    }
+                  }
+                  // idUnidade == null && !reLogin
+                  //     ? ConstsFuture.navigatorPopAndPush(context, HomePage())
+                  //     : Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => HomePage(),
+                  //         ),
+                  //       );
                 }
               });
             });
@@ -280,6 +348,7 @@ class ConstsFuture {
     var resposta = await http.get(Uri.parse(
         '${Consts.apiUnidade}correspondencias/?fn=listarCorrespondencias&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso'));
     if (resposta.statusCode == 200) {
+      CorrespondenciaScreen.listaNovaCorresp3.clear();
       var respostaBody = json.decode(resposta.body);
       for (var i = 0; i <= respostaBody['correspondencias'].length - 1; i++) {
         if (respostaBody['correspondencias'][i]['protocolo'] == '') {

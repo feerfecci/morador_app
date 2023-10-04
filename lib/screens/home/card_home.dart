@@ -40,6 +40,9 @@ Widget buildCardHome(BuildContext context,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Spacer(
+            flex: 2,
+          ),
           ConstsWidget.buildBadge(
             context,
             position: badges.BadgePosition.topEnd(
@@ -61,8 +64,8 @@ Widget buildCardHome(BuildContext context,
                         : false,
             child: ConstsWidget.buildCachedImage(context,
                 iconApi: iconApi,
-                height: SplashScreen.isSmall ? 0.08 : 0.066,
-                width: SplashScreen.isSmall ? 0.14 : 0.14),
+                height: SplashScreen.isSmall ? 0.07 : 0.063,
+                width: SplashScreen.isSmall ? 0.14 : 0.138),
           ),
           // badges.Badge(
           //   showBadge: ,
@@ -88,9 +91,7 @@ Widget buildCardHome(BuildContext context,
           //       height: SplashScreen.isSmall ? 0.08 : 0.066,
           //       width: SplashScreen.isSmall ? 0.14 : 0.14),
           // ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
+          Spacer(),
           SizedBox(
               width: size.width * 0.9,
               child: ConstsWidget.buildTextTitle(
@@ -99,6 +100,7 @@ Widget buildCardHome(BuildContext context,
                 textAlign: TextAlign.center,
                 // size: 16,
               )),
+          Spacer(),
         ],
       ),
     ),

@@ -78,8 +78,9 @@ class ListarReservasState extends State<ListarReservas> {
                           String nome_morador = apiEspacos['nome_morador'];
                           int idunidade = apiEspacos['idunidade'];
                           String unidade = apiEspacos['unidade'];
-                          String data_reserva = DateFormat('dd/MM/yy').format(
-                              DateTime.parse(apiEspacos['data_reserva']));
+                          String data_reserva = DateFormat('dd/MM/yy HH:mm')
+                              .format(
+                                  DateTime.parse(apiEspacos['data_reserva']));
                           String datahora = apiEspacos['datahora'];
 
                           return MyBoxShadow(

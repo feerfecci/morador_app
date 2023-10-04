@@ -44,6 +44,7 @@ Future apiQuadroAvisos() async {
 
 Future comparaAvisos(jsonResposta) async {
   List apiAvisos = jsonResposta['avisos'];
+  QuadroAvisosScreen.qntAvisos.clear();
 
   LocalPreferences.getDateLogin().then((value) {
     List listApiAvisos = apiAvisos;
@@ -124,10 +125,15 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                               QuadroAvisosScreen.qntAvisos.remove(idaviso);
                             }
                           },
-                          title: ConstsWidget.buildTextTitle(
-                            context,
-                            titulo,
-                            textAlign: TextAlign.center,
+                          title: Column(
+                            children: [
+                              ConstsWidget.buildTextTitle(
+                                context,
+                                titulo,
+                                textAlign: TextAlign.center,
+                              ),
+                              ConstsWidget.buildTextSubTitle(context, datahora),
+                            ],
                           ),
                           expandedAlignment: Alignment.centerLeft,
                           children: [
@@ -141,8 +147,6 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                                     texto,
                                     textAlign: TextAlign.center,
                                   ),
-                                  ConstsWidget.buildTextSubTitle(
-                                      context, datahora),
                                   SizedBox(
                                     height: size.height * 0.01,
                                   ),

@@ -27,13 +27,13 @@ dependencies:
   whatsapp_unilink: ^2.1.0
   reorderable_grid_view: ^2.2.6
   flutter_draggable_gridview: ^0.0.8
-  date_time_picker: ^2.1.0
   badges: ^3.1.1
   flutter_html: ^3.0.0-alpha.3
   diacritic: ^0.1.4
   flutter_local_notifications: ^15.1.1
   email_validator: ^2.1.17
   cached_network_image: ^3.2.3
+  date_time_picker: ^2.1.0
   
   
 flutter_icons:

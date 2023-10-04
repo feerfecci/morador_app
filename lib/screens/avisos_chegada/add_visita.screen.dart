@@ -157,65 +157,60 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
       },
       child: buildScaffoldAll(
         context,
-        title: 'Agendar Visita',
+        title: 'Convidar Visita',
         body: Column(
           children: [
             MyBoxShadow(
                 child: Column(
               children: [
-                Form(
-                  key: keyEmail,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: SplashScreen.isSmall
-                            ? size.width * 0.7
-                            : size.width * 0.75,
-                        child: buildMyTextFormField(context,
-                            controller: emailCtrl,
-                            title: 'Email',
-                            validator: Validatorless.multiple([
-                              Validatorless.required('Preencha'),
-                              Validatorless.email(
-                                  'Preencha com um email válido')
-                            ]),
-                            keyboardType: TextInputType.emailAddress),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        // width: size.width * 0.12,
-                        // height: size.height * 0.06,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            alignment: Alignment.center,
-                            padding:
-                                EdgeInsets.only(right: size.height * 0.0005),
-                            side: BorderSide(
-                                width: size.width * 0.005, color: Colors.blue),
-                            shape: CircleBorder(),
-                          ),
-                          onPressed: () {
-                            var formValid =
-                                keyEmail.currentState?.validate() ?? false;
-                            if (formValid && emailCtrl.text != '') {
-                              setState(() {
-                                listEmailVisita.add(emailCtrl.text);
-                                emailCtrl.clear();
-                              });
-                            } else {
-                              buildCustomSnackBar(context,
-                                  titulo: 'Cuidado',
-                                  hasError: true,
-                                  texto: 'Selecione pelo menos uma email');
-                            }
-                          },
-                          child: Center(
-                            child: Icon(Icons.add, color: Colors.blue),
-                          ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: SplashScreen.isSmall
+                          ? size.width * 0.7
+                          : size.width * 0.75,
+                      child: buildMyTextFormField(context,
+                          controller: emailCtrl,
+                          title: 'Email',
+                          keyboardType: TextInputType.emailAddress),
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      // width: size.width * 0.12,
+                      // height: size.height * 0.06,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(right: size.height * 0.0005),
+                          side: BorderSide(
+                              width: size.width * 0.005, color: Colors.blue),
+                          shape: CircleBorder(),
                         ),
-                      )
-                    ],
-                  ),
+                        onPressed: () {
+                          // var formValid =
+                          //     keyEmail.currentState?.validate() != null
+                          //         ? listEmailVisita.isEmpty
+                          //             ? true
+                          //             : false
+                          //         : false;
+                          if (emailCtrl.text != '') {
+                            setState(() {
+                              listEmailVisita.add(emailCtrl.text);
+                              emailCtrl.clear();
+                            });
+                          } else {
+                            buildCustomSnackBar(context,
+                                titulo: 'Cuidado',
+                                hasError: true,
+                                texto: 'Selecione pelo menos uma email');
+                          }
+                        },
+                        child: Center(
+                          child: Icon(Icons.add, color: Colors.blue),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 ConstsWidget.buildPadding001(
                   context,
@@ -226,7 +221,9 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                   height: size.height * 0.01,
                 ),
                 MyDatePicker(
-                    dataSelected: dataSelected, lista: listEmailVisita),
+                    dataSelected: dataSelected,
+                    lista: listEmailVisita,
+                    hintText: 'Escolha o dia e horário da visita'),
                 // Column(
                 //   children: [
                 //     // Row(
@@ -295,6 +292,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                               title: 'Cancelar',
                               onPressed: () {
                                 listEmailVisita.clear();
+                                MyDatePicker.dataSelected = '';
                                 Navigator.pop(context);
                               },
                             ),

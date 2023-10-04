@@ -64,7 +64,6 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                     ConstsWidget.buildOutlinedButton(
                       context,
                       title: 'Convidados',
-                      fontSize: 18,
                       backgroundColor: filtrar == 0 ? Colors.grey[300] : null,
                       onPressed: () {
                         setState(() {
@@ -74,31 +73,53 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                         });
                       },
                     ),
-                    ConstsWidget.buildOutlinedButton(
-                      context,
-                      title: 'Confirmados',
-                      fontSize: 18,
-                      backgroundColor: filtrar == 1 ? Colors.grey[300] : null,
-                      onPressed: () {
-                        setState(() {
-                          filtrar = 1;
-                          listIdVisita.clear();
-                          isChecked = false;
-                        });
-                      },
-                    ),
-                    ConstsWidget.buildOutlinedButton(
-                      context,
-                      title: 'Autorizados',
-                      fontSize: 18,
-                      backgroundColor: filtrar == 2 ? Colors.grey[300] : null,
-                      onPressed: () {
-                        setState(() {
-                          filtrar = 2;
-                          clearValues();
-                        });
-                      },
-                    ),
+                    filtrar == 1
+                        ? ConstsWidget.buildCustomButton(
+                            context,
+                            'Confirmados',
+                            color: Consts.kColorAmarelo,
+                            onPressed: () {
+                              setState(() {
+                                filtrar = 1;
+                                listIdVisita.clear();
+                                isChecked = false;
+                              });
+                            },
+                          )
+                        : ConstsWidget.buildOutlinedButton(
+                            context,
+                            title: 'Confirmados',
+                            fontSize: 18,
+                            onPressed: () {
+                              setState(() {
+                                filtrar = 1;
+                                listIdVisita.clear();
+                                isChecked = false;
+                              });
+                            },
+                          ),
+                    filtrar == 2
+                        ? ConstsWidget.buildCustomButton(
+                            context,
+                            'Autorizados',
+                            color: Consts.kColorVerde,
+                            onPressed: () {
+                              setState(() {
+                                filtrar = 2;
+                                clearValues();
+                              });
+                            },
+                          )
+                        : ConstsWidget.buildOutlinedButton(
+                            context,
+                            title: 'Autorizados',
+                            onPressed: () {
+                              setState(() {
+                                filtrar = 2;
+                                clearValues();
+                              });
+                            },
+                          ),
                   ],
                 ),
               ),
@@ -107,13 +128,13 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                   context,
                   child: ConstsWidget.buildCustomButton(
                     context,
-                    filtrar == 1 ? 'Autorizar' : 'Anular',
+                    filtrar == 1 ? 'Autorizar Visita' : 'Anular Visita',
                     color: Consts.kColorRed,
                     onPressed: () {
                       if (listIdVisita.isNotEmpty) {
                         showDialogAll(context,
                             title: ConstsWidget.buildTextSubTitle(
-                                context, 'Autorizar Visita'),
+                                context, 'Cancelar Visita'),
                             children: [
                               RichText(
                                   text: TextSpan(
@@ -229,6 +250,10 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                               DateFormat('dd/MM/yyyy HH:mm').format(
                                   DateTime.parse(
                                       apiVisitante['datahora_visita']));
+                          String? datahora_enviado =
+                              DateFormat('dd/MM/yyyy HH:mm').format(
+                                  DateTime.parse(
+                                      apiVisitante['datahora_enviado']));
                           bool confirmado = apiVisitante['confirmado'];
                           bool autorizado = apiVisitante['autorizado'];
                           bool compareceu = apiVisitante['autorizado'];
@@ -248,8 +273,8 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ConstsWidget.buildTextSubTitle(context,
-                                          'Já foi enviado convite para'),
+                                      ConstsWidget.buildTextSubTitle(
+                                          context, 'Convite enviado para'),
                                       SizedBox(
                                         width: size.width * 0.9,
                                         child: ConstsWidget.buildTextTitle(
@@ -257,6 +282,15 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                           email!,
                                         ),
                                       ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      ConstsWidget.buildTextSubTitle(
+                                          context, 'Enviado em'),
+                                      ConstsWidget.buildTextTitle(
+                                        context,
+                                        datahora_enviado,
+                                      )
                                     ],
                                   ),
                                 if (nome_convidado != null)
@@ -349,8 +383,8 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ConstsWidget.buildTextSubTitle(
-                                            context, 'Data da Visita'),
+                                        ConstsWidget.buildTextSubTitle(context,
+                                            'Data e hora da da Visita'),
                                         ConstsWidget.buildTextTitle(
                                             context, datahora_visita),
                                       ],

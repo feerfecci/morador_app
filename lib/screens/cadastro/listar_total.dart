@@ -79,6 +79,9 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                             });
                           },
                         ),
+                  SizedBox(
+                    width: size.width * 0.01,
+                  ),
                   filtrar == 1
                       ? ConstsWidget.buildCustomButton(
                           context,

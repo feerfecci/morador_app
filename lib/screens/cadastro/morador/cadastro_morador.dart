@@ -23,12 +23,6 @@ import 'listar_morador.dart';
 
 // ignore: must_be_immutable
 class CadastroMorador extends StatefulWidget {
-  static TextEditingController senhaNovaCtrl = TextEditingController();
-  static TextEditingController senhaConfirmCtrl = TextEditingController();
-  static TextEditingController retiradaNovaCtrl = TextEditingController();
-  static TextEditingController retiradaConfirmCtrl = TextEditingController();
-  static int isSenhaLoginAll = 0;
-  static int isSenhaRetiradaAll = 0;
   int? idmorador;
   bool ativo;
   String? nome_completo;
@@ -70,9 +64,15 @@ class _CadastroMoradorState extends State<CadastroMorador> {
   List listAtivo = [1, 0];
   bool isGerarSenha = false;
   Object? dropdownValueAtivo;
+  int isSenhaLoginAll = 0;
+  int isSenhaRetiradaAll = 0;
 
-  final formKeyRetirada = GlobalKey<FormState>();
+  final formKeyTrocaSenha = GlobalKey<FormState>();
   String loginGerado2 = '';
+  TextEditingController senhaNovaCtrl = TextEditingController();
+  TextEditingController senhaConfirmCtrl = TextEditingController();
+  TextEditingController retiradaNovaCtrl = TextEditingController();
+  TextEditingController retiradaConfirmCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -116,22 +116,22 @@ class _CadastroMoradorState extends State<CadastroMorador> {
           ? '${widget.idmorador == null ? 'Incluir' : 'Editar'} Morador'
           : 'Meu Perfil',
       resizeToAvoidBottomInset: true,
-      body: Form(
-        key: _formKeyMorador,
-        child: MyBoxShadow(
-          child: Column(
-            children: [
-              ConstsWidget.buildPadding001(
-                context,
-                child: ConstsWidget.buildTextSubTitle(
-                    context, '(*) Campo Obrigatório',
-                    color: Consts.kColorRed),
-              ),
+      body: MyBoxShadow(
+        child: Column(
+          children: [
+            ConstsWidget.buildPadding001(
+              context,
+              child: ConstsWidget.buildTextSubTitle(
+                  context, '(*) Campo Obrigatório',
+                  color: Consts.kColorRed),
+            ),
 
-              Column(
+            Form(
+              key: _formKeyMorador,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (!widget.isDrawer)
+                  if (!widget.isDrawer && widget.login != InfosMorador.login)
                     buildDropAtivoInativo(
                       context,
                     ),
@@ -287,7 +287,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       context,
                       child: ConstsWidget.buildLoadingButton(
                         context,
-                        title: 'Gerar Login',
+                        title: 'Continuar',
                         isLoading: isLoadingLogin,
                         color: Consts.kColorVerde,
                         onPressed: () {
@@ -329,118 +329,157 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ),
                 ],
               ),
-              //Login Gerado
+            ),
+            //Login Gerado
 
-              if (loginGerado2 != '')
-                Column(
-                  children: [
-                    MyBoxShadow(
-                      child: Row(
-                        children: [
+            if (loginGerado2 != '')
+              Column(
+                children: [
+                  MyBoxShadow(
+                    child: Row(
+                      children: [
+                        ConstsWidget.buildPadding001(
+                          context,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ConstsWidget.buildTextSubTitle(context, 'Login'),
+                              SizedBox(
+                                width: size.width * 0.8,
+                                child: ConstsWidget.buildTextTitle(
+                                    context, _formInfosMorador.login.toString(),
+                                    textAlign: TextAlign.center),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  //LOGIN
+                  if (widget.isDrawer && InfosMorador.login == widget.login)
+                    Column(
+                      children: [
+                        ConstsWidget.buildPadding001(
+                          context,
+                          vertical: 0.02,
+                          child: ConstsWidget.buildTextTitle(
+                              context, 'Senha Login'),
+                        ),
+                        if (InfosMorador.listIdUnidade.length != 1)
                           ConstsWidget.buildPadding001(
                             context,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ConstsWidget.buildTextSubTitle(
-                                    context, 'Login'),
-                                SizedBox(
-                                  width: size.width * 0.8,
-                                  child: ConstsWidget.buildTextTitle(context,
-                                      _formInfosMorador.login.toString(),
-                                      textAlign: TextAlign.center),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                            child: ConstsWidget.buildCheckBox(context,
+                                isChecked: isSenhaLoginAll == 1 ? true : false,
+                                width: size.width * 0.6, onChanged: (value) {
+                              setState(
+                                () {
+                                  FocusManager.instance.primaryFocus!.unfocus();
+                                  isSenhaLoginAll = value! ? 1 : 0;
+                                },
+                              );
+                            }, title: 'Trocar em todas as unidade'),
+                          ),
+                        buildMyTextFormField(
+                          context,
+                          title: 'Nova Senha Login',
+                          validator: Validatorless.multiple([
+                            // Validatorless.required('Confirme a senha'),
+                            Validatorless.min(
+                                6, 'Senha precisa ter 6 caracteres'),
+                          ]),
+                          controller: senhaNovaCtrl,
+                        ),
+                        // buildMyTextFormField(
+                        //   context,
+                        //   title: 'Confirmar Senha',
+                        //   validator: Validatorless.multiple([
+                        //     Validatorless.required('Confirme a senha'),
+                        //     Validatorless.min(
+                        //         6, 'Senha precisa ter 6 caracteres'),
+                        //     Validatorless.compare(
+                        //         senhaNovaCtrl, 'Senhas não são iguais'),
+                        //   ]),
+                        //   controller: senhaConfirmCtrl,
+                        // ),
+                        //RETIRADA
+                        ConstsWidget.buildPadding001(
+                          context,
+                          vertical: 0.02,
+                          child: ConstsWidget.buildTextTitle(
+                              context, 'Senha Retirada'),
+                        ),
+                        if (InfosMorador.listIdUnidade.length != 1)
+                          ConstsWidget.buildPadding001(
+                            context,
+                            child: ConstsWidget.buildCheckBox(context,
+                                isChecked:
+                                    isSenhaRetiradaAll == 1 ? true : false,
+                                width: size.width * 0.6, onChanged: (value) {
+                              setState(
+                                () {
+                                  FocusManager.instance.primaryFocus!.unfocus();
+                                  isSenhaRetiradaAll = value! ? 1 : 0;
+                                },
+                              );
+                            }, title: 'Trocar em todas as unidade'),
+                          ),
+                        buildMyTextFormField(
+                          context,
+                          title: 'Nova Senha Retirada',
+                          validator: Validatorless.multiple([
+                            // Validatorless.required('Confirme a senha'),
+                            Validatorless.min(
+                                6, 'Senha precisa ter 6 caracteres'),
+                          ]),
+                          controller: retiradaNovaCtrl,
+                        ),
+                        // buildMyTextFormField(
+                        //   context,
+                        //   title: 'Confirmar Senha',
+                        //   validator: Validatorless.multiple([
+                        //     Validatorless.required('Confirme a senha'),
+                        //     Validatorless.min(
+                        //         6, 'Senha precisa ter 6 caracteres'),
+                        //     Validatorless.compare(
+                        //         retiradaNovaCtrl, 'Senhas não são iguais'),
+                        //   ]),
+                        //   controller: retiradaConfirmCtrl,
+                        // ),
+                      ],
+                    ),
+                  if (InfosMorador.responsavel || !widget.isDrawer)
+                    ConstsWidget.buildPadding001(
+                      context,
+                      child: ConstsWidget.buildCheckBox(
+                        context,
+                        isChecked: isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                            int salvaAcesso = isChecked == true ? 1 : 0;
+                            _formInfosMorador =
+                                _formInfosMorador.copyWith(acesso: salvaAcesso);
+                          });
+                        },
+                        title: 'Permitir acesso ao sistema',
                       ),
                     ),
-                    if (widget.isDrawer && InfosMorador.login == widget.login)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ConstsWidget.buildPadding001(
-                            context,
-                            vertical: 0.02,
-                            child: ConstsWidget.buildCustomButton(
-                              context,
-                              'Senha Login',
-                              rowSpacing: 0.025,
-                              onPressed: () {
-                                trocarSenhaAlert(
-                                  context,
-                                  title: 'Login',
-                                );
-                              },
-                            ),
-                          ),
-                          ConstsWidget.buildPadding001(
-                            context,
-                            child: ConstsWidget.buildOutlinedButton(
-                              context,
-                              title: 'Senha Retirada',
-                              rowSpacing: 0.025,
-                              onPressed: () {
-                                trocarSenhaAlert(
-                                  context,
-                                  title: 'Retirada',
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    // ListTile(
-                    //   title: ConstsWidget.buildTextTitle(
-                    //       context, 'Permitir acesso ao sistema'),
-                    //   trailing: StatefulBuilder(builder: (context, setState) {
-                    //     return SizedBox(
-                    //         width: size.width * 0.125,
-                    //         child: Row(
-                    //           mainAxisAlignment:
-                    //               MainAxisAlignment.spaceBetween,
-                    //           children: [
-                    //             Checkbox(
-                    //               value: isChecked,
-                    //               activeColor: Consts.kColorApp,
-                    //               onChanged: (bool? value) {
-                    //                 setState(() {
-                    //                   isChecked = value!;
-                    //                   int salvaAcesso =
-                    //                       isChecked == true ? 1 : 0;
-                    //                   _formInfosMorador = _formInfosMorador
-                    //                       .copyWith(acesso: salvaAcesso);
-                    //                 });
-                    //               },
-                    //             ),
-                    //           ],
-                    //         ));
-                    //   }),
-                    // ),
-                    if (InfosMorador.responsavel || !widget.isDrawer)
-                      ConstsWidget.buildCheckBox(context, isChecked: isChecked,
-                          onChanged: (bool? value) {
+                  if (widget.idmorador != null && !widget.isDrawer)
+                    StatefulBuilder(builder: (context, setState) {
+                      return ConstsWidget.buildCheckBox(context,
+                          isChecked: isGerarSenha, onChanged: (bool? value) {
                         setState(() {
-                          isChecked = value!;
-                          int salvaAcesso = isChecked == true ? 1 : 0;
-                          _formInfosMorador =
-                              _formInfosMorador.copyWith(acesso: salvaAcesso);
+                          isGerarSenha = value!;
                         });
-                      }, title: 'Permitir acesso ao sistema'),
-                    if (widget.idmorador != null && !widget.isDrawer)
-                      StatefulBuilder(builder: (context, setState) {
-                        return ConstsWidget.buildCheckBox(context,
-                            isChecked: isGerarSenha, onChanged: (bool? value) {
-                          setState(() {
-                            isGerarSenha = value!;
-                          });
-                        }, title: 'Gerar Senha e Enviar Acesso');
-                      }),
-                  ],
-                ),
-              if (loginGerado2 != '')
-                ConstsWidget.buildLoadingButton(
+                      }, title: 'Gerar Senha e Enviar Acesso');
+                    }),
+                ],
+              ),
+            if (loginGerado2 != '')
+              ConstsWidget.buildPadding001(
+                context,
+                child: ConstsWidget.buildLoadingButton(
                   context,
                   title: 'Salvar',
                   isLoading: isLoading,
@@ -452,10 +491,35 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     // });
                     var formValid =
                         _formKeyMorador.currentState?.validate() ?? false;
+
+                    bool formValidSenha = false;
                     FocusManager.instance.primaryFocus!.unfocus();
-                    print('login: ${CadastroMorador.isSenhaLoginAll}');
-                    print('retirada: ${CadastroMorador.isSenhaRetiradaAll}');
-                    if (formValid) {
+
+                    if ((senhaNovaCtrl.text.isNotEmpty &&
+                            senhaNovaCtrl.text.length >= 6) ||
+                        (retiradaNovaCtrl.text.isNotEmpty &&
+                            retiradaNovaCtrl.text.length >= 6)) {
+                      setState(() {
+                        formValidSenha = true;
+                      });
+                    } else if ((senhaNovaCtrl.text.isNotEmpty &&
+                            senhaNovaCtrl.text.length < 6) ||
+                        (retiradaNovaCtrl.text.isNotEmpty &&
+                            retiradaNovaCtrl.text.length < 6)) {
+                    } else if (senhaNovaCtrl.text.isEmpty ||
+                        retiradaNovaCtrl.text.isEmpty) {
+                      setState(() {
+                        formValidSenha = false;
+                      });
+                    } else {
+                      setState(() {
+                        formValidSenha = false;
+                      });
+                    }
+
+                    if (formValid &&
+                        senhaNovaCtrl.text.isEmpty &&
+                        retiradaNovaCtrl.text.isEmpty) {
                       _formKeyMorador.currentState?.save();
                       if (widget.isDrawer) {
                         InfosMorador.nome_completo =
@@ -468,16 +532,26 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         InfosMorador.email = _formInfosMorador.email!;
                       }
                       salvarDadosMorador();
-                      setState(() {
-                        isLoading = false;
-                      });
                     } else {
-                      //print(formValid.toString());
+                      if (widget.isDrawer) {
+                        InfosMorador.nome_completo =
+                            _formInfosMorador.nome_morador!;
+                        InfosMorador.data_nascimento =
+                            _formInfosMorador.nascimento!;
+                        InfosMorador.documento = _formInfosMorador.documento!;
+                        InfosMorador.dddtelefone = _formInfosMorador.ddd!;
+                        InfosMorador.telefone = _formInfosMorador.telefone!;
+                        InfosMorador.email = _formInfosMorador.email!;
+                      }
+                      if (formValidSenha == true) {
+                        salvarSenha();
+                        salvarDadosMorador();
+                      }
                     }
                   },
-                )
-            ],
-          ),
+                ),
+              )
+          ],
         ),
       ),
     );
@@ -493,8 +567,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     InfosMorador.responsavel && widget.isDrawer
         ? isResponsavel = 1
         : isResponsavel = 0;
-    String datanasc = _formInfosMorador.nascimento != ''
-        ? '&datanasc=${_formInfosMorador.nascimento}'
+    String datanasc = MyDatePicker.dataSelected != '' &&
+            MyDatePicker.dataSelected != '0000-00-00'
+        ? '&datanasc=${DateFormat('yyyy-MM-dd').format(DateTime.parse(MyDatePicker.dataSelected))}'
         : '';
     String dddtelefone = _formInfosMorador.ddd != ''
         ? '&dddtelefone=${_formInfosMorador.ddd}'
@@ -515,23 +590,15 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                 ListaTotalUnidade(
                   idunidade: widget.idunidade,
                   tipoAbrir: 1,
-                ));
+                )).then((value) {
+              buildCustomSnackBar(context,
+                  titulo: 'Sucesso', texto: value['mensagem']);
+              setState(() {
+                apiMoradores();
+              });
+            });
           } else {
             ConstsFuture.navigatorPageRoute(context, HomePage());
-          }
-        } else {
-          if (CadastroMorador.senhaNovaCtrl.text != '' ||
-              CadastroMorador.retiradaNovaCtrl.text != '') {
-            ConstsFuture.changeApi(
-                    'moradores/?fn=mudarSenhas&mudasenhalogin=${CadastroMorador.isSenhaLoginAll}&mudasenharetirada=${CadastroMorador.isSenhaRetiradaAll}&login=$loginGerado2&idmorador=${InfosMorador.idmorador}${CadastroMorador.senhaNovaCtrl.text != '' ? '&senha=${CadastroMorador.senhaNovaCtrl.text}' : ''}${CadastroMorador.retiradaNovaCtrl.text.isNotEmpty ? '&senha_retirada=${CadastroMorador.retiradaNovaCtrl.text}' : ''}')
-                .then((value) {
-              CadastroMorador.senhaNovaCtrl.clear();
-              CadastroMorador.senhaConfirmCtrl.clear();
-              CadastroMorador.retiradaConfirmCtrl.clear();
-              CadastroMorador.retiradaNovaCtrl.clear();
-              CadastroMorador.isSenhaLoginAll = 0;
-              CadastroMorador.isSenhaRetiradaAll = 0;
-            });
           }
         }
         Navigator.pop(context);
@@ -555,6 +622,21 @@ class _CadastroMoradorState extends State<CadastroMorador> {
           texto: value['mensagem'],
           hasError: true,
         );
+      }
+    });
+  }
+
+  salvarSenha() {
+    ConstsFuture.changeApi(
+            'moradores/?fn=mudarSenhas&mudasenhalogin=$isSenhaLoginAll&mudasenharetirada=$isSenhaRetiradaAll&login=$loginGerado2&idmorador=${InfosMorador.idmorador}${senhaNovaCtrl.text != '' ? '&senha=${senhaNovaCtrl.text}' : ''}${retiradaNovaCtrl.text.isNotEmpty ? '&senha_retirada=${retiradaNovaCtrl.text}' : ''}')
+        .then((value) {
+      if (!value['erro']) {
+        senhaNovaCtrl.clear();
+        senhaConfirmCtrl.clear();
+        retiradaConfirmCtrl.clear();
+        retiradaNovaCtrl.clear();
+        isSenhaLoginAll = 0;
+        isSenhaRetiradaAll = 0;
       }
     });
   }

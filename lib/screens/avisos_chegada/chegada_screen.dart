@@ -50,7 +50,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
         });
       },
       child: buildScaffoldAll(context,
-          title: widget.tipo == 1 ? 'Delivery' : 'Histórico Visitas',
+          title: widget.tipo == 1 ? 'Delivery' : 'Histórico de Visitas',
           body: Column(
             children: [
               if (widget.tipo == 2)

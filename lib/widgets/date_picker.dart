@@ -11,7 +11,7 @@ class MyDatePicker extends StatefulWidget {
   final List? lista = [];
   final DateTimePickerType type;
   final bool aniversario;
-  final hintText;
+  final String hintText;
   MyDatePicker(
       {lista,
       required dataSelected,

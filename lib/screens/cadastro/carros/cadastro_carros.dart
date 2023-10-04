@@ -179,6 +179,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     context,
                     title: 'Placa',
                     textCapitalization: TextCapitalization.characters,
+                    maxLength: 7,
                     // keyboardType: TextInputType.name,
                     // mask: '#######',
                     onSaved: (text) =>
@@ -222,17 +223,17 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                       buildCustomSnackBar(context,
                           titulo: 'Sucesso', texto: value['mensagem']);
                     } else {
-                 return     buildCustomSnackBar(context,
+                      buildCustomSnackBar(context,
                           hasError: true,
                           titulo: 'Algo saiu mal!',
                           texto: value['mensagem']);
                     }
                   });
-                } else {buildCustomSnackBar(context,
-                          hasError: true,
-                          titulo: 'Algo saiu mau!',
-                          texto: 'Escolha um tipo de veículos');
-                    }
+                } else {
+                  buildCustomSnackBar(context,
+                      hasError: true,
+                      titulo: 'Algo saiu mal!',
+                      texto: 'Selecione um tipo de Veículo');
                 }
               },
             )
