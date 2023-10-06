@@ -55,6 +55,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return SafeArea(
       child: SizedBox(
         height: size.height * 0.95,
+        width: size.width * 0.775,
         child: Drawer(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           shape: RoundedRectangleBorder(
@@ -115,7 +116,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 },
               ),
               buidListTile(
-                title: 'Unificar Condomínios',
+                title: 'Adicionar Outras Unidades',
                 leading: Icons.lock_person_outlined,
                 onPressed: () => trocarSenhaAlert(context, isChecked: true),
               ),

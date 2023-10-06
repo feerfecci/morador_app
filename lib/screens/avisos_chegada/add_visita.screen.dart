@@ -212,11 +212,6 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                     )
                   ],
                 ),
-                ConstsWidget.buildPadding001(
-                  context,
-                  child:
-                      ConstsWidget.buildTextTitle(context, 'Horário da Visita'),
-                ),
                 SizedBox(
                   height: size.height * 0.01,
                 ),

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 import 'dart:async';
 import 'package:app_portaria/screens/home/home_page.dart';
+import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:app_portaria/widgets/date_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -58,6 +59,9 @@ class CadastroMorador extends StatefulWidget {
   State<CadastroMorador> createState() => _CadastroMoradorState();
 }
 
+bool isObscureLogin = true;
+bool isObscureRetirada = true;
+
 class _CadastroMoradorState extends State<CadastroMorador> {
   bool isLoading = false;
   bool isLoadingLogin = false;
@@ -90,9 +94,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     _formInfosMorador = _formInfosMorador.copyWith(acesso: widget.acesso);
     _formInfosMorador = _formInfosMorador.copyWith(idunidade: widget.idunidade);
     _formInfosMorador = _formInfosMorador.copyWith(iddivisao: widget.iddivisao);
-    loginGerado2 = !InfosMorador.senha_alterada && widget.idunidade != null
-        ? InfosMorador.login
-        : '';
+    loginGerado2 =
+        widget.isDrawer && widget.idunidade != null ? InfosMorador.login : '';
     MyDatePicker.dataSelected = widget.nascimento ?? '';
   }
 
@@ -110,6 +113,90 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     isChecked = acessoApi;
     var size = MediaQuery.of(context).size;
 
+    Widget buildCampoSenha({
+      required TextEditingController senhaCtrl,
+      required bool obscureText,
+      required String title,
+    }) {
+      return StatefulBuilder(
+        builder: (context, setState) => TextFormField(
+          textInputAction: TextInputAction.done,
+          controller: senhaCtrl,
+          style: TextStyle(fontSize: SplashScreen.isSmall ? 14 : 16),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: Validatorless.multiple([
+            // Validatorless.required(
+            //     'Preencha com sua senha de acesso'),
+            Validatorless.min(6, 'Mínimo de 6 caracteres')
+          ]),
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.032, vertical: size.height * 0.023),
+            filled: true,
+            fillColor: Theme.of(context).primaryColor,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.primary)),
+            hintText: 'Nova Senha $title',
+            label: RichText(
+                text: TextSpan(
+                    text: 'Nova Senha $title',
+                    style: TextStyle(
+                      fontSize: SplashScreen.isSmall ? 14 : 16,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                    ),
+                    children: [
+                  TextSpan(
+                      text: ' **',
+                      style: TextStyle(
+                          color: Consts.kColorRed,
+                          fontSize: SplashScreen.isSmall ? 14 : 16))
+                ])),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+              child: obscureText
+                  ? Icon(Icons.visibility_off_outlined,
+                      color: Theme.of(context).textTheme.bodyLarge!.color)
+                  : Icon(Icons.visibility_outlined,
+                      color: Theme.of(context).textTheme.bodyLarge!.color),
+            ),
+          ),
+        ),
+      );
+    }
+
+    alertTodosUnidades({
+      required String title,
+    }) {
+      return showDialogAll(context,
+          title:
+              ConstsWidget.buildTextTitle(context, 'Alterar em todas unidades'),
+          children: [
+            ConstsWidget.buildTextSubTitle(
+              context,
+              'A Senha de $title será alterada em todos as suas unidades no Portaria App',
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            ConstsWidget.buildCustomButton(
+              context,
+              'Entendi',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ]);
+    }
+
     return buildScaffoldAll(
       context,
       title: !widget.isDrawer
@@ -119,11 +206,8 @@ class _CadastroMoradorState extends State<CadastroMorador> {
       body: MyBoxShadow(
         child: Column(
           children: [
-            ConstsWidget.buildPadding001(
+            ConstsWidget.buildCamposObrigatorios(
               context,
-              child: ConstsWidget.buildTextSubTitle(
-                  context, '(*) Campo Obrigatório',
-                  color: Consts.kColorRed),
             ),
 
             Form(
@@ -253,6 +337,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           initialValue: widget.telefone,
                           title: 'Telefone',
                           keyboardType: TextInputType.number,
+                          mask: '# ########',
                           hintText: '9 11223344',
                           onSaved: (text) {
                             _formInfosMorador =
@@ -282,7 +367,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ),
                   ),
 
-                  if (loginGerado2 == '')
+                  if (loginGerado2 == '' && !widget.isDrawer)
                     ConstsWidget.buildPadding001(
                       context,
                       child: ConstsWidget.buildLoadingButton(
@@ -358,15 +443,19 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                   ),
                   //LOGIN
                   if (widget.isDrawer && InfosMorador.login == widget.login)
-                    Column(
-                      children: [
-                        ConstsWidget.buildPadding001(
-                          context,
-                          vertical: 0.02,
-                          child: ConstsWidget.buildTextTitle(
-                              context, 'Senha Login'),
-                        ),
-                        if (InfosMorador.listIdUnidade.length != 1)
+                    Form(
+                      key: formKeyTrocaSenha,
+                      child: Column(
+                        children: [
+                          ConstsWidget.buildPadding001(
+                            context,
+                            vertical: 0.01,
+                            child: Container(),
+                          ),
+                          buildCampoSenha(
+                              senhaCtrl: senhaNovaCtrl,
+                              obscureText: isObscureLogin,
+                              title: 'Login'),
                           ConstsWidget.buildPadding001(
                             context,
                             child: ConstsWidget.buildCheckBox(context,
@@ -378,75 +467,48 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                                   isSenhaLoginAll = value! ? 1 : 0;
                                 },
                               );
-                            }, title: 'Trocar em todas as unidade'),
+                              if (value == true) {
+                                alertTodosUnidades(title: 'Login');
+                              }
+                            }, title: 'Alterar em todas as unidade'),
                           ),
-                        buildMyTextFormField(
-                          context,
-                          title: 'Nova Senha Login',
-                          validator: Validatorless.multiple([
-                            // Validatorless.required('Confirme a senha'),
-                            Validatorless.min(
-                                6, 'Senha precisa ter 6 caracteres'),
-                          ]),
-                          controller: senhaNovaCtrl,
-                        ),
-                        // buildMyTextFormField(
-                        //   context,
-                        //   title: 'Confirmar Senha',
-                        //   validator: Validatorless.multiple([
-                        //     Validatorless.required('Confirme a senha'),
-                        //     Validatorless.min(
-                        //         6, 'Senha precisa ter 6 caracteres'),
-                        //     Validatorless.compare(
-                        //         senhaNovaCtrl, 'Senhas não são iguais'),
-                        //   ]),
-                        //   controller: senhaConfirmCtrl,
-                        // ),
-                        //RETIRADA
-                        ConstsWidget.buildPadding001(
-                          context,
-                          vertical: 0.02,
-                          child: ConstsWidget.buildTextTitle(
-                              context, 'Senha Retirada'),
-                        ),
-                        if (InfosMorador.listIdUnidade.length != 1)
+                          //RETIRADA
+                          buildCampoSenha(
+                              senhaCtrl: retiradaNovaCtrl,
+                              obscureText: isObscureRetirada,
+                              title: 'Retirada'),
+                          // if (InfosMorador.listIdUnidade.length != 1)
                           ConstsWidget.buildPadding001(
                             context,
                             child: ConstsWidget.buildCheckBox(context,
                                 isChecked:
                                     isSenhaRetiradaAll == 1 ? true : false,
                                 width: size.width * 0.6, onChanged: (value) {
+                              if (value == true) {
+                                alertTodosUnidades(title: 'Retirada');
+                              }
                               setState(
                                 () {
                                   FocusManager.instance.primaryFocus!.unfocus();
                                   isSenhaRetiradaAll = value! ? 1 : 0;
                                 },
                               );
-                            }, title: 'Trocar em todas as unidade'),
+                            }, title: 'Alterar em todas as unidade'),
                           ),
-                        buildMyTextFormField(
-                          context,
-                          title: 'Nova Senha Retirada',
-                          validator: Validatorless.multiple([
-                            // Validatorless.required('Confirme a senha'),
-                            Validatorless.min(
-                                6, 'Senha precisa ter 6 caracteres'),
-                          ]),
-                          controller: retiradaNovaCtrl,
-                        ),
-                        // buildMyTextFormField(
-                        //   context,
-                        //   title: 'Confirmar Senha',
-                        //   validator: Validatorless.multiple([
-                        //     Validatorless.required('Confirme a senha'),
-                        //     Validatorless.min(
-                        //         6, 'Senha precisa ter 6 caracteres'),
-                        //     Validatorless.compare(
-                        //         retiradaNovaCtrl, 'Senhas não são iguais'),
-                        //   ]),
-                        //   controller: retiradaConfirmCtrl,
-                        // ),
-                      ],
+                          // buildMyTextFormField(
+                          //   context,
+                          //   title: 'Confirmar Senha',
+                          //   validator: Validatorless.multiple([
+                          //     Validatorless.required('Confirme a senha'),
+                          //     Validatorless.min(
+                          //         6, 'Senha precisa ter 6 caracteres'),
+                          //     Validatorless.compare(
+                          //         retiradaNovaCtrl, 'Senhas não são iguais'),
+                          //   ]),
+                          //   controller: retiradaConfirmCtrl,
+                          // ),
+                        ],
+                      ),
                     ),
                   if (InfosMorador.responsavel || !widget.isDrawer)
                     ConstsWidget.buildPadding001(
@@ -521,29 +583,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         senhaNovaCtrl.text.isEmpty &&
                         retiradaNovaCtrl.text.isEmpty) {
                       _formKeyMorador.currentState?.save();
-                      if (widget.isDrawer) {
-                        InfosMorador.nome_completo =
-                            _formInfosMorador.nome_morador!;
-                        InfosMorador.data_nascimento =
-                            _formInfosMorador.nascimento!;
-                        InfosMorador.documento = _formInfosMorador.documento!;
-                        InfosMorador.dddtelefone = _formInfosMorador.ddd!;
-                        InfosMorador.telefone = _formInfosMorador.telefone!;
-                        InfosMorador.email = _formInfosMorador.email!;
-                      }
+
                       salvarDadosMorador();
                     } else {
-                      if (widget.isDrawer) {
-                        InfosMorador.nome_completo =
-                            _formInfosMorador.nome_morador!;
-                        InfosMorador.data_nascimento =
-                            _formInfosMorador.nascimento!;
-                        InfosMorador.documento = _formInfosMorador.documento!;
-                        InfosMorador.dddtelefone = _formInfosMorador.ddd!;
-                        InfosMorador.telefone = _formInfosMorador.telefone!;
-                        InfosMorador.email = _formInfosMorador.email!;
-                      }
                       if (formValidSenha == true) {
+                        _formKeyMorador.currentState?.save();
                         salvarSenha();
                         salvarDadosMorador();
                       }
@@ -577,7 +621,14 @@ class _CadastroMoradorState extends State<CadastroMorador> {
     String telefone = _formInfosMorador.telefone != ''
         ? '&telefone=${_formInfosMorador.telefone}'
         : '';
-
+    if (widget.isDrawer) {
+      InfosMorador.nome_completo = _formInfosMorador.nome_morador!;
+      InfosMorador.data_nascimento = _formInfosMorador.nascimento!;
+      InfosMorador.documento = _formInfosMorador.documento!;
+      InfosMorador.dddtelefone = _formInfosMorador.ddd!;
+      InfosMorador.telefone = _formInfosMorador.telefone!;
+      InfosMorador.email = _formInfosMorador.email!;
+    }
     ConstsFuture.changeApi(
             'moradores/?fn=$fnApi&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}&iddivisao=${InfosMorador.iddivisao}&ativo=${_formInfosMorador.ativo}&numero=${InfosMorador.numero}&nomeMorador=${_formInfosMorador.nome_morador}&login=${_formInfosMorador.login}$datanasc&documento=${_formInfosMorador.documento}$dddtelefone$telefone&email=${_formInfosMorador.email}&acessa_sistema=${_formInfosMorador.acesso}&responsavel=$isResponsavel')
         .then((value) {

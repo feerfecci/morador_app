@@ -16,6 +16,7 @@ import 'package:badges/badges.dart' as badges;
 
 class QuadroAvisosScreen extends StatefulWidget {
   static List qntAvisos = [];
+  static List idLogados = [];
 
   const QuadroAvisosScreen({super.key});
 
@@ -32,7 +33,7 @@ Future apiQuadroAvisos() async {
   if (resposta.statusCode == 200) {
     var jsonResposta = json.decode(resposta.body);
     if (!jsonResposta['erro']) {
-      comparaAvisos(jsonResposta)
+      await comparaAvisos(jsonResposta)
           .whenComplete(() => LocalPreferences.setDateLogin());
     }
 
@@ -43,13 +44,14 @@ Future apiQuadroAvisos() async {
 }
 
 Future comparaAvisos(jsonResposta) async {
-  List apiAvisos = jsonResposta['avisos'];
   QuadroAvisosScreen.qntAvisos.clear();
+  List apiAvisos = jsonResposta['avisos'];
 
-  LocalPreferences.getDateLogin().then((value) {
+  await LocalPreferences.getDateLogin().then((value) {
     List listApiAvisos = apiAvisos;
     listApiAvisos.map((e) {
-      if (value != null) {
+      if (value != null &&
+          !QuadroAvisosScreen.idLogados.contains(InfosMorador.idmorador)) {
         DateTime dateValue = DateTime.parse(value);
         DateTime dateAvisos = DateTime.parse(e['datahora']);
 
@@ -60,6 +62,10 @@ Future comparaAvisos(jsonResposta) async {
           }
         }
       } else {
+        if (!QuadroAvisosScreen.idLogados.contains(InfosMorador.idmorador)) {
+          QuadroAvisosScreen.idLogados.add(InfosMorador.idmorador);
+        }
+
         QuadroAvisosScreen.qntAvisos.add(e['idaviso']);
       }
     }).toSet();

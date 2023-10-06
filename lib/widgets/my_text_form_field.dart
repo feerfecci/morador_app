@@ -97,7 +97,8 @@ Widget buildMyTextFormObrigatorio(BuildContext context,
     context,
     child: TextFormField(
       controller: controller, maxLength: maxLength,
-      initialValue: initialValue, textCapitalization: textCapitalization,
+      initialValue: initialValue,
+      textCapitalization: textCapitalization,
       keyboardType: keyboardType,
       inputFormatters: [
         MaskTextInputFormatter(mask: mask),

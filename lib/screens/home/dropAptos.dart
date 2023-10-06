@@ -45,7 +45,8 @@ class _DropAptosState extends State<DropAptos> {
               if (i != 1)
                 Container(
                   height: 1,
-                  decoration: BoxDecoration(color: Colors.black12),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary),
                 ),
               if (i != 1)
                 SizedBox(
@@ -84,7 +85,7 @@ class _DropAptosState extends State<DropAptos> {
                     height: size.height * 0.02,
                   ),
                   ConstsWidget.buildTextTitle(
-                      context, 'Unificar Meus Condomínios'),
+                      context, 'Adicionar Outras Unidades'),
                 ],
               )),
         );

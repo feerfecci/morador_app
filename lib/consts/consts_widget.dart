@@ -59,17 +59,17 @@ class ConstsWidget {
       Color? color = Consts.kColorAzul,
       double rowSpacing = 0,
       Color? colorText = Colors.white,
+      double fontSize = 18,
       required void Function()? onPressed}) {
     var size = MediaQuery.of(context).size;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: color, shape: StadiumBorder()),
       onPressed: onPressed,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: SplashScreen.isSmall
-                ? size.height * 0.035
-                : size.height * 0.025),
+      child: buildPadding001(
+        context,
+        horizontal: 0,
+        vertical: SplashScreen.isSmall ? 0.035 : 0.025,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -83,8 +83,8 @@ class ConstsWidget {
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: colorText,
-                fontSize: SplashScreen.isSmall ? 16 : 18,
-                fontWeight: FontWeight.w500,
+                fontSize: SplashScreen.isSmall ? fontSize - 2 : fontSize,
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
@@ -103,42 +103,47 @@ class ConstsWidget {
       Color colorIcon = Consts.kButtonColor,
       Color colorFont = Consts.kButtonColor,
       Color? backgroundColor = Colors.transparent,
-      double rowSpacing = 0.00,
+      double rowSpacing = 0,
       double fontSize = 18,
-      double horizontal = 0.025}) {
+      double horizontal = 0.03}) {
     var size = MediaQuery.of(context).size;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         alignment: Alignment.center,
         backgroundColor: backgroundColor,
-        padding: EdgeInsets.symmetric(
-            vertical: SplashScreen.isSmall
-                ? size.height * 0.035
-                : size.height * 0.022,
-            horizontal: size.width * horizontal),
+        // padding: EdgeInsets.symmetric(
+        //     vertical: SplashScreen.isSmall
+        //         ? size.height * 0.035
+        //         : size.height * 0.023,
+        //     horizontal: size.width * horizontal),
         side: BorderSide(width: size.width * 0.005, color: colorBorder),
         shape: StadiumBorder(),
       ),
       onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: size.width * rowSpacing,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color: colorFont,
-              fontSize: SplashScreen.isSmall ? 16 : 18,
-              // fontWeight: FontWeight.w500,
+      child: buildPadding001(
+        context,
+        horizontal: 0,
+        vertical: SplashScreen.isSmall ? 0.035 : 0.025,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: size.width * rowSpacing,
             ),
-          ),
-          SizedBox(
-            width: size.width * rowSpacing,
-          ),
-        ],
+            Text(
+              title,
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: colorFont,
+                fontSize: SplashScreen.isSmall ? fontSize - 2 : fontSize,
+                // fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(
+              width: size.width * rowSpacing,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -148,49 +153,54 @@ class ConstsWidget {
       required bool isLoading,
       required String title,
       double horizontal = 0,
+      double fontSize = 18,
       Color color = Consts.kColorAzul}) {
     var size = MediaQuery.of(context).size;
 
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(
-                vertical: SplashScreen.isSmall
-                    ? size.height * 0.035
-                    : size.height * 0.025,
-                horizontal: size.width * horizontal),
+            // padding: EdgeInsets.symmetric(
+            //     vertical: SplashScreen.isSmall
+            //         ? size.height * 0.035
+            //         : size.height * 0.025,
+            //     horizontal: size.width * horizontal),
             backgroundColor: color,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Consts.borderButton))),
         onPressed: onPressed,
-        child: !isLoading
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: SplashScreen.isSmall ? 16 : 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: size.height * 0.025,
-                    width: size.width * 0.05,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ));
+        child: buildPadding001(context,
+            horizontal: 0,
+            vertical: SplashScreen.isSmall ? 0.035 : 0.025,
+            child: !isLoading
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize:
+                              SplashScreen.isSmall ? fontSize - 2 : fontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.025,
+                        width: size.width * 0.05,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  )));
   }
 
   static Widget buildAtivoInativo(
@@ -284,7 +294,8 @@ class ConstsWidget {
         expandedCrossAxisAlignment: expandedCrossAxisAlignment,
         childrenPadding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
         expandedAlignment: expandedAlignment,
-        title: titleCenter ? Center(child: title) : title,
+
+        title: title,
         children: children,
       ),
     );
@@ -325,7 +336,7 @@ class ConstsWidget {
   static Widget buildCamposObrigatorios(BuildContext context) {
     return ConstsWidget.buildPadding001(
       context,
-      child: ConstsWidget.buildTextSubTitle(context, '(*) Campo Obrigatório',
+      child: ConstsWidget.buildTextSubTitle(context, '(*) Campos Obrigatórios',
           color: Consts.kColorRed),
     );
   }

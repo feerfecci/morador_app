@@ -76,7 +76,6 @@ class LocalPreferences {
   static Future getDateLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? cacheDate = preferences.getString('DateLogin');
-
     return cacheDate;
   }
 }

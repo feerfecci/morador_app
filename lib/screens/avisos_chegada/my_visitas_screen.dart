@@ -13,6 +13,8 @@ import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../splash_screen/splash_screen.dart';
+
 class MyVisitasScreen extends StatefulWidget {
   const MyVisitasScreen({super.key});
 
@@ -59,67 +61,99 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
               ConstsWidget.buildPadding001(
                 context,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ConstsWidget.buildOutlinedButton(
-                      context,
-                      title: 'Convidados',
-                      backgroundColor: filtrar == 0 ? Colors.grey[300] : null,
-                      onPressed: () {
-                        setState(() {
-                          filtrar = 0;
-                          listIdVisita.clear();
-                          isChecked = false;
-                        });
-                      },
+                    SizedBox(
+                      width: SplashScreen.isSmall
+                          ? size.width * 0.32
+                          : size.width * 0.315,
+                      child: filtrar == 0
+                          ? ConstsWidget.buildCustomButton(
+                              context,
+                              'Convidados',
+                              fontSize: 15,
+                              color: Colors.grey,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 0;
+                                  listIdVisita.clear();
+                                  isChecked = false;
+                                });
+                              },
+                            )
+                          : ConstsWidget.buildOutlinedButton(
+                              context,
+                              title: 'Convidados',
+                              fontSize: 15,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 0;
+                                  listIdVisita.clear();
+                                  isChecked = false;
+                                });
+                              },
+                            ),
                     ),
-                    filtrar == 1
-                        ? ConstsWidget.buildCustomButton(
-                            context,
-                            'Confirmados',
-                            color: Consts.kColorAmarelo,
-                            onPressed: () {
-                              setState(() {
-                                filtrar = 1;
-                                listIdVisita.clear();
-                                isChecked = false;
-                              });
-                            },
-                          )
-                        : ConstsWidget.buildOutlinedButton(
-                            context,
-                            title: 'Confirmados',
-                            fontSize: 18,
-                            onPressed: () {
-                              setState(() {
-                                filtrar = 1;
-                                listIdVisita.clear();
-                                isChecked = false;
-                              });
-                            },
-                          ),
-                    filtrar == 2
-                        ? ConstsWidget.buildCustomButton(
-                            context,
-                            'Autorizados',
-                            color: Consts.kColorVerde,
-                            onPressed: () {
-                              setState(() {
-                                filtrar = 2;
-                                clearValues();
-                              });
-                            },
-                          )
-                        : ConstsWidget.buildOutlinedButton(
-                            context,
-                            title: 'Autorizados',
-                            onPressed: () {
-                              setState(() {
-                                filtrar = 2;
-                                clearValues();
-                              });
-                            },
-                          ),
+                    SizedBox(
+                      width: SplashScreen.isSmall
+                          ? size.width * 0.32
+                          : size.width * 0.315,
+                      child: filtrar == 1
+                          ? ConstsWidget.buildCustomButton(
+                              context,
+                              'Confirmados',
+                              fontSize: 15,
+                              color: Consts.kColorAmarelo,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 1;
+                                  listIdVisita.clear();
+                                  isChecked = false;
+                                });
+                              },
+                            )
+                          : ConstsWidget.buildOutlinedButton(
+                              context,
+                              title: 'Confirmados',
+                              fontSize: 15,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 1;
+                                  listIdVisita.clear();
+                                  isChecked = false;
+                                });
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: SplashScreen.isSmall
+                          ? size.width * 0.32
+                          : size.width * 0.315,
+                      child: filtrar == 2
+                          ? ConstsWidget.buildCustomButton(
+                              context,
+                              'Autorizados',
+                              fontSize: 15,
+                              color: Consts.kColorVerde,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 2;
+                                  clearValues();
+                                });
+                              },
+                            )
+                          : ConstsWidget.buildOutlinedButton(
+                              context,
+                              title: 'Autorizados',
+                              fontSize: 15,
+                              onPressed: () {
+                                setState(() {
+                                  filtrar = 2;
+                                  clearValues();
+                                });
+                              },
+                            ),
+                    ),
                   ],
                 ),
               ),
@@ -128,7 +162,7 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                   context,
                   child: ConstsWidget.buildCustomButton(
                     context,
-                    filtrar == 1 ? 'Autorizar Visita' : 'Anular Visita',
+                    filtrar == 1 ? 'Autorizar Visita' : 'Cancelar Visita',
                     color: Consts.kColorRed,
                     onPressed: () {
                       if (listIdVisita.isNotEmpty) {
@@ -137,54 +171,58 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                 context, 'Cancelar Visita'),
                             children: [
                               RichText(
+                                  textAlign: TextAlign.center,
                                   text: TextSpan(
                                       text: 'Tem certeza de deseja ',
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color),
                                       children: [
-                                    TextSpan(
-                                      text: filtrar == 1
-                                          ? 'Autorizar '
-                                          : 'Anular ',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                    ),
-                                    TextSpan(
-                                      text: 'esta solicitação de visita',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                    ),
-                                  ])),
+                                        TextSpan(
+                                          text: filtrar == 1
+                                              ? 'Autorizar '
+                                              : 'Cancelar',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .color),
+                                        ),
+                                        TextSpan(
+                                          text: 'esta solicitação de visita',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .color),
+                                        ),
+                                      ])),
                               SizedBox(
                                 height: size.height * 0.01,
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Spacer(
-                                    flex: 2,
-                                  ),
                                   ConstsWidget.buildOutlinedButton(
                                     context,
+                                    rowSpacing: 0.06,
                                     title: 'Cancelar',
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                   ),
-                                  Spacer(),
                                   ConstsWidget.buildCustomButton(
                                     context,
-                                    filtrar == 1 ? 'Autorizar ' : 'Anular ',
+                                    filtrar == 1 ? 'Autorizar ' : 'Cancelar',
                                     color: Consts.kColorRed,
+                                    rowSpacing: 0.03,
                                     onPressed: () {
                                       // //print(listIdVisita);
                                       ConstsFuture.changeApi(
@@ -383,8 +421,8 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ConstsWidget.buildTextSubTitle(context,
-                                            'Data e hora da da Visita'),
+                                        ConstsWidget.buildTextSubTitle(
+                                            context, 'Data e hora da Visita'),
                                         ConstsWidget.buildTextTitle(
                                             context, datahora_visita),
                                       ],

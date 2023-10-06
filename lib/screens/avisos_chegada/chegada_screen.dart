@@ -126,62 +126,61 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                                             children: [
                                               ConstsWidget.buildTextTitle(
                                                   context, titulo,
-                                                  size: 18,
                                                   textAlign: TextAlign.center),
-                                              ConstsWidget.buildPadding001(
-                                                context,
-                                                child: SizedBox(
-                                                    width: size.width * 0.9,
-                                                    child: RichText(
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        text: TextSpan(
-                                                            style: TextStyle(
-                                                                fontSize: 20,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyLarge!
-                                                                    .color),
-                                                            text: texto,
-                                                            children: [
-                                                              TextSpan(
-                                                                text:
-                                                                    ' - $datahora',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .bodyLarge!
-                                                                        .color),
-                                                              )
-                                                            ]))),
-                                              ),
+                                              // ConstsWidget.buildPadding001(
+                                              //   context,
+                                              //   child: SizedBox(
+                                              //       width: size.width * 0.9,
+                                              //       child: RichText(
+                                              //           textAlign:
+                                              //               TextAlign.center,
+                                              //           text: TextSpan(
+                                              //               style: TextStyle(
+                                              //                   fontSize: 18,
+                                              //                   color: Theme.of(
+                                              //                           context)
+                                              //                       .textTheme
+                                              //                       .bodyLarge!
+                                              //                       .color),
+                                              //               text: texto,
+                                              //               children: [
+                                              //                 TextSpan(
+                                              //                   text:
+                                              //                       ' - $datahora',
+                                              //                   style: TextStyle(
+                                              //                       fontSize:
+                                              //                           18,
+                                              //                       color: Theme.of(
+                                              //                               context)
+                                              //                           .textTheme
+                                              //                           .bodyLarge!
+                                              //                           .color),
+                                              //                 )
+                                              //               ]))),
+                                              // ),
                                               // Row(
                                               //   children: [
                                               //     ConstsWidget.buildPadding001(
                                               //       context,
-                                              //       child: SizedBox(
-                                              //         width: size.width * 0.9,
-                                              //         child: ConstsWidget
-                                              //             .buildTextSubTitle(
-                                              //                 context, texto,
-                                              //                 textAlign:
-                                              //                     TextAlign
-                                              //                         .center),
-                                              //       ),
+                                              // child:
+                                              SizedBox(
+                                                width: size.width * 0.9,
+                                                child: ConstsWidget
+                                                    .buildTextSubTitle(
+                                                        context, texto,
+                                                        textAlign:
+                                                            TextAlign.center),
+                                              ),
                                               //     ),
                                               //   ],
                                               // ),
-                                              // SizedBox(
-                                              //   child: ConstsWidget
-                                              //       .buildTextSubTitle(
-                                              //     context,
-                                              //     datahora,
-                                              //   ),
-                                              // ),
+                                              SizedBox(
+                                                child: ConstsWidget
+                                                    .buildTextSubTitle(
+                                                  context,
+                                                  datahora,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],

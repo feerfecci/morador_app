@@ -59,7 +59,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       ? ConstsWidget.buildCustomButton(
                           context,
                           'Condôminos',
-                          rowSpacing: 0.03,
+                          rowSpacing: 0.024,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;
@@ -70,7 +70,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       : ConstsWidget.buildOutlinedButton(
                           context,
                           title: 'Condôminos',
-                          rowSpacing: 0.075,
+                          rowSpacing: 0.049,
                           fontSize: 18,
                           onPressed: () {
                             setState(() {
@@ -86,7 +86,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       ? ConstsWidget.buildCustomButton(
                           context,
                           'Veículos',
-                          rowSpacing: 0.05,
+                          rowSpacing: 0.049,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;
@@ -98,7 +98,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                           context,
                           title: 'Veículos',
                           fontSize: 18,
-                          rowSpacing: 0.12,
+                          rowSpacing: 0.1,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;

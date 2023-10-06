@@ -45,9 +45,10 @@ class _ListarCarrosState extends State<ListarCarros> {
       return ConstsWidget.buildPadding001(
         context,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SizedBox(
-              width: size.width * 0.7,
+              width: size.width * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -56,12 +57,15 @@ class _ListarCarrosState extends State<ListarCarros> {
                 ],
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstsWidget.buildTextSubTitle(context, title2),
-                ConstsWidget.buildTextTitle(context, subTitle2),
-              ],
+            SizedBox(
+              width: size.width * 0.2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstsWidget.buildTextSubTitle(context, title2),
+                  ConstsWidget.buildTextTitle(context, subTitle2),
+                ],
+              ),
             ),
           ],
         ),
@@ -111,23 +115,32 @@ class _ListarCarrosState extends State<ListarCarros> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildRowInfos(context,
-                              title1: 'Tipo',
-                              subTitle1: tipo,
-                              title2: 'Marca',
-                              subTitle2: marca),
-                          buildRowInfos(context,
-                              title1: 'Modelo',
-                              subTitle1: modelo,
-                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              title2: 'Cor',
-                              subTitle2: cor),
-                          buildRowInfos(context,
-                              title1: 'Placa',
-                              subTitle1: placa,
-                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              title2: 'Vaga',
-                              subTitle2: vaga),
+                          ConstsWidget.buildPadding001(
+                            context,
+                            horizontal: 0.02,
+                            vertical: 0,
+                            child: Column(
+                              children: [
+                                buildRowInfos(context,
+                                    title1: 'Tipo',
+                                    subTitle1: tipo,
+                                    title2: 'Marca',
+                                    subTitle2: marca),
+                                buildRowInfos(context,
+                                    title1: 'Modelo',
+                                    subTitle1: modelo,
+                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    title2: 'Cor',
+                                    subTitle2: cor),
+                                buildRowInfos(context,
+                                    title1: 'Placa',
+                                    subTitle1: placa,
+                                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    title2: 'Vaga',
+                                    subTitle2: vaga)
+                              ],
+                            ),
+                          ),
                           SizedBox(
                             height: size.height * 0.01,
                           ),

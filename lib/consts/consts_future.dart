@@ -348,16 +348,17 @@ class ConstsFuture {
     var resposta = await http.get(Uri.parse(
         '${Consts.apiUnidade}correspondencias/?fn=listarCorrespondencias&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso'));
     if (resposta.statusCode == 200) {
-      CorrespondenciaScreen.listaNovaCorresp3.clear();
       var respostaBody = json.decode(resposta.body);
       for (var i = 0; i <= respostaBody['correspondencias'].length - 1; i++) {
         if (respostaBody['correspondencias'][i]['protocolo'] == '') {
           if (tipoAviso == 3) {
             //   //print(
             //       'tipo 3 ${respostaBody['correspondencias'][i]['status_entrega']}');
+            CorrespondenciaScreen.listaNovaCorresp3.clear();
             CorrespondenciaScreen.listaNovaCorresp3
                 .add(respostaBody['correspondencias'][i]['idcorrespondencia']);
           } else {
+            CorrespondenciaScreen.listaNovaCorresp4.clear();
             //   //print(
             //       'tipo 4 ${respostaBody['correspondencias'][i]['status_entrega']}');
             CorrespondenciaScreen.listaNovaCorresp4

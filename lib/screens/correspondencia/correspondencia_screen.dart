@@ -190,21 +190,21 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                 return MyBoxShadow(
                                   child: Column(
                                     children: [
-                                      ConstsWidget.buildPadding001(
-                                        context,
-                                        child: ConstsWidget.buildTextTitle(
-                                            context, remetente,
-                                            textAlign: TextAlign.center,
-                                            size: 18),
+                                      SizedBox(
+                                        height: size.height * 0.01,
                                       ),
-                                      // SizedBox(
-                                      //   height: size.height * 0.01,
-                                      // ),
+                                      ConstsWidget.buildTextTitle(
+                                          context, remetente,
+                                          textAlign: TextAlign.center,
+                                          size: 18),
+                                      SizedBox(
+                                        height: size.height * 0.005,
+                                      ),
                                       ConstsWidget.buildTextSubTitle(context,
                                           '$descricao - $datahora_cadastro',
                                           textAlign: TextAlign.center),
                                       SizedBox(
-                                        height: size.height * 0.01,
+                                        height: size.height * 0.005,
                                       ),
                                       // if (quantidade != '1')
                                       Column(

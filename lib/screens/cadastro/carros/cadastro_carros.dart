@@ -142,13 +142,13 @@ class _CadastroCarrosState extends State<CadastroCarros> {
       title: widget.idveiculo == null ? 'Adicionar Veículo' : 'Editar Veículo',
       resizeToAvoidBottomInset: true,
       body: MyBoxShadow(
-        child: Column(
-          children: [
-            ConstsWidget.buildCamposObrigatorios(context),
-            buildDropTipo(),
-            Form(
-              key: keyFormCarros,
-              child: Column(
+        child: Form(
+          key: keyFormCarros,
+          child: Column(
+            children: [
+              ConstsWidget.buildCamposObrigatorios(context),
+              buildDropTipo(),
+              Column(
                 children: [
                   buildMyTextFormObrigatorio(
                     context,
@@ -179,8 +179,8 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     context,
                     title: 'Placa',
                     textCapitalization: TextCapitalization.characters,
-                    maxLength: 7,
-                    // keyboardType: TextInputType.name,
+                    // maxLength: 7,
+                    keyboardType: TextInputType.text,
                     // mask: '#######',
                     onSaved: (text) =>
                         formInfosCarro = formInfosCarro.copyWith(placa: text),
@@ -195,49 +195,50 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                   ),
                 ],
               ),
-            ),
-            ConstsWidget.buildCustomButton(
-              context,
-              // icon: Icons.save_alt,
-              'Salvar',
-              color: Consts.kColorRed,
-              onPressed: () {
-                var formValid = keyFormCarros.currentState?.validate() ?? false;
-                FocusManager.instance.primaryFocus!.unfocus();
-                if (formValid && formInfosCarro.tipo != null) {
-                  keyFormCarros.currentState?.save();
-                  String editOrAdd = widget.idveiculo == null
-                      ? 'incluirVeiculosUnidade&'
-                      : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
-                  ConstsFuture.changeApi(
-                          'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
-                      .then((value) {
-                    if (!value['erro']) {
-                      ConstsFuture.navigatorPopAndReplacement(
-                          context,
-                          ListaTotalUnidade(
-                            idunidade: widget.idunidade,
-                            tipoAbrir: 2,
-                          ));
-                      setState(() {});
-                      buildCustomSnackBar(context,
-                          titulo: 'Sucesso', texto: value['mensagem']);
-                    } else {
-                      buildCustomSnackBar(context,
-                          hasError: true,
-                          titulo: 'Algo saiu mal!',
-                          texto: value['mensagem']);
-                    }
-                  });
-                } else {
-                  buildCustomSnackBar(context,
-                      hasError: true,
-                      titulo: 'Algo saiu mal!',
-                      texto: 'Selecione um tipo de Veículo');
-                }
-              },
-            )
-          ],
+              ConstsWidget.buildCustomButton(
+                context,
+                // icon: Icons.save_alt,
+                'Salvar',
+                color: Consts.kColorRed,
+                onPressed: () {
+                  var formValid =
+                      keyFormCarros.currentState?.validate() ?? false;
+                  FocusManager.instance.primaryFocus!.unfocus();
+                  if (formValid && formInfosCarro.tipo != null) {
+                    keyFormCarros.currentState?.save();
+                    String editOrAdd = widget.idveiculo == null
+                        ? 'incluirVeiculosUnidade&'
+                        : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
+                    ConstsFuture.changeApi(
+                            'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
+                        .then((value) {
+                      if (!value['erro']) {
+                        ConstsFuture.navigatorPopAndReplacement(
+                            context,
+                            ListaTotalUnidade(
+                              idunidade: widget.idunidade,
+                              tipoAbrir: 2,
+                            ));
+                        setState(() {});
+                        buildCustomSnackBar(context,
+                            titulo: 'Sucesso', texto: value['mensagem']);
+                      } else {
+                        buildCustomSnackBar(context,
+                            hasError: true,
+                            titulo: 'Algo saiu mal!',
+                            texto: value['mensagem']);
+                      }
+                    });
+                  } else {
+                    buildCustomSnackBar(context,
+                        hasError: true,
+                        titulo: 'Algo saiu mal!',
+                        texto: 'Selecione um tipo de Veículo');
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
