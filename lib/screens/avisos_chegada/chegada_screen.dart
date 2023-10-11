@@ -5,6 +5,7 @@ import 'package:app_portaria/consts/consts.dart';
 import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/screens/avisos_chegada/add_visita.screen.dart';
 import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_resp_port.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -61,7 +62,8 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                       context,
                       child: ConstsWidget.buildOutlinedButton(
                         context,
-                        title: 'Minhas Visitas', rowSpacing: 0.045,
+                        title: 'Minhas Visitas',
+                        rowSpacing: SplashScreen.isSmall ? 0.020 : 0.045,
                         // color: Colors.grey,
                         onPressed: () {
                           ConstsFuture.navigatorPageRoute(
@@ -72,7 +74,7 @@ class _ChegadaScreenState extends State<ChegadaScreen> {
                     ConstsWidget.buildCustomButton(
                       context,
                       'Convidar Visita',
-                      rowSpacing: 0.015,
+                      rowSpacing: SplashScreen.isSmall ? 0.005 : 0.015,
                       color: Consts.kColorVerde,
                       onPressed: () {
                         ConstsFuture.navigatorPageRoute(

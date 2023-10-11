@@ -5,7 +5,6 @@ import 'package:app_portaria/screens/reserva_espaco/listar_espacos.dart';
 import 'package:app_portaria/widgets/date_picker.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/snack_bar.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_all.dart';
 

@@ -43,63 +43,60 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     Widget buildDropRespDelivery() {
-      return ConstsWidget.buildPadding001(
-        context,
-        child: Container(
-          width: double.infinity,
-          height: size.height * 0.075,
-          decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            border: Border.all(color: Colors.black26),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: ButtonTheme(
-              alignedDropdown: true,
-              child: DropdownButton(
-                elevation: 24,
-                isExpanded: true,
-                icon: Icon(
-                  Icons.arrow_downward,
-                  color: Theme.of(context).iconTheme.color,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                hint: Text('Selecione Uma Resposta'),
-                alignment: Alignment.center,
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyLarge!.color,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18,
-                ),
-                value: dropRespostas,
-                items: listRespostas.map((e) {
-                  return DropdownMenuItem(
-                      value: e['idmsg'],
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                              height: size.height * 0.025,
-                              width: size.width * 0.9,
-                              child: ConstsWidget.buildTextTitle(
-                                  context, e['titulo'],
-                                  overflow: TextOverflow.ellipsis)),
-                          SizedBox(
-                              height: size.height * 0.025,
-                              width: size.width * 0.9,
-                              child: ConstsWidget.buildTextSubTitle(
-                                  context, e['texto'])),
-                        ],
-                      ));
-                }).toList(),
-                onChanged: (value) {
-                  setState(
-                    () {
-                      dropRespostas = value;
-                    },
-                  );
-                },
+      return Container(
+        width: double.infinity,
+        height: size.height * 0.075,
+        decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          border: Border.all(color: Colors.black26),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: ButtonTheme(
+            alignedDropdown: true,
+            child: DropdownButton(
+              elevation: 24,
+              isExpanded: true,
+              icon: Icon(
+                Icons.arrow_downward,
+                color: Theme.of(context).iconTheme.color,
               ),
+              borderRadius: BorderRadius.circular(16),
+              hint: Text('Selecione Uma Resposta'),
+              alignment: Alignment.center,
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyLarge!.color,
+                fontWeight: FontWeight.w400,
+                fontSize: 18,
+              ),
+              value: dropRespostas,
+              items: listRespostas.map((e) {
+                return DropdownMenuItem(
+                    value: e['idmsg'],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            height: size.height * 0.025,
+                            width: size.width * 0.9,
+                            child: ConstsWidget.buildTextTitle(
+                                context, e['titulo'],
+                                overflow: TextOverflow.ellipsis)),
+                        SizedBox(
+                            height: size.height * 0.025,
+                            width: size.width * 0.9,
+                            child: ConstsWidget.buildTextSubTitle(
+                                context, e['texto'])),
+                      ],
+                    ));
+              }).toList(),
+              onChanged: (value) {
+                setState(
+                  () {
+                    dropRespostas = value;
+                  },
+                );
+              },
             ),
           ),
         ),
@@ -108,7 +105,7 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
 
     return AlertDialog(
       insetPadding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.05, vertical: size.height * 0.05),
+          horizontal: size.width * 0.05, vertical: size.height * 0.01),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
       ),
@@ -123,6 +120,9 @@ class _RespondeDeliveryState extends State<RespondeDelivery> {
           mainAxisSize: MainAxisSize.min,
           children: [
             buildDropRespDelivery(),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
             ConstsWidget.buildCustomButton(
               context,
               'Responder',

@@ -15,13 +15,14 @@ class _PageVaziaState extends State<PageVazia> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: ConstsWidget.buildCachedImage(context,
               iconApi: 'https://a.portariaapp.com/img/ico-nao-encontrado.png'),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.only(top: 20),
           child: ConstsWidget.buildTextTitle(context, widget.title,
               textAlign: TextAlign.center),
         ),

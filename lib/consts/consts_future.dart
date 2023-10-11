@@ -344,28 +344,22 @@ class ConstsFuture {
   }
 
   static Future apiListarCorrespondencias(int? tipoAviso) async {
-    // CorrespondenciaScreen.listaNovaCorresp3.clear();
+    CorrespondenciaScreen.listaNovaCorresp3.clear();
+    CorrespondenciaScreen.listaNovaCorresp4.clear();
     var resposta = await http.get(Uri.parse(
         '${Consts.apiUnidade}correspondencias/?fn=listarCorrespondencias&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso'));
     if (resposta.statusCode == 200) {
       var respostaBody = json.decode(resposta.body);
-      for (var i = 0; i <= respostaBody['correspondencias'].length - 1; i++) {
-        if (respostaBody['correspondencias'][i]['protocolo'] == '') {
+      List apiListCorrep = respostaBody['correspondencias'];
+      apiListCorrep.map((e) {
+        if (e['protocolo'] == '') {
           if (tipoAviso == 3) {
-            //   //print(
-            //       'tipo 3 ${respostaBody['correspondencias'][i]['status_entrega']}');
-            CorrespondenciaScreen.listaNovaCorresp3.clear();
-            CorrespondenciaScreen.listaNovaCorresp3
-                .add(respostaBody['correspondencias'][i]['idcorrespondencia']);
+            CorrespondenciaScreen.listaNovaCorresp3.add(e['idcorrespondencia']);
           } else {
-            CorrespondenciaScreen.listaNovaCorresp4.clear();
-            //   //print(
-            //       'tipo 4 ${respostaBody['correspondencias'][i]['status_entrega']}');
-            CorrespondenciaScreen.listaNovaCorresp4
-                .add(respostaBody['correspondencias'][i]['idcorrespondencia']);
+            CorrespondenciaScreen.listaNovaCorresp4.add(e['idcorrespondencia']);
           }
         }
-      }
+      }).toSet();
       return json.decode(resposta.body);
     } else {
       return false;

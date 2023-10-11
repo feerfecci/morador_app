@@ -1,14 +1,10 @@
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
-
 import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
-import '../../screens/cadastro/morador/cadastro_morador.dart';
 import '../my_text_form_field.dart';
-import 'alert_all.dart';
 
 trocarSenhaAlert(BuildContext context, {bool isChecked = false}) {
   showDialog(
@@ -17,6 +13,7 @@ trocarSenhaAlert(BuildContext context, {bool isChecked = false}) {
       builder: (context) => AlertDialogTrocaSenha(isChecked: isChecked));
 }
 
+// ignore: must_be_immutable
 class AlertDialogTrocaSenha extends StatefulWidget {
   bool isChecked;
   AlertDialogTrocaSenha({this.isChecked = false, super.key});
@@ -46,13 +43,16 @@ class _AlertDialogTrocaSenhaState extends State<AlertDialogTrocaSenha> {
       )),
       content: SizedBox(
         width: size.width * 0.8,
-        height: SplashScreen.isSmall ? size.height * 0.35 : size.height * 0.28,
+        height: size.height * 0.4,
         child: Form(
           key: formKeySenha,
           child: ListView(
             // shrinkWrap: true,
             // physics: ClampingScrollPhysics(),
             children: [
+              ConstsWidget.buildPadding001(context,
+                  child: ConstsWidget.buildTextExplicaSenha(context,
+                      isAlertDialog: true)),
               buildMyTextFormObrigatorio(
                 context,
                 title: 'Nova Senha',
@@ -76,12 +76,12 @@ class _AlertDialogTrocaSenhaState extends State<AlertDialogTrocaSenha> {
                 context,
                 horizontal: 0,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ConstsWidget.buildOutlinedButton(
                       context,
                       title: 'Cancelar',
-                      rowSpacing: 0.06,
+                      rowSpacing: SplashScreen.isSmall ? 0.03 : 0.055,
                       onPressed: () {
                         Navigator.pop(context);
                         senhaNovaCtrl.clear();
@@ -90,12 +90,11 @@ class _AlertDialogTrocaSenhaState extends State<AlertDialogTrocaSenha> {
                         isSenhaLoginAll = 0;
                       },
                     ),
-                    Spacer(),
                     ConstsWidget.buildCustomButton(
                       context,
                       'Salvar',
                       color: Consts.kColorRed,
-                      rowSpacing: 0.04,
+                      rowSpacing: SplashScreen.isSmall ? 0.03 : 0.035,
                       onPressed: () {
                         var validSenha =
                             formKeySenha.currentState?.validate() ?? false;

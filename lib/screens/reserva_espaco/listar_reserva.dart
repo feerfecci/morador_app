@@ -78,7 +78,7 @@ class ListarReservasState extends State<ListarReservas> {
                           String nome_morador = apiEspacos['nome_morador'];
                           int idunidade = apiEspacos['idunidade'];
                           String unidade = apiEspacos['unidade'];
-                          String data_reserva = DateFormat('dd/MM/yy HH:mm')
+                          String data_reserva = DateFormat('dd/MM/yy • HH:mm')
                               .format(
                                   DateTime.parse(apiEspacos['data_reserva']));
                           String datahora = apiEspacos['datahora'];
@@ -126,12 +126,12 @@ class ListarReservasState extends State<ListarReservas> {
                                   children: [
                                     buildTextReserva(
                                       titulo: 'Data da Reserva',
-                                      width: 0.4,
+                                      width: 0.45,
                                       texto: data_reserva.toString(),
                                     ),
                                     buildTextReserva(
                                       titulo: 'Reservado por',
-                                      width: 0.5,
+                                      width: 0.45,
                                       texto: nome_morador.toString(),
                                     ),
                                   ],

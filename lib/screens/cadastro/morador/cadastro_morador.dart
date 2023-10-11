@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'package:app_portaria/screens/home/home_page.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:app_portaria/widgets/date_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -219,6 +218,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     buildDropAtivoInativo(
                       context,
                     ),
+                  if (widget.isDrawer)
+                    ConstsWidget.buildPadding001(context,
+                        child: ConstsWidget.buildTextExplicaSenha(
+                          context,
+                        )),
                   // if (widget.idmorador == null)
                   buildMyTextFormObrigatorio(
                     context,
@@ -239,15 +243,12 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     },
                   ),
                   // if (widget.idmorador == null)
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                          width: size.width * 0.37,
+                          width: size.width * 0.35,
                           child: Column(
                             children: [
                               SizedBox(
@@ -276,7 +277,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                             ],
                           )),
                       SizedBox(
-                        width: size.width * 0.5,
+                        width: size.width * 0.55,
                         child: buildMyTextFormObrigatorio(
                           context,
                           // readOnly: !InfosMorador.responsavel,
@@ -309,11 +310,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ],
                   ),
                   //Contatos
-                  ConstsWidget.buildPadding001(
-                    context,
-                    child: ConstsWidget.buildTextTitle(context, 'Contatos'),
-                  ),
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
                         width: size.width * 0.16,
@@ -327,11 +326,11 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                             mask: '##',
                             hintText: '11'),
                       ),
+                      // SizedBox(
+                      //   width: size.width * 0.040,
+                      // ),
                       SizedBox(
-                        width: size.width * 0.1,
-                      ),
-                      SizedBox(
-                        width: size.width * 0.65,
+                        width: size.width * 0.74,
                         child: buildMyTextFormField(
                           context,
                           initialValue: widget.telefone,
@@ -348,23 +347,20 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ],
                   ),
 
-                  ConstsWidget.buildPadding001(
+                  buildMyTextFormObrigatorio(
                     context,
-                    child: buildMyTextFormObrigatorio(
-                      context,
-                      initialValue: widget.email,
-                      keyboardType: TextInputType.emailAddress,
-                      onSaved: (text) {
-                        _formInfosMorador =
-                            _formInfosMorador.copyWith(email: text);
-                      },
-                      title: 'Email',
-                      hintText: 'exemplo@exe.com',
-                      validator: Validatorless.multiple([
-                        Validatorless.email('Não é um email válido'),
-                        Validatorless.required('Obrigatório'),
-                      ]),
-                    ),
+                    initialValue: widget.email,
+                    keyboardType: TextInputType.emailAddress,
+                    onSaved: (text) {
+                      _formInfosMorador =
+                          _formInfosMorador.copyWith(email: text);
+                    },
+                    title: 'Email',
+                    hintText: 'exemplo@exe.com',
+                    validator: Validatorless.multiple([
+                      Validatorless.email('Não é um email válido'),
+                      Validatorless.required('Obrigatório'),
+                    ]),
                   ),
 
                   if (loginGerado2 == '' && !widget.isDrawer)
@@ -412,6 +408,10 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                         },
                       ),
                     ),
+                  if (loginGerado2 == '' && !widget.isDrawer)
+                    SizedBox(
+                      height: size.height * 0.008,
+                    )
                 ],
               ),
             ),
@@ -420,15 +420,29 @@ class _CadastroMoradorState extends State<CadastroMorador> {
             if (loginGerado2 != '')
               Column(
                 children: [
-                  MyBoxShadow(
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ConstsWidget.buildPadding001(
                           context,
+                          vertical: 0.02,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ConstsWidget.buildTextSubTitle(context, 'Login'),
+                              ConstsWidget.buildTextSubTitle(context, 'Login:'),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
                               SizedBox(
                                 width: size.width * 0.8,
                                 child: ConstsWidget.buildTextTitle(
@@ -470,7 +484,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               if (value == true) {
                                 alertTodosUnidades(title: 'Login');
                               }
-                            }, title: 'Alterar em todas as unidade'),
+                            }, title: 'Alterar em Todas as Unidade'),
                           ),
                           //RETIRADA
                           buildCampoSenha(
@@ -493,7 +507,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                                   isSenhaRetiradaAll = value! ? 1 : 0;
                                 },
                               );
-                            }, title: 'Alterar em todas as unidade'),
+                            }, title: 'Alterar em Todas as Unidade'),
                           ),
                           // buildMyTextFormField(
                           //   context,

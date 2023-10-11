@@ -3,7 +3,6 @@ import 'package:app_portaria/consts/consts_future.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
-import 'package:validatorless/validatorless.dart';
 import '../../consts/consts_widget.dart';
 import '../../widgets/date_picker.dart';
 import '../../widgets/my_text_form_field.dart';
@@ -132,10 +131,11 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
               SizedBox(
                 height: size.height * 0.01,
               ),
-              Container(
-                color: Colors.grey[300],
-                height: 1,
-              ),
+              if (index != listEmailVisita.length - 1)
+                Container(
+                  color: Colors.grey[300],
+                  height: 1,
+                ),
             ],
           );
         },
@@ -272,7 +272,12 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                 if (listEmailVisita.isNotEmpty)
                   Column(
                     children: [
-                      MyBoxShadow(
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 1),
+                            borderRadius: BorderRadius.circular(16)),
                         child: ConstsWidget.buildPadding001(context,
                             horizontal: 0.02, child: buildListaEmailConvid()),
                       ),
@@ -285,6 +290,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                             ConstsWidget.buildOutlinedButton(
                               context,
                               title: 'Cancelar',
+                              rowSpacing: SplashScreen.isSmall ? 0.06 : 0.08,
                               onPressed: () {
                                 listEmailVisita.clear();
                                 MyDatePicker.dataSelected = '';
@@ -296,8 +302,8 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                               context,
                               color: Consts.kColorRed,
                               isLoading: isLoading,
-                              horizontal: 0.05,
                               title: 'Confirmar',
+                              rowSpacing: SplashScreen.isSmall ? 0.06 : 0.08,
                               onPressed: () {
                                 if (listEmailVisita.isNotEmpty &&
                                     emailCtrl.text.isEmpty &&

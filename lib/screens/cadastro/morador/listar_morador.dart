@@ -1,5 +1,4 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names
-
 import 'dart:convert';
 import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +96,7 @@ class _ListarMoradorState extends State<ListarMorador> {
                               child: ConstsWidget.buildTextTitle(
                                   context, nome_morador),
                             ),
+
                             // Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             //   children: [
@@ -109,6 +109,14 @@ class _ListarMoradorState extends State<ListarMorador> {
                             //   ],
                             // ),
                             children: [
+                          Container(
+                            height: 1,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -130,6 +138,9 @@ class _ListarMoradorState extends State<ListarMorador> {
                                   children: [
                                     ConstsWidget.buildTextSubTitle(
                                         context, 'Situação'),
+                                    SizedBox(
+                                      height: size.height * 0.0075,
+                                    ),
                                     ConstsWidget.buildAtivoInativo(
                                         context, ativo),
                                   ],
@@ -192,18 +203,26 @@ class _ListarMoradorState extends State<ListarMorador> {
                           ConstsWidget.buildTextTitle(context, email),
                           ConstsWidget.buildPadding001(
                             context,
-                            vertical: 0.03,
+                            vertical: 0.025,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 ConstsWidget.buildTextTitle(
-                                    context, 'Permitir acesso ao sistema'),
+                                    context, 'Permitir Acesso ao Sistema'),
                                 // ConstsWidget.buildCheckBox(context,
                                 //     isChecked: acessa_sistema,
                                 //     onChanged: (bool? value) {},
                                 //     title: 'Permitir acesso ao sistema'),
                                 ConstsWidget.buildAtivoInativo(
                                     context, acessa_sistema),
+
+                                // Icon(
+                                //   Icons.check_circle_outline_outlined,
+                                //   color: acessa_sistema
+                                //       ? Colors.green
+                                //       : Theme.of(context).colorScheme.primary,
+                                //   size: SplashScreen.isSmall ? 25 : 30,
+                                // ),
                               ],
                             ),
                           ),
@@ -226,7 +245,10 @@ class _ListarMoradorState extends State<ListarMorador> {
                                   telefone: telefone,
                                   acesso: acessa_sistema ? 1 : 0,
                                 ));
-                          })
+                          }),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
                         ]));
                   },
                 );

@@ -309,7 +309,10 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                                 );
                               });
                         } else {
-                          return PageVazia(title: snapshot.data['mensagem']);
+                          return Padding(
+                            padding: EdgeInsets.only(top: size.height * 0.03),
+                            child: PageVazia(title: snapshot.data['mensagem']),
+                          );
                         }
                       } else {
                         return PageErro();

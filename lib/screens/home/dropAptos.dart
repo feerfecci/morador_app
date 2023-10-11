@@ -9,9 +9,7 @@ import '../../consts/consts_widget.dart';
 
 class DropAptos extends StatefulWidget {
   const DropAptos({super.key});
-  static List listAptos = [
-    {'sdfsdfg': 'd4542'}
-  ];
+  static List listAptos = [];
 
   @override
   State<DropAptos> createState() => _DropAptosState();
@@ -100,99 +98,100 @@ class _DropAptosState extends State<DropAptos> {
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             // border: Border.all(color: Colors.black26),
+
             borderRadius: BorderRadius.all(Radius.circular(16)),
             border: Border.all(color: Theme.of(context).colorScheme.primary)),
         child: DropdownButtonHideUnderline(
-          child: ButtonTheme(
-            alignedDropdown: true,
-            child: DropdownButton(
-              isExpanded: true,
-              elevation: 24,
-              itemHeight: size.height * 0.08,
-              icon: Icon(
-                Icons.arrow_downward,
-                color: Theme.of(context).iconTheme.color,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              // itemHeight: 70,
-              selectedItemBuilder: (context) {
-                return DropAptos.listAptos.map((e) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ConstsWidget.buildTextTitle(
-                          context, '${e['nome_condominio']}',
-                          size: 18),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ConstsWidget.buildTextSubTitle(
-                              context, '${e['unidade']} - ',
-                              textAlign: TextAlign.center, size: 16),
-                          ConstsWidget.buildTextSubTitle(context, e['divisao'],
-                              size: 16),
-                        ],
-                      ),
-                    ],
-                  );
-                }).toList();
-              },
-              // hint: Center(child: Text('Selecione Um Apto')),
-              value: dropAptos,
-              items: listDrop,
-              //  DropAptos.listAptos.map((e) {
-              //   setState(() {
-              //     i++;
-              //   });
-              //   print(i);
-              //   return DropdownMenuItem(
-              //       alignment: Alignment.center,
-              //       value: e['idunidade'],
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           if (i != 1)
-              //             Container(
-              //               height: 1,
-              //               decoration: BoxDecoration(color: Colors.black12),
-              //             ),
-              //           if (i != 1)
-              //             SizedBox(
-              //               height: size.height * 0.01,
-              //             ),
-              //           ConstsWidget.buildTextTitle(
-              //               context, '${e['nome_condominio']}',
-              //               size: 18),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               ConstsWidget.buildTextSubTitle(
-              //                   context, '${e['unidade']} - ',
-              //                   textAlign: TextAlign.center, size: 16),
-              //               ConstsWidget.buildTextSubTitle(
-              //                   context, e['divisao'],
-              //                   size: 16),
-              //             ],
-              //           ),
-              //           // if (i != 1)
-              //         ],
-              //       ));
-              // }).toList(),
-              onChanged: (value) {
-                if (value != 65684613513) {
-                  setState(
-                    () {
-                      dropAptos = value;
-                      ConstsFuture.efetuaLogin(
-                          context, InfosMorador.login, InfosMorador.senhaCripto,
-                          idUnidade: '$dropAptos');
-                    },
-                  );
-                } else {
-                  trocarSenhaAlert(context, isChecked: true);
-                }
-              },
+          child: DropdownButton(
+            isExpanded: true,
+            elevation: 24, focusColor: Colors.red,
+            itemHeight:
+                SplashScreen.isSmall ? size.height * 0.09 : size.height * 0.07,
+            icon: Icon(
+              Icons.arrow_downward,
+              color: Theme.of(context).iconTheme.color,
             ),
+
+            borderRadius: BorderRadius.circular(16),
+
+            // itemHeight: 70,
+            selectedItemBuilder: (context) {
+              return DropAptos.listAptos.map((e) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ConstsWidget.buildTextTitle(
+                        context, '${e['nome_condominio']}',
+                        size: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ConstsWidget.buildTextSubTitle(
+                            context, '${e['unidade']} - ',
+                            textAlign: TextAlign.center, size: 16),
+                        ConstsWidget.buildTextSubTitle(context, e['divisao'],
+                            size: 16),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList();
+            },
+            // hint: Center(child: Text('Selecione Um Apto')),
+            value: dropAptos,
+            items: listDrop,
+            //  DropAptos.listAptos.map((e) {
+            //   setState(() {
+            //     i++;
+            //   });
+            //   print(i);
+            //   return DropdownMenuItem(
+            //       alignment: Alignment.center,
+            //       value: e['idunidade'],
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           if (i != 1)
+            //             Container(
+            //               height: 1,
+            //               decoration: BoxDecoration(color: Colors.black12),
+            //             ),
+            //           if (i != 1)
+            //             SizedBox(
+            //               height: size.height * 0.01,
+            //             ),
+            //           ConstsWidget.buildTextTitle(
+            //               context, '${e['nome_condominio']}',
+            //               size: 18),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               ConstsWidget.buildTextSubTitle(
+            //                   context, '${e['unidade']} - ',
+            //                   textAlign: TextAlign.center, size: 16),
+            //               ConstsWidget.buildTextSubTitle(
+            //                   context, e['divisao'],
+            //                   size: 16),
+            //             ],
+            //           ),
+            //           // if (i != 1)
+            //         ],
+            //       ));
+            // }).toList(),
+            onChanged: (value) {
+              if (value != 65684613513) {
+                setState(
+                  () {
+                    dropAptos = value;
+                    ConstsFuture.efetuaLogin(
+                        context, InfosMorador.login, InfosMorador.senhaCripto,
+                        idUnidade: '$dropAptos');
+                  },
+                );
+              } else {
+                trocarSenhaAlert(context, isChecked: true);
+              }
+            },
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 import 'package:app_portaria/screens/cadastro/morador/listar_morador.dart';
+import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
@@ -59,7 +60,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       ? ConstsWidget.buildCustomButton(
                           context,
                           'Condôminos',
-                          rowSpacing: 0.024,
+                          rowSpacing: SplashScreen.isSmall ? 0.02 : 0.024,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;
@@ -70,7 +71,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       : ConstsWidget.buildOutlinedButton(
                           context,
                           title: 'Condôminos',
-                          rowSpacing: 0.049,
+                          rowSpacing: SplashScreen.isSmall ? 0.03 : 0.049,
                           fontSize: 18,
                           onPressed: () {
                             setState(() {
@@ -86,7 +87,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                       ? ConstsWidget.buildCustomButton(
                           context,
                           'Veículos',
-                          rowSpacing: 0.049,
+                          rowSpacing: SplashScreen.isSmall ? 0.05 : 0.049,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;
@@ -98,7 +99,7 @@ class _ListaTotalUnidadeState extends State<ListaTotalUnidade> {
                           context,
                           title: 'Veículos',
                           fontSize: 18,
-                          rowSpacing: 0.1,
+                          rowSpacing: SplashScreen.isSmall ? 0.085 : 0.1,
                           onPressed: () {
                             setState(() {
                               filtrar = 1;

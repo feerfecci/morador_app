@@ -47,15 +47,16 @@ class _CadastroCarrosState extends State<CadastroCarros> {
   @override
   Widget build(BuildContext context) {
     int tipoApi = 0;
-    if (widget.tipo == 'Carro e utilitário') {
+    if (widget.tipo == 'Carro ou Utilitário') {
       tipoApi = 0;
-      formInfosCarro = formInfosCarro.copyWith(tipo: 'Carro e utilitário');
+      formInfosCarro = formInfosCarro.copyWith(tipo: 'Carro ou Utilitário');
     } else if (widget.tipo == "Moto") {
       tipoApi = 1;
       formInfosCarro = formInfosCarro.copyWith(tipo: 'Moto');
-    } else if (widget.tipo == 'Caminhão e Micro-ônibus') {
+    } else if (widget.tipo == 'Caminhão ou Micro-ônibus') {
       tipoApi = 2;
-      formInfosCarro = formInfosCarro.copyWith(tipo: 'Caminhão e Micro-ônibus');
+      formInfosCarro =
+          formInfosCarro.copyWith(tipo: 'Caminhão ou Micro-ônibus');
     }
     Object? dropTipoCarro = widget.idveiculo == null ? null : tipoApi;
     var size = MediaQuery.of(context).size;
@@ -82,11 +83,11 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     items: listTipoCarro.map((e) {
                       String tipoTexto = '';
                       if (e == 0) {
-                        tipoTexto = 'Carro e utilitário';
+                        tipoTexto = 'Carro ou Utilitário';
                       } else if (e == 1) {
                         tipoTexto = 'Moto';
                       } else if (e == 2) {
-                        tipoTexto = 'Caminhão e Micro-ônibus';
+                        tipoTexto = 'Caminhão ou Micro-ônibus';
                       }
                       return DropdownMenuItem(
                         alignment: Alignment.center,
@@ -101,7 +102,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                         if (value == 0) {
                           dropTipoCarro = 0;
                           formInfosCarro = formInfosCarro.copyWith(
-                              tipo: 'Carro e utilitário');
+                              tipo: 'Carro ou Utilitário');
                         } else if (value == 1) {
                           dropTipoCarro = 1;
                           formInfosCarro =
@@ -109,7 +110,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                         } else if (value == 2) {
                           dropTipoCarro = 2;
                           formInfosCarro = formInfosCarro.copyWith(
-                              tipo: 'Caminhão e Micro-ônibus');
+                              tipo: 'Caminhão ou Micro-ônibus');
                         }
                       });
                     },
@@ -195,47 +196,51 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                   ),
                 ],
               ),
-              ConstsWidget.buildCustomButton(
-                context,
-                // icon: Icons.save_alt,
-                'Salvar',
-                color: Consts.kColorRed,
-                onPressed: () {
-                  var formValid =
-                      keyFormCarros.currentState?.validate() ?? false;
-                  FocusManager.instance.primaryFocus!.unfocus();
-                  if (formValid && formInfosCarro.tipo != null) {
-                    keyFormCarros.currentState?.save();
-                    String editOrAdd = widget.idveiculo == null
-                        ? 'incluirVeiculosUnidade&'
-                        : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
-                    ConstsFuture.changeApi(
-                            'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
-                        .then((value) {
-                      if (!value['erro']) {
-                        ConstsFuture.navigatorPopAndReplacement(
-                            context,
-                            ListaTotalUnidade(
-                              idunidade: widget.idunidade,
-                              tipoAbrir: 2,
-                            ));
-                        setState(() {});
-                        buildCustomSnackBar(context,
-                            titulo: 'Sucesso', texto: value['mensagem']);
-                      } else {
-                        buildCustomSnackBar(context,
-                            hasError: true,
-                            titulo: 'Algo saiu mal!',
-                            texto: value['mensagem']);
-                      }
-                    });
-                  } else {
-                    buildCustomSnackBar(context,
-                        hasError: true,
-                        titulo: 'Algo saiu mal!',
-                        texto: 'Selecione um tipo de Veículo');
-                  }
-                },
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: size.height * 0.015, top: size.height * 0.01),
+                child: ConstsWidget.buildCustomButton(
+                  context,
+                  // icon: Icons.save_alt,
+                  'Salvar',
+                  color: Consts.kColorRed,
+                  onPressed: () {
+                    var formValid =
+                        keyFormCarros.currentState?.validate() ?? false;
+                    FocusManager.instance.primaryFocus!.unfocus();
+                    if (formValid && formInfosCarro.tipo != null) {
+                      keyFormCarros.currentState?.save();
+                      String editOrAdd = widget.idveiculo == null
+                          ? 'incluirVeiculosUnidade&'
+                          : 'editarVeiculosUnidade&idveiculo=${widget.idveiculo}&';
+                      ConstsFuture.changeApi(
+                              'veiculos/index.php?fn=$editOrAdd&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=${formInfosCarro.tipo}&marca=${formInfosCarro.marca}&modelo=${formInfosCarro.modelo}&cor=${formInfosCarro.cor}&placa=${formInfosCarro.placa}&vaga=${formInfosCarro.vaga}')
+                          .then((value) {
+                        if (!value['erro']) {
+                          ConstsFuture.navigatorPopAndReplacement(
+                              context,
+                              ListaTotalUnidade(
+                                idunidade: widget.idunidade,
+                                tipoAbrir: 2,
+                              ));
+                          setState(() {});
+                          buildCustomSnackBar(context,
+                              titulo: 'Sucesso', texto: value['mensagem']);
+                        } else {
+                          buildCustomSnackBar(context,
+                              hasError: true,
+                              titulo: 'Algo saiu mal!',
+                              texto: value['mensagem']);
+                        }
+                      });
+                    } else {
+                      buildCustomSnackBar(context,
+                          hasError: true,
+                          titulo: 'Algo saiu mal!',
+                          texto: 'Selecione um tipo de Veículo');
+                    }
+                  },
+                ),
               )
             ],
           ),

@@ -24,25 +24,6 @@ class ListarEspacosState extends State<ListarEspacos> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Widget buildTextoEspaco({required titulo, required texto}) {
-      return ConstsWidget.buildPadding001(
-        context,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ConstsWidget.buildTextSubTitle(
-              context,
-              titulo,
-            ),
-            SizedBox(
-              height: size.height * 0.005,
-            ),
-            ConstsWidget.buildTextTitle(context, texto, size: 18),
-          ],
-        ),
-      );
-    }
-
     Future apiListarEspacos() {
       //print('listarEspacos');
       return ConstsFuture.changeApi(

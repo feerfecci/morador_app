@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/shimmer.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'consts.dart';
-import 'consts_future.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -152,6 +149,7 @@ class ConstsWidget {
       {required void Function()? onPressed,
       required bool isLoading,
       required String title,
+      double rowSpacing = 0,
       double horizontal = 0,
       double fontSize = 18,
       Color color = Consts.kColorAzul}) {
@@ -175,6 +173,9 @@ class ConstsWidget {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        width: size.width * rowSpacing,
+                      ),
                       Text(
                         title,
                         overflow: TextOverflow.ellipsis,
@@ -184,6 +185,9 @@ class ConstsWidget {
                               SplashScreen.isSmall ? fontSize - 2 : fontSize,
                           fontWeight: FontWeight.w500,
                         ),
+                      ),
+                      SizedBox(
+                        width: size.width * rowSpacing,
                       ),
                     ],
                   )
@@ -253,13 +257,25 @@ class ConstsWidget {
   }
 
   static Widget buildCachedImage(BuildContext context,
-      {required String iconApi, double? width, double? height, String? title}) {
+      {required String iconApi,
+      double? width,
+      double? height,
+      String? title,
+      bool meuWidth = false}) {
     var size = MediaQuery.of(context).size;
     // bool isLoading = true;
     return CachedNetworkImage(
       imageUrl: iconApi,
-      height: height != null ? size.height * height : null,
-      width: width != null ? size.width * width : null,
+      height: !meuWidth
+          ? height != null
+              ? size.height * height
+              : null
+          : height,
+      width: !meuWidth
+          ? width != null
+              ? size.width * width
+              : null
+          : width,
       fit: BoxFit.fill,
       fadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
@@ -294,7 +310,7 @@ class ConstsWidget {
         expandedCrossAxisAlignment: expandedCrossAxisAlignment,
         childrenPadding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
         expandedAlignment: expandedAlignment,
-
+        tilePadding: EdgeInsets.only(left: size.width * 0.02),
         title: title,
         children: children,
       ),
@@ -336,8 +352,76 @@ class ConstsWidget {
   static Widget buildCamposObrigatorios(BuildContext context) {
     return ConstsWidget.buildPadding001(
       context,
-      child: ConstsWidget.buildTextSubTitle(context, '(*) Campos Obrigatórios',
+      child: ConstsWidget.buildTextTitle(context, '(*) Campos Obrigatórios',
           color: Consts.kColorRed),
+    );
+  }
+
+  static TextSpan builRichTextTitle(BuildContext context,
+      {required String textBold, Color? color}) {
+    return TextSpan(
+        text: textBold,
+        style: TextStyle(
+          color: color ?? Theme.of(context).textTheme.bodyLarge!.color,
+
+          // Theme.of(context)
+          //     .colorScheme
+          //     .primary,
+          overflow: TextOverflow.ellipsis,
+          fontSize: SplashScreen.isSmall ? 16 : 18,
+          fontWeight: FontWeight.bold,
+        ));
+  }
+
+  static TextSpan builRichTextSubTitle(BuildContext context,
+      {required String subTitle, Color? color}) {
+    return TextSpan(
+        text: subTitle,
+        style: TextStyle(
+            color: color ?? Theme.of(context).textTheme.bodyLarge!.color,
+            height: 1.5,
+            overflow: TextOverflow.ellipsis,
+            fontSize: SplashScreen.isSmall ? 14 : 16));
+  }
+
+  static Widget buildTextExplicaSenha(BuildContext context,
+      {bool isAlertDialog = false}) {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+          style: TextStyle(color: Colors.red, fontSize: 60),
+          children: [
+            ConstsWidget.builRichTextSubTitle(
+              context,
+              //  color: Colors.red,
+              subTitle: 'Para unificar todas suas unidades no login atual ',
+            ),
+            ConstsWidget.builRichTextTitle(context,
+                color: Colors.red, textBold: InfosMorador.login),
+            ConstsWidget.builRichTextSubTitle(context,
+                //  color: Colors.red,
+                subTitle: ', atualize sua senha de acesso,'),
+            if (!isAlertDialog)
+              ConstsWidget.builRichTextSubTitle(context,
+                  //  color: Colors.red,
+                  subTitle: ' selecione a opção '),
+            if (!isAlertDialog)
+              ConstsWidget.builRichTextTitle(context,
+                  color: Colors.red, textBold: 'Adicionar Meus Condomínios'),
+            ConstsWidget.builRichTextSubTitle(context,
+                //  color: Colors.red,
+                subTitle: ' e clique no botão '),
+            if (!isAlertDialog)
+              ConstsWidget.builRichTextTitle(context,
+                  color: Colors.red, textBold: 'Salvar'),
+            if (!isAlertDialog)
+              ConstsWidget.builRichTextSubTitle(context,
+                  //  color: Colors.red,
+                  subTitle:
+                      '. Se deseja alterar a senha e manter separados os acessos a cada unidade no Portaria App, preencha os campos abaixo e clique em '),
+            ConstsWidget.builRichTextTitle(context,
+                color: Colors.red, textBold: 'Salvar'),
+          ]),
     );
   }
 }

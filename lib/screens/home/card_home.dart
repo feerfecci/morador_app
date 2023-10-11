@@ -22,7 +22,12 @@ Widget buildCardHome(BuildContext context,
     await launchUrl(Uri.parse('tel:$number'));
   }
 
+  double meuwidth =
+      SplashScreen.isSmall ? size.width * 0.14 : size.width * 0.138;
+  double meuheigth = meuwidth;
+
   return MyBoxShadow(
+    paddingAll: 0,
     child: InkWell(
       onTap: numberCall == null
           ? () {
@@ -38,10 +43,11 @@ Widget buildCardHome(BuildContext context,
             },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Spacer(
-            flex: 2,
+          Spacer(),
+          SizedBox(
+            height: size.height * 0.005,
           ),
           ConstsWidget.buildBadge(
             context,
@@ -64,41 +70,21 @@ Widget buildCardHome(BuildContext context,
                         : false,
             child: ConstsWidget.buildCachedImage(context,
                 iconApi: iconApi,
-                height: SplashScreen.isSmall ? 0.07 : 0.063,
-                width: SplashScreen.isSmall ? 0.14 : 0.138),
+                height: meuheigth,
+                width: meuwidth,
+                meuWidth: true),
           ),
-          // badges.Badge(
-          //   showBadge: ,
-          //   badgeAnimation: badges.BadgeAnimation.fade(toAnimate: false),
-          //   badgeContent: Text(
-          //     title == 'Caixas'
-          //         ? CorrespondenciaScreen.listaNovaCorresp4.length.toString()
-          //         : title == 'Cartas'
-          //             ? CorrespondenciaScreen.listaNovaCorresp3.length
-          //                 .toString()
-          //             : QuadroAvisosScreen.qntAvisos.length.toString(),
-          //     style: TextStyle(
-          //         color: Theme.of(context).cardColor,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          //   position: badges.BadgePosition.topEnd(
-          //       top: -size.height * 0.015, end: -size.width * 0.14),
-          //   badgeStyle: badges.BadgeStyle(
-          //     badgeColor: Consts.kColorRed,
-          //   ),
-          //   child: ConstsWidget.buildCachedImage(context,
-          //       iconApi: iconApi,
-          //       height: SplashScreen.isSmall ? 0.08 : 0.066,
-          //       width: SplashScreen.isSmall ? 0.14 : 0.14),
-          // ),
-          Spacer(),
+          // Spacer(),
+          SizedBox(
+            height: size.height * 0.011,
+          ),
           SizedBox(
               width: size.width * 0.9,
               child: ConstsWidget.buildTextTitle(
                 context,
                 title,
                 textAlign: TextAlign.center,
-                // size: 16,
+                size: 16,
               )),
           Spacer(),
         ],

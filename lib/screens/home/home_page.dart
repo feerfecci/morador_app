@@ -1,25 +1,18 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, non_constant_identifier_names
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:app_portaria/consts/consts_widget.dart';
-import 'package:app_portaria/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:app_portaria/screens/cadastro/listar_total.dart';
-import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
 import 'package:app_portaria/screens/home/dropAptos.dart';
-import 'package:app_portaria/screens/reserva_espaco/listar_reserva.dart';
 import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
 import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
 import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts.dart';
 import '../../consts/consts_future.dart';
 import '../../repositories/shared_preferences.dart';
-import '../../widgets/alert_dialog/alert_resp_port.dart';
 import '../../widgets/custom_drawer/custom_drawer.dart';
 import '../avisos_chegada/chegada_screen.dart';
 import '../quadro_avisos/quadro_avisos_screen.dart';
@@ -410,8 +403,11 @@ class _HomePageState extends State<HomePage> {
       onRefresh: () async {
         setState(() {
           // apiPubli(local: 0);
-          // CorrespondenciaScreen.listaNovaCorresp3.clear();
-          // CorrespondenciaScreen.listaNovaCorresp4.clear();
+          // ConstsFuture.apiListarCorrespondencias(3).whenComplete(() {
+          //   ConstsFuture.apiListarCorrespondencias(4).whenComplete(() {
+          //     apiQuadroAvisos().whenComplete(() {});
+          //   });
+          // });
         });
       },
       child: Scaffold(
@@ -458,20 +454,21 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.015),
               child: Column(
                 children: [
-                  if (InfosMorador.qntApto != 1) DropAptos(),
-                  if (InfosMorador.qntApto == 1)
-                    ConstsWidget.buildPadding001(
-                      context,
-                      vertical: 0.02,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ConstsWidget.buildTextTitle(context,
-                              '${InfosMorador.divisao} - ${InfosMorador.numero}',
-                              size: 20),
-                        ],
-                      ),
-                    ),
+                  // if (InfosMorador.qntApto != 1)
+                  DropAptos(),
+                  // if (InfosMorador.qntApto == 1)
+                  //   ConstsWidget.buildPadding001(
+                  //     context,
+                  //     vertical: 0.02,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         ConstsWidget.buildTextTitle(context,
+                  //             '${InfosMorador.divisao} - ${InfosMorador.numero}',
+                  //             size: 20),
+                  //       ],
+                  //     ),
+                  //   ),
                   buildDraggableGrid(qualModel: 1, models: models1),
                   SizedBox(
                     height: SplashScreen.isSmall

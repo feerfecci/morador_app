@@ -109,7 +109,7 @@ class _QuadroAvisosScreenState extends State<QuadroAvisosScreen> {
                       var txt_tipo = apiQuadro['txt_tipo'];
                       var texto = apiQuadro['texto'];
                       var arquivo = apiQuadro['arquivo'];
-                      var datahora = DateFormat('dd/MM/yyyy HH:mm')
+                      var datahora = DateFormat('dd/MM/yyyy・HH:mm')
                           .format(DateTime.parse(apiQuadro['datahora']));
                       bool bolinha = false;
                       if (QuadroAvisosScreen.qntAvisos.contains(idaviso)) {
