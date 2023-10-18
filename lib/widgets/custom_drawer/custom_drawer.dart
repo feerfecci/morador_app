@@ -129,13 +129,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     mode: LaunchMode.externalNonBrowserApplication),
               ),
               buidListTile(
-                title: 'Política de privacidade',
+                title: 'Política de Privacidade',
                 leading: Icons.privacy_tip_outlined,
                 onPressed: () =>
                     ConstsFuture.navigatorPageRoute(context, PoliticaScreen()),
               ),
               buidListTile(
-                title: 'Termos de uso',
+                title: 'Termos de Uso',
                 leading: Icons.assignment_outlined,
                 onPressed: () => ConstsFuture.navigatorPageRoute(
                     context, TermoDeUsoScreen()),
@@ -157,7 +157,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     mode: LaunchMode.externalNonBrowserApplication),
               ),
               buidListTile(
-                title: 'Efetuar logoff',
+                title: 'Efetuar Logoff',
                 leading: Icons.logout_outlined,
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(

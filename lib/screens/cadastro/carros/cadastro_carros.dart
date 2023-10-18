@@ -69,7 +69,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
             height: size.height * 0.07,
             decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,
-              border: Border.all(color: Colors.black26),
+              border: Border.all(color: Theme.of(context).colorScheme.primary),
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             child: ConstsWidget.buildPadding001(
@@ -122,7 +122,7 @@ class _CadastroCarrosState extends State<CadastroCarros> {
                     ),
                     borderRadius: BorderRadius.circular(16),
                     hint: Text(
-                      'Selecione um tipo',
+                      'Selecione um Tipo',
                       textAlign: TextAlign.center,
                     ),
                     style: TextStyle(

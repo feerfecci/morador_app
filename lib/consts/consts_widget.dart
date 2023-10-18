@@ -233,7 +233,7 @@ class ConstsWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        SizedBox(width: width, child: buildTextTitle(context, title)),
+        SizedBox(width: width, child: buildTextTitle(context, title, size: 16)),
         Checkbox(
           // shape:
           //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -385,9 +385,9 @@ class ConstsWidget {
   }
 
   static Widget buildTextExplicaSenha(BuildContext context,
-      {bool isAlertDialog = false}) {
+      {bool isAlertDialog = false, textAlign = TextAlign.center}) {
     return RichText(
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       text: TextSpan(
           style: TextStyle(color: Colors.red, fontSize: 60),
           children: [
@@ -400,7 +400,7 @@ class ConstsWidget {
                 color: Colors.red, textBold: InfosMorador.login),
             ConstsWidget.builRichTextSubTitle(context,
                 //  color: Colors.red,
-                subTitle: ', atualize sua senha de acesso,'),
+                subTitle: ', atualize sua senha de acesso'),
             if (!isAlertDialog)
               ConstsWidget.builRichTextSubTitle(context,
                   //  color: Colors.red,
@@ -410,7 +410,7 @@ class ConstsWidget {
                   color: Colors.red, textBold: 'Adicionar Meus Condomínios'),
             ConstsWidget.builRichTextSubTitle(context,
                 //  color: Colors.red,
-                subTitle: ' e clique no botão '),
+                subTitle: ' e, clique no botão '),
             if (!isAlertDialog)
               ConstsWidget.builRichTextTitle(context,
                   color: Colors.red, textBold: 'Salvar'),
@@ -422,6 +422,20 @@ class ConstsWidget {
             ConstsWidget.builRichTextTitle(context,
                 color: Colors.red, textBold: 'Salvar'),
           ]),
+    );
+  }
+
+  static Widget buildSeparated(BuildContext context, {double vertical = 0.02}) {
+    return ConstsWidget.buildPadding001(
+      context,
+      vertical: vertical,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+              width: 1, color: Theme.of(context).colorScheme.primary),
+        ),
+      ),
     );
   }
 }

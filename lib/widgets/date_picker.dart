@@ -82,7 +82,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
             left: !widget.aniversario ? size.width * 0.02 : 0,
-            top: size.height * 0.045,
+            top: size.height * 0.0475,
           ),
           filled: true,
           fillColor: Theme.of(context).canvasColor,
@@ -129,7 +129,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
         firstDate: !widget.aniversario ? DateTime.now() : DateTime(1850),
         lastDate: !widget.aniversario ? DateTime(2100) : DateTime.now(),
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         textAlign: TextAlign.center,

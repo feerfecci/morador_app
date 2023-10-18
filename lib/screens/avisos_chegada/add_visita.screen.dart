@@ -218,7 +218,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                 MyDatePicker(
                     dataSelected: dataSelected,
                     lista: listEmailVisita,
-                    hintText: 'Escolha o dia e horário da visita'),
+                    hintText: 'Escolha o Dia e Horário da Visita'),
                 // Column(
                 //   children: [
                 //     // Row(
@@ -302,7 +302,7 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                               context,
                               color: Consts.kColorRed,
                               isLoading: isLoading,
-                              title: 'Confirmar',
+                              title: 'Convidar',
                               rowSpacing: SplashScreen.isSmall ? 0.06 : 0.08,
                               onPressed: () {
                                 if (listEmailVisita.isNotEmpty &&

@@ -137,47 +137,8 @@ class _DropAptosState extends State<DropAptos> {
                 );
               }).toList();
             },
-            // hint: Center(child: Text('Selecione Um Apto')),
             value: dropAptos,
             items: listDrop,
-            //  DropAptos.listAptos.map((e) {
-            //   setState(() {
-            //     i++;
-            //   });
-            //   print(i);
-            //   return DropdownMenuItem(
-            //       alignment: Alignment.center,
-            //       value: e['idunidade'],
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           if (i != 1)
-            //             Container(
-            //               height: 1,
-            //               decoration: BoxDecoration(color: Colors.black12),
-            //             ),
-            //           if (i != 1)
-            //             SizedBox(
-            //               height: size.height * 0.01,
-            //             ),
-            //           ConstsWidget.buildTextTitle(
-            //               context, '${e['nome_condominio']}',
-            //               size: 18),
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               ConstsWidget.buildTextSubTitle(
-            //                   context, '${e['unidade']} - ',
-            //                   textAlign: TextAlign.center, size: 16),
-            //               ConstsWidget.buildTextSubTitle(
-            //                   context, e['divisao'],
-            //                   size: 16),
-            //             ],
-            //           ),
-            //           // if (i != 1)
-            //         ],
-            //       ));
-            // }).toList(),
             onChanged: (value) {
               if (value != 65684613513) {
                 setState(

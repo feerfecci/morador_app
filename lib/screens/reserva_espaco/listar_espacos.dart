@@ -70,8 +70,10 @@ class ListarEspacosState extends State<ListarEspacos> {
                           String nome_espaco = apiEspacos['nome_espaco'];
                           int? idcondominio = apiEspacos['idcondominio'];
                           String? descricao = apiEspacos['descricao'];
-                          List datas_reservadas =
-                              apiEspacos['datas_reservadas'];
+                          List datas_reservadas_ini =
+                              apiEspacos['datas_ini_reservadas'];
+                          List datas_reservadas_fim =
+                              apiEspacos['datas_fim_reservadas'];
 
                           return MyBoxShadow(
                             child: Column(
@@ -101,6 +103,12 @@ class ListarEspacosState extends State<ListarEspacos> {
                                 ),
                                 ConstsWidget.buildPadding001(
                                   context,
+                                  child: ConstsWidget.buildTextSubTitle(
+                                      context, idespaco.toString(),
+                                      textAlign: TextAlign.center, size: 16),
+                                ),
+                                ConstsWidget.buildPadding001(
+                                  context,
                                   child: ConstsWidget.buildCustomButton(
                                     context,
                                     'Solicitar Reserva',
@@ -111,7 +119,10 @@ class ListarEspacosState extends State<ListarEspacos> {
                                         context,
                                         FazerReserva(
                                           idespaco: idespaco!,
-                                          dataReservada: datas_reservadas,
+                                          dataReservadaIni:
+                                              datas_reservadas_ini,
+                                          dataReservadaFim:
+                                              datas_reservadas_fim,
                                           nomeEspaco: nome_espaco.toString(),
                                           descricaoEspaco: descricao.toString(),
                                         ),

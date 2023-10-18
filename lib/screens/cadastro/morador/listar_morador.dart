@@ -10,6 +10,7 @@ import '../../../consts/consts_widget.dart';
 import '../../../widgets/my_box_shadow.dart';
 import '../../../widgets/page_erro.dart';
 import '../../../widgets/page_vazia.dart';
+import '../../splash_screen/splash_screen.dart';
 import 'cadastro_morador.dart';
 
 class ListarMorador extends StatefulWidget {
@@ -35,6 +36,48 @@ class _ListarMoradorState extends State<ListarMorador> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    Widget buildTilePermissaoSalvo(String title,
+        {bool isChecked = false, double width = 0.43}) {
+      return ConstsWidget.buildPadding001(
+        context,
+        vertical: 0.005,
+        child: Row(
+          children: [
+            ConstsWidget.buildTextTitle(context, title),
+            SizedBox(
+              width: size.width * 0.03,
+            ),
+            Icon(
+              Icons.check_circle_outline_outlined,
+              color: isChecked
+                  ? Colors.green
+                  : Theme.of(context).colorScheme.primary,
+              size: SplashScreen.isSmall ? 25 : 30,
+            ),
+          ],
+        ),
+
+        // Container(
+        //   height:
+        //       SplashScreen.isSmall ? size.height * 0.08 : size.height * 0.06,
+        //   width: size.width * width,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(16),
+        //     color: isChecked ? Consts.kColorVerde : Colors.grey,
+        //   ),
+        //   child: Center(
+        //     child: Text(
+        //       title,
+        //       style: TextStyle(
+        //           color: Colors.white,
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 15),
+        //     ),
+        //   ),
+        // ),
+      );
+    }
+
     return Column(
       // shrinkWrap: true,
       // physics: ClampingScrollPhysics(),
@@ -204,27 +247,8 @@ class _ListarMoradorState extends State<ListarMorador> {
                           ConstsWidget.buildPadding001(
                             context,
                             vertical: 0.025,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ConstsWidget.buildTextTitle(
-                                    context, 'Permitir Acesso ao Sistema'),
-                                // ConstsWidget.buildCheckBox(context,
-                                //     isChecked: acessa_sistema,
-                                //     onChanged: (bool? value) {},
-                                //     title: 'Permitir acesso ao sistema'),
-                                ConstsWidget.buildAtivoInativo(
-                                    context, acessa_sistema),
-
-                                // Icon(
-                                //   Icons.check_circle_outline_outlined,
-                                //   color: acessa_sistema
-                                //       ? Colors.green
-                                //       : Theme.of(context).colorScheme.primary,
-                                //   size: SplashScreen.isSmall ? 25 : 30,
-                                // ),
-                              ],
-                            ),
+                            child: buildTilePermissaoSalvo('Acesso ao Sistema',
+                                isChecked: acessa_sistema),
                           ),
                           ConstsWidget.buildCustomButton(
                               context, 'Editar Condômino', onPressed: () {

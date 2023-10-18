@@ -220,8 +220,33 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                     ),
                   if (widget.isDrawer)
                     ConstsWidget.buildPadding001(context,
-                        child: ConstsWidget.buildTextExplicaSenha(
-                          context,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          child: ConstsWidget.buildExpandedTile(
+                            context,
+                            children: [
+                              ConstsWidget.buildTextExplicaSenha(context,
+                                  textAlign: TextAlign.left),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              )
+                            ],
+                            title: Row(
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.01,
+                                ),
+                                ConstsWidget.buildTextTitle(
+                                    context, 'Como Adicionar Outro Local'),
+                                ConstsWidget.buildTextSubTitle(context, ' **',
+                                    color: Colors.red),
+                              ],
+                            ),
+                          ),
                         )),
                   // if (widget.idmorador == null)
                   buildMyTextFormObrigatorio(
@@ -252,9 +277,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                           child: Column(
                             children: [
                               SizedBox(
-                                height: SplashScreen.isSmall
-                                    ? size.height * 0.01
-                                    : size.height * 0.007,
+                                height: size.height * 0.01,
                               ),
                               MyDatePicker(
                                 dataSelected:
@@ -461,11 +484,7 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                       key: formKeyTrocaSenha,
                       child: Column(
                         children: [
-                          ConstsWidget.buildPadding001(
-                            context,
-                            vertical: 0.01,
-                            child: Container(),
-                          ),
+                          ConstsWidget.buildSeparated(context),
                           buildCampoSenha(
                               senhaCtrl: senhaNovaCtrl,
                               obscureText: isObscureLogin,
@@ -509,6 +528,9 @@ class _CadastroMoradorState extends State<CadastroMorador> {
                               );
                             }, title: 'Alterar em Todas as Unidade'),
                           ),
+                          // ConstsWidget.buildSeparated(
+                          //   context,
+                          // ),
                           // buildMyTextFormField(
                           //   context,
                           //   title: 'Confirmar Senha',

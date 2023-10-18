@@ -158,12 +158,15 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                       if (listIdVisita.isNotEmpty) {
                         showDialogAll(context,
                             title: ConstsWidget.buildTextTitle(
-                                context, 'Cancelar Visita'),
+                                context,
+                                filtrar == 1
+                                    ? 'Autorizar Visita'
+                                    : 'Cancelar Visita'),
                             children: [
                               RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(
-                                      text: 'Tem certeza de deseja ',
+                                      text: 'Tem certeza que deseja ',
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: Theme.of(context)
@@ -202,29 +205,19 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                 children: [
                                   ConstsWidget.buildOutlinedButton(
                                     context,
-                                    rowSpacing: filtrar == 1
-                                        ? SplashScreen.isSmall
-                                            ? 0.03
-                                            : 0.055
-                                        : SplashScreen.isSmall
-                                            ? 0.09
-                                            : 0.1,
-                                    title: filtrar == 1 ? 'Cancelar' : 'Não',
+                                    rowSpacing:
+                                        SplashScreen.isSmall ? 0.09 : 0.1,
+                                    title: 'Não',
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                   ),
                                   ConstsWidget.buildCustomButton(
                                     context,
-                                    filtrar == 1 ? 'Autorizar' : 'Sim',
+                                    'Sim',
                                     color: Consts.kColorRed,
-                                    rowSpacing: filtrar == 1
-                                        ? SplashScreen.isSmall
-                                            ? 0.015
-                                            : 0.025
-                                        : SplashScreen.isSmall
-                                            ? 0.051
-                                            : 0.054,
+                                    rowSpacing:
+                                        SplashScreen.isSmall ? 0.051 : 0.054,
                                     onPressed: () {
                                       // //print(listIdVisita);
                                       ConstsFuture.changeApi(

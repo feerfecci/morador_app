@@ -78,65 +78,81 @@ class ListarReservasState extends State<ListarReservas> {
                           String nome_morador = apiEspacos['nome_morador'];
                           int idunidade = apiEspacos['idunidade'];
                           String unidade = apiEspacos['unidade'];
-                          String data_reserva = DateFormat('dd/MM/yy • HH:mm')
-                              .format(
-                                  DateTime.parse(apiEspacos['data_reserva']));
+                          String data_reserva_ini =
+                              DateFormat('dd/MM/yy • HH:mm').format(
+                                  DateTime.parse(
+                                      apiEspacos['data_reserva_ini']));
+                          String data_reserva_fim =
+                              DateFormat('dd/MM/yy • HH:mm').format(
+                                  DateTime.parse(
+                                      apiEspacos['data_reserva_fim']));
                           String datahora = apiEspacos['datahora'];
 
                           return MyBoxShadow(
-                            child: Column(
-                              // shrinkWrap: true,
-                              // physics: ClampingScrollPhysics(),
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    // buildTextReserva(
-                                    //   titulo: 'Nome do Espaço',
-                                    //   texto: nome_espaco.toString(),
-                                    // ),
-                                    SizedBox(
-                                      width: size.width * 0.64,
-                                      child: ConstsWidget.buildTextTitle(
-                                        context,
-                                        nome_espaco,
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: status == 0
-                                              ? Colors.grey
-                                              : status == 1
-                                                  ? Consts.kColorVerde
-                                                  : Consts.kColorAmarelo,
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.all(size.height * 0.01),
+                            child: ConstsWidget.buildPadding001(
+                              context,
+                              vertical: 0,
+                              horizontal: 0.01,
+                              child: Column(
+                                // shrinkWrap: true,
+                                // physics: ClampingScrollPhysics(),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      // buildTextReserva(
+                                      //   titulo: 'Nome do Espaço',
+                                      //   texto: nome_espaco.toString(),
+                                      // ),
+                                      SizedBox(
+                                        width: size.width * 0.62,
                                         child: ConstsWidget.buildTextTitle(
-                                            context, texto_status,
-                                            color: Colors.white),
+                                          context,
+                                          nome_espaco,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    buildTextReserva(
-                                      titulo: 'Data da Reserva',
-                                      width: 0.45,
-                                      texto: data_reserva.toString(),
-                                    ),
-                                    buildTextReserva(
-                                      titulo: 'Reservado por',
-                                      width: 0.45,
-                                      texto: nome_morador.toString(),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: status == 0
+                                                ? Colors.grey
+                                                : status == 1
+                                                    ? Consts.kColorVerde
+                                                    : Consts.kColorAmarelo,
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(
+                                              size.height * 0.01),
+                                          child: ConstsWidget.buildTextTitle(
+                                              context, texto_status,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      buildTextReserva(
+                                        titulo: 'Data Início',
+                                        width: 0.48,
+                                        texto: data_reserva_ini.toString(),
+                                      ),
+                                      buildTextReserva(
+                                        titulo: 'Data Término',
+                                        width: 0.40,
+                                        texto: data_reserva_fim.toString(),
+                                      ),
+                                    ],
+                                  ),
+                                  buildTextReserva(
+                                    titulo: 'Reservado por',
+                                    width: 0.44,
+                                    texto: nome_morador.toString(),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
