@@ -15,7 +15,7 @@ dependencies:
   validatorless: ^1.2.3
   shared_preferences: ^2.0.15
   local_auth: ^2.1.6
-  flutter_platform_alert: ^0.3.0
+  flutter_platform_alert: ^0.4.0
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.5
   mask_text_input_formatter: ^2.4.0
@@ -30,7 +30,6 @@ dependencies:
   badges: ^3.1.1
   flutter_html: ^3.0.0-alpha.3
   diacritic: ^0.1.4
-  flutter_local_notifications: ^15.1.1
   email_validator: ^2.1.17
   cached_network_image: ^3.2.3
   date_time_picker: ^2.1.0
