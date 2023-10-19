@@ -100,7 +100,6 @@ class _EsqueciSenhaScreenState extends State<EsqueciSenhaScreen> {
                   buildMyTextFormObrigatorio(context,
                       controller: _loginController,
                       title: 'Login',
-                      textCapitalization: TextCapitalization.characters,
                       autofillHints: [AutofillHints.email],
                       validator: Validatorless.multiple(
                           [Validatorless.required('Preencha com seu login')]),
