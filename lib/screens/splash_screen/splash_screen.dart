@@ -2,9 +2,9 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:app_portaria/repositories/biometric.dart';
-import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/login/login_screen.dart';
+import 'package:morador_app/repositories/biometric.dart';
+import 'package:morador_app/repositories/shared_preferences.dart';
+import 'package:morador_app/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
 import '../../consts/consts_future.dart';

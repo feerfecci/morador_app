@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 import 'dart:async';
-import 'package:app_portaria/screens/home/home_page.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
-import 'package:app_portaria/widgets/date_picker.dart';
+import 'package:morador_app/screens/home/home_page.dart';
+import 'package:morador_app/widgets/alert_dialog/alert_all.dart';
+import 'package:morador_app/widgets/date_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
+import 'package:morador_app/widgets/snack_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 import '../../../consts/consts.dart';

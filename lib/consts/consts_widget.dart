@@ -1,5 +1,5 @@
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/shimmer.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/shimmer.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'consts.dart';
@@ -233,7 +233,10 @@ class ConstsWidget {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [
-        SizedBox(width: width, child: buildTextTitle(context, title, size: 16)),
+        SizedBox(
+          width: width,
+          child: buildTextTitle(context, title),
+        ),
         Checkbox(
           // shape:
           //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

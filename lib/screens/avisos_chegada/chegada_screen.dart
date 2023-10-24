@@ -1,12 +1,12 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/screens/avisos_chegada/add_visita.screen.dart';
-import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_resp_port.dart';
+import 'package:morador_app/consts/consts.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/screens/avisos_chegada/add_visita.screen.dart';
+import 'package:morador_app/screens/correspondencia/loading_corresp.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/alert_dialog/alert_resp_port.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

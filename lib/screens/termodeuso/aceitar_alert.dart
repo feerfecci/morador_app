@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;

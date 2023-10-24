@@ -1,5 +1,5 @@
-import 'package:app_portaria/consts/consts_widget.dart';
-import 'package:app_portaria/widgets/custom_drawer/custom_drawer.dart';
+import 'package:morador_app/consts/consts_widget.dart';
+import 'package:morador_app/widgets/custom_drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/splash_screen/splash_screen.dart';

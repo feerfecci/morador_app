@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
-import 'package:app_portaria/screens/cadastro/morador/listar_morador.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
+import 'package:morador_app/screens/cadastro/morador/listar_morador.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts_widget.dart';
 import 'carros/listar_carros.dart';

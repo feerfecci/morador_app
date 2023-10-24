@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, non_constant_identifier_names
 import 'dart:async';
 import 'dart:convert';
-import 'package:app_portaria/consts/consts_widget.dart';
-import 'package:app_portaria/screens/cadastro/listar_total.dart';
-import 'package:app_portaria/screens/home/dropAptos.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_all.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
+import 'package:morador_app/consts/consts_widget.dart';
+import 'package:morador_app/screens/cadastro/listar_total.dart';
+import 'package:morador_app/screens/home/dropAptos.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/alert_dialog/alert_all.dart';
+import 'package:morador_app/widgets/my_box_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';

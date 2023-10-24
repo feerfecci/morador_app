@@ -1,9 +1,9 @@
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
-import 'package:app_portaria/widgets/my_text_form_field.dart';
-import 'package:app_portaria/widgets/snack_bar.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/repositories/shared_preferences.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/screens/termodeuso/termo_de_uso.dart';
+import 'package:morador_app/widgets/my_text_form_field.dart';
+import 'package:morador_app/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 import '../../consts/consts_widget.dart';
@@ -47,16 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Scaffold(
             body: ListView(
               children: [
-                SizedBox(
-                  height: SplashScreen.isSmall
-                      ? size.height * 0.03
-                      : size.height * 0.04,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: size.width * 0.05,
-                    right: size.width * 0.05,
-                  ),
+                ConstsWidget.buildPadding001(
+                  context,
+                  horizontal: 0.02,
+                  vertical: 0.03,
                   child: Column(
                     children: [
                       ConstsWidget.buildCachedImage(context,
@@ -82,6 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           title: 'Login',
                           autofillHints: [AutofillHints.email],
                           hintText: 'Digite seu Login'),
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
                       buildFormPassword(context,
                           controller: passWordCtrl,
                           autofillHints: [AutofillHints.password],
@@ -93,42 +90,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: EdgeInsets.only(
                           bottom: size.height * 0.025,
-                          top: size.height * 0.01,
+                          top: size.height * 0.02,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ConstsWidget.buildCheckBox(context,
-                                isChecked: isChecked, onChanged: (bool? value) {
-                              setState(() {
-                                isChecked = value!;
-                              });
-                              FocusManager.instance.primaryFocus!.unfocus();
-                            }, title: 'Mantenha-me conectado'),
-
-                            // ConstsWidget.buildTextTitle(
-                            //     context, 'Mantenha-me conectado'),
-                            // Checkbox(
-                            //   value: isChecked,
-                            //   onChanged: (bool? value) {
-                            //     setState(() {
-                            //       isChecked = value!;
-                            //     });
-                            //   },
-                            // )
-                          ],
-                        ),
-
-                        // CheckboxListTile(
-                        //   value: isChecked,
-                        //   title: ConstsWidget.buildTextTitle(
-                        //       context, 'Mantenha-me conectado'),
-                        //   onChanged: (bool? value) {
-                        //     setState(() {
-                        //       isChecked = value!;
-                        //     });
-                        //   },
-                        // ),
+                        child: ConstsWidget.buildCheckBox(context,
+                            isChecked: isChecked, onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                          FocusManager.instance.primaryFocus!.unfocus();
+                        }, title: 'Mantenha-me Conectado'),
                       ),
                       ConstsWidget.buildLoadingButton(
                         context,
@@ -189,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: Text(
-                              'Termos de Uso',
+                              'Recuperar Senha',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.blue),
                             ),
@@ -209,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             child: Text(
-                              'Recuperar Senha',
+                              'Termos de Uso',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.blue),
                             ),

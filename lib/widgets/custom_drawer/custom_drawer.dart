@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/cadastro/morador/cadastro_morador.dart';
-import 'package:app_portaria/screens/login/login_screen.dart';
-import 'package:app_portaria/screens/politica/politica_screen.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/screens/termodeuso/termo_de_uso.dart';
+import 'package:morador_app/consts/consts.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/repositories/shared_preferences.dart';
+import 'package:morador_app/screens/cadastro/morador/cadastro_morador.dart';
+import 'package:morador_app/screens/login/login_screen.dart';
+import 'package:morador_app/screens/politica/politica_screen.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/screens/termodeuso/termo_de_uso.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts_widget.dart';

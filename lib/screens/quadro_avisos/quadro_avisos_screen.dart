@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
 import 'dart:convert';
-import 'package:app_portaria/repositories/shared_preferences.dart';
-import 'package:app_portaria/screens/correspondencia/loading_corresp.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/page_erro.dart';
-import 'package:app_portaria/widgets/page_vazia.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
+import 'package:morador_app/repositories/shared_preferences.dart';
+import 'package:morador_app/screens/correspondencia/loading_corresp.dart';
+import 'package:morador_app/widgets/my_box_shadow.dart';
+import 'package:morador_app/widgets/page_erro.dart';
+import 'package:morador_app/widgets/page_vazia.dart';
+import 'package:morador_app/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';

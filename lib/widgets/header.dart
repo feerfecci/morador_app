@@ -1,4 +1,4 @@
-import 'package:app_portaria/consts/consts_widget.dart';
+import 'package:morador_app/consts/consts_widget.dart';
 import 'package:flutter/material.dart';
 
 Widget buildHeaderPage(

@@ -1,9 +1,9 @@
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/consts/consts_widget.dart';
-import 'package:app_portaria/forms/form_carro.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/my_text_form_field.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/consts/consts_widget.dart';
+import 'package:morador_app/forms/form_carro.dart';
+import 'package:morador_app/widgets/my_box_shadow.dart';
+import 'package:morador_app/widgets/my_text_form_field.dart';
+import 'package:morador_app/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 
 import '../../../consts/consts.dart';

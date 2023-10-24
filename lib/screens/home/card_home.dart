@@ -1,6 +1,6 @@
-import 'package:app_portaria/screens/correspondencia/correspondencia_screen.dart';
-import 'package:app_portaria/screens/quadro_avisos/quadro_avisos_screen.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/screens/correspondencia/correspondencia_screen.dart';
+import 'package:morador_app/screens/quadro_avisos/quadro_avisos_screen.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../consts/consts_future.dart';

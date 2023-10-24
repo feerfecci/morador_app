@@ -2,8 +2,8 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:app_portaria/screens/home/home_page.dart';
-import 'package:app_portaria/screens/login/login_screen.dart';
+import 'package:morador_app/screens/home/home_page.dart';
+import 'package:morador_app/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
@@ -355,8 +355,10 @@ class ConstsFuture {
         if (e['protocolo'] == '') {
           if (tipoAviso == 3) {
             CorrespondenciaScreen.listaNovaCorresp3.add(e['idcorrespondencia']);
+            print(CorrespondenciaScreen.listaNovaCorresp3);
           } else {
             CorrespondenciaScreen.listaNovaCorresp4.add(e['idcorrespondencia']);
+            print(CorrespondenciaScreen.listaNovaCorresp4);
           }
         }
       }).toSet();

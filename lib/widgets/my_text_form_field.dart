@@ -1,5 +1,5 @@
-import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/consts/consts.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -150,7 +150,7 @@ Widget buildFormPassword(BuildContext context,
         obscureText: isObscure,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.032, vertical: size.height * 0.023),
+              horizontal: size.width * 0.032, vertical: size.height * 0.025),
           filled: true,
           fillColor: Theme.of(context).primaryColor,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
@@ -161,7 +161,7 @@ Widget buildFormPassword(BuildContext context,
           hintText: 'Digite sua Senha',
           label: RichText(
               text: TextSpan(
-                  text: 'Digite sua Senha',
+                  text: 'Senha',
                   style: TextStyle(
                     fontSize: SplashScreen.isSmall ? 14 : 16,
                     color: Theme.of(context).textTheme.bodyLarge!.color,

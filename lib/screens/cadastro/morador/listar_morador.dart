@@ -1,6 +1,6 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names
 import 'dart:convert';
-import 'package:app_portaria/screens/cadastro/loading_cadastro.dart';
+import 'package:morador_app/screens/cadastro/loading_cadastro.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';

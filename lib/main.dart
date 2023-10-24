@@ -1,5 +1,5 @@
-import 'package:app_portaria/repositories/theme_provider.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/repositories/theme_provider.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(
-        
-      ),
+      create: (context) => ThemeProvider(),
       builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(

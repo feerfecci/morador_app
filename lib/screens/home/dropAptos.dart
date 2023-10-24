@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
-import 'package:app_portaria/widgets/alert_dialog/alert_trocar_senha.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/widgets/alert_dialog/alert_trocar_senha.dart';
 import 'package:flutter/material.dart';
 import '../../consts/consts.dart';
 import '../../consts/consts_widget.dart';

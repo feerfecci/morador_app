@@ -1,9 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
-import 'package:app_portaria/consts/consts.dart';
-import 'package:app_portaria/consts/consts_future.dart';
-import 'package:app_portaria/widgets/my_box_shadow.dart';
-import 'package:app_portaria/widgets/page_vazia.dart';
-import 'package:app_portaria/widgets/scaffold_all.dart';
+import 'package:morador_app/consts/consts.dart';
+import 'package:morador_app/consts/consts_future.dart';
+import 'package:morador_app/widgets/my_box_shadow.dart';
+import 'package:morador_app/widgets/page_vazia.dart';
+import 'package:morador_app/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../consts/consts_widget.dart';

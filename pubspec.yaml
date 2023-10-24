@@ -1,8 +1,8 @@
-name: app_portaria
+name: morador_app
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=2.19.0-255.0.dev <3.0.0'

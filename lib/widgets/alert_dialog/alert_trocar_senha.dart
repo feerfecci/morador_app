@@ -1,4 +1,4 @@
-import 'package:app_portaria/screens/splash_screen/splash_screen.dart';
+import 'package:morador_app/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 import '../../consts/consts.dart';
