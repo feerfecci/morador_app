@@ -131,7 +131,6 @@ class _CorrespondenciaScreenState extends State<CorrespondenciaScreen> {
                       isLoading: loadingRetirada, onPressed: () {
                     correspRetirar.isNotEmpty
                         ? carregandoRetirada()
-                        // //print(correspRetirar)
                         : buildCustomSnackBar(context,
                             titulo: 'Atenção',
                             hasError: true,

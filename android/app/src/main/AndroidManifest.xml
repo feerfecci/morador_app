@@ -16,7 +16,11 @@
         android:label="Portaria App | Condômino"
         android:name="${applicationName}"
         android:icon="@mipmap/launch_icon">
-        
+
+         <meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/logo_azul" />       
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

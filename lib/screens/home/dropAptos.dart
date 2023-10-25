@@ -107,9 +107,12 @@ class _DropAptosState extends State<DropAptos> {
             elevation: 24, focusColor: Colors.red,
             itemHeight:
                 SplashScreen.isSmall ? size.height * 0.09 : size.height * 0.07,
-            icon: Icon(
-              Icons.arrow_downward,
-              color: Theme.of(context).iconTheme.color,
+            icon: Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Icon(
+                Icons.arrow_downward,
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
 
             borderRadius: BorderRadius.circular(16),
@@ -117,23 +120,26 @@ class _DropAptosState extends State<DropAptos> {
             // itemHeight: 70,
             selectedItemBuilder: (context) {
               return DropAptos.listAptos.map((e) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ConstsWidget.buildTextTitle(
-                        context, '${e['nome_condominio']}',
-                        size: 18),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ConstsWidget.buildTextSubTitle(
-                            context, '${e['unidade']} - ',
-                            textAlign: TextAlign.center, size: 16),
-                        ConstsWidget.buildTextSubTitle(context, e['divisao'],
-                            size: 16),
-                      ],
-                    ),
-                  ],
+                return Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ConstsWidget.buildTextTitle(
+                          context, '${e['nome_condominio']}',
+                          size: 18),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ConstsWidget.buildTextSubTitle(
+                              context, '${e['unidade']} - ',
+                              textAlign: TextAlign.center, size: 16),
+                          ConstsWidget.buildTextSubTitle(context, e['divisao'],
+                              size: 16),
+                        ],
+                      ),
+                    ],
+                  ),
                 );
               }).toList();
             },

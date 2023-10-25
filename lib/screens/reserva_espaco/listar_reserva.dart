@@ -1,4 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable
+import 'dart:convert';
+
+import 'package:http/http.dart';
 import 'package:morador_app/consts/consts.dart';
 import 'package:morador_app/consts/consts_future.dart';
 import 'package:morador_app/widgets/my_box_shadow.dart';
@@ -11,13 +14,49 @@ import '../../widgets/page_erro.dart';
 import '../correspondencia/loading_corresp.dart';
 
 class ListarReservas extends StatefulWidget {
+  static List listReservas = [];
   const ListarReservas({super.key});
 
   @override
   State<ListarReservas> createState() => ListarReservasState();
 }
 
+Future apiListarReservas() async {
+  var url = Uri.parse(
+      'https://a.portariaapp.com/unidade/api/reserva_espacos/?fn=listarReservas&idcond=${InfosMorador.idcondominio}&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}');
+  var resposta = await get(url);
+
+  if (resposta.statusCode == 200) {
+    var jsonResposta = json.decode(resposta.body);
+    if (!jsonResposta['erro']) {
+      List apiReservas = jsonResposta['reserva_espacos'];
+      apiReservas.map((e) {
+        var diference = DateTime.parse(e['data_reserva_fim'])
+            .difference(DateTime.now())
+            .inHours;
+        if (e['status'] == 1 && diference >= 1) {
+          if (!ListarReservas.listReservas.contains(e['idreserva'])) {
+            ListarReservas.listReservas.add(e['idreserva']);
+          }
+        }
+      }).toSet();
+    }
+    print(['Lista idReserva', ListarReservas.listReservas.length]);
+
+    return json.decode(resposta.body);
+  } else {
+    return false;
+  }
+}
+
 class ListarReservasState extends State<ListarReservas> {
+  @override
+  void initState() {
+    apiListarReservas();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

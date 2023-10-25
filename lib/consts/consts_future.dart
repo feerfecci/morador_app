@@ -2,6 +2,8 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_app_version_checker/flutter_app_version_checker.dart';
+import 'package:morador_app/screens/avisos_chegada/my_visitas_screen.dart';
 import 'package:morador_app/screens/home/home_page.dart';
 import 'package:morador_app/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -123,11 +125,10 @@ class ConstsFuture {
       return true;
     }
 
-    CorrespondenciaScreen.listaNovaCorresp3.clear();
-    CorrespondenciaScreen.listaNovaCorresp4.clear();
     InfosMorador.user = user;
     criptoSenha(senha).then((senhaCrip) async {
-      InfosMorador.senhaCripto = idUnidade == null ? senhaCrip : senha;
+      InfosMorador.senhaCripto =
+          idUnidade == null && !reLogin ? senhaCrip : senha;
       // Timer(Duration(hours: 1), () {
       //   LocalPreferences.removeUserLogin();
       // });
@@ -137,19 +138,8 @@ class ConstsFuture {
       if (resposta.statusCode == 200) {
         var apiBody = json.decode(resposta.body);
         bool erro = apiBody['erro'];
-        if (!erro && apiBody['mensagem'] != "") {
+        if (!erro) {
           if (idUnidade == null) DropAptos.listAptos = apiBody['login'];
-          // if (DropAptos.listAptos.length != 1) {
-          //   DropAptos.listAptos.map((e) {
-          //     String? getIdMorador;
-          //     LocalPreferences.getIdLogin().then((value) {
-          //       getIdMorador == value;
-          //     });
-          //     if (DropAptos.listAptos.contains(getIdMorador)) {
-          //       print(e);
-          //     }
-          //   }).toSet();
-          // }
 
           var apiInfos = apiBody['login'][0];
           if (apiInfos['acessa_sistema'] == null ||
@@ -213,87 +203,92 @@ class ConstsFuture {
           CorrespondenciaScreen.listaNovaCorresp3.clear();
           CorrespondenciaScreen.listaNovaCorresp4.clear();
           QuadroAvisosScreen.qntAvisos.clear();
+          ListarReservas.listReservas.clear();
 
           apiListarCorrespondencias(3).whenComplete(() {
             apiListarCorrespondencias(4).whenComplete(() {
               apiQuadroAvisos().whenComplete(() {
-                if (!InfosMorador.aceitou_termos) {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AceitarTermosScreen(
-                            idUnidade:
-                                idUnidade != null ? int.parse(idUnidade) : 0);
-                      });
-                } else {
-                  if (idUnidade == null && !reLogin) {
-                    ConstsFuture.navigatorPopAndPush(context, HomePage());
-
-                    alertSenhaPadrao();
+                apiListarReservas().whenComplete(() {
+                  if (!InfosMorador.aceitou_termos) {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return AceitarTermosScreen(
+                              idUnidade:
+                                  idUnidade != null ? int.parse(idUnidade) : 0);
+                        });
                   } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
-                    if (reLogin && openedResult != null) {
-                      if (openedResult.notification.buttons != null) {
-                        if (openedResult.notification.additionalData!['rota'] ==
-                            'delivery') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, ChegadaScreen(tipo: 1));
+                    if (idUnidade == null && !reLogin) {
+                      ConstsFuture.navigatorPopAndPush(context, HomePage());
 
-                          alertRespondeDelivery(context, tipoAviso: 5);
-                        } else if (openedResult
-                                .notification.additionalData!['rota'] ==
-                            'visita') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, ChegadaScreen(tipo: 2));
-                          alertRespondeDelivery(context, tipoAviso: 6);
-                        }
-                      } else {
-                        if (openedResult.notification.additionalData!['rota'] ==
-                            'corresp') {
-                          ConstsFuture.navigatorPageRoute(
-                              context,
-                              CorrespondenciaScreen(
-                                tipoAviso: 3,
-                              ));
-                        } else if (openedResult
-                                .notification.additionalData!['rota'] ==
-                            'aviso') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, QuadroAvisosScreen());
-                        } else if (openedResult
-                                .notification.additionalData!['rota'] ==
-                            'mercadorias') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, CorrespondenciaScreen(tipoAviso: 4));
-                        } else if (openedResult
-                                .notification.additionalData!['rota'] ==
-                            'reserva_espacos') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, ListarReservas());
-                        } else if (openedResult
-                                .notification.additionalData!['rota'] ==
-                            'previsitas') {
-                          ConstsFuture.navigatorPageRoute(
-                              context, ListarReservas());
+                      alertSenhaPadrao();
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                      if (reLogin && openedResult != null) {
+                        if (openedResult.notification.buttons != null) {
+                          if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'delivery') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, ChegadaScreen(tipo: 1));
+
+                            alertRespondeDelivery(context, tipoAviso: 5);
+                          } else if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'visita') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, ChegadaScreen(tipo: 2));
+                            alertRespondeDelivery(context, tipoAviso: 6);
+                          }
+                        } else {
+                          if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'corresp') {
+                            ConstsFuture.navigatorPageRoute(
+                                context,
+                                CorrespondenciaScreen(
+                                  tipoAviso: 3,
+                                ));
+                          } else if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'aviso') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, QuadroAvisosScreen());
+                          } else if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'mercadorias') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, CorrespondenciaScreen(tipoAviso: 4));
+                          } else if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'reserva_espacos') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, ListarReservas());
+                          } else if (openedResult
+                                  .notification.additionalData!['rota'] ==
+                              'previsitas') {
+                            ConstsFuture.navigatorPageRoute(
+                                context, MyVisitasScreen());
+                          }
                         }
                       }
                     }
+                    // idUnidade == null && !reLogin
+                    //     ? ConstsFuture.navigatorPopAndPush(context, HomePage())
+                    //     : Navigator.pushReplacement(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //           builder: (context) => HomePage(),
+                    //         ),
+                    //       );
                   }
-                  // idUnidade == null && !reLogin
-                  //     ? ConstsFuture.navigatorPopAndPush(context, HomePage())
-                  //     : Navigator.pushReplacement(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => HomePage(),
-                  //         ),
-                  //       );
-                }
+                });
               });
             });
           });
@@ -344,8 +339,6 @@ class ConstsFuture {
   }
 
   static Future apiListarCorrespondencias(int? tipoAviso) async {
-    CorrespondenciaScreen.listaNovaCorresp3.clear();
-    CorrespondenciaScreen.listaNovaCorresp4.clear();
     var resposta = await http.get(Uri.parse(
         '${Consts.apiUnidade}correspondencias/?fn=listarCorrespondencias&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso'));
     if (resposta.statusCode == 200) {
@@ -355,10 +348,8 @@ class ConstsFuture {
         if (e['protocolo'] == '') {
           if (tipoAviso == 3) {
             CorrespondenciaScreen.listaNovaCorresp3.add(e['idcorrespondencia']);
-            print(CorrespondenciaScreen.listaNovaCorresp3);
           } else {
             CorrespondenciaScreen.listaNovaCorresp4.add(e['idcorrespondencia']);
-            print(CorrespondenciaScreen.listaNovaCorresp4);
           }
         }
       }).toSet();

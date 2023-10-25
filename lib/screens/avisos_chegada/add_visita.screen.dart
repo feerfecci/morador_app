@@ -112,14 +112,6 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                         setState(() {
                           listEmailVisita.remove(listEmailVisita[index]);
                         });
-                        // var validForm =
-                        //     keyEmail.currentState?.validate() ?? false;
-                        // if (validForm) {
-                        //   setState(() {
-                        //     listEmailVisita.add(emailCtrl.text);
-                        //     //print(listEmailVisita);
-                        //   });
-                        // }
                       },
                       child: Center(
                         child: Icon(Icons.close, color: Colors.blue),
@@ -219,56 +211,9 @@ class _AddVisitaScreenState extends State<AddVisitaScreen> {
                     dataSelected: dataSelected,
                     lista: listEmailVisita,
                     hintText: 'Escolha o Dia e Horário da Visita'),
-                // Column(
-                //   children: [
-                //     // Row(
-                //     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     //   children: [
-                //     //     // ConstsWidget.buildCustomButton(
-                //     //     //   context,
-                //     //     //   newDate != null ? newDate! : 'Selecione uma Data',
-                //     //     //   onPressed: () {
-                //     //     //     DatePickerDialog(
-                //     //     //         initialDate: DateTime.now(),
-                //     //     //         firstDate: DateTime.now(),
-                //     //     //         lastDate: DateTime(2033));
-                //     //     // dataSelected = await showDatePicker(
-                //     //     //     context: context,
-                //     //     //     locale: const Locale('pt', 'BR'),
-                //     //     //     confirmText: 'Selecionar',
-                //     //     //     cancelText: 'Cancelar',
-                //     //     //     helpText: 'Selecione uma data',
-                //     //     //     initialDate: DateTime.now(),
-                //     //     //     firstDate: DateTime.now(),
-                //     //     //     lastDate: DateTime(2033));
-                //     //     // if (dataSelected != null) {
-                //     //     //   setState(() {
-                //     //     //     newDate = DateFormat('dd/MM/yyyy')
-                //     //     //         .format(dataSelected!);
-                //     //     //     // var transformDate = ;
-                //     //     //     //print(
-                //     //     //         'data do picker ${dataSelected?.year}-0${dataSelected?.month}-0${dataSelected?.day}');
-                //     //     //   });
-                //     //     // }
-                //     //     //   },
-                //     //     // ),
-                //     //     SizedBox(
-                //     //       width: size.width * 0.2,
-                //     //       child: buildMyTextFormField(context,
-                //     //           title: 'Horário',
-                //     //           mask: '##:##',
-                //     //           controller: dataCtrl,
-                //     //           hintText: '14:30',
-                //     //           keyboardType: TextInputType.number),
-                //     //     ),
-                //     //   ],
-                //     // ),
-                //   ],
-                // ),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-
                 if (listEmailVisita.isNotEmpty)
                   Column(
                     children: [

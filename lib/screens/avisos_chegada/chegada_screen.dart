@@ -27,7 +27,6 @@ class ChegadaScreen extends StatefulWidget {
 
 class _ChegadaScreenState extends State<ChegadaScreen> {
   listarVisitasDlivery({required tipoAviso}) async {
-    // //print('historico_avisos');
     var url = Uri.parse(
         '${Consts.apiUnidade}historico_avisos/index.php?fn=historicoAvisos&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&tipo=$tipoAviso');
 

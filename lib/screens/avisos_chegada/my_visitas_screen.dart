@@ -219,7 +219,6 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                     rowSpacing:
                                         SplashScreen.isSmall ? 0.051 : 0.054,
                                     onPressed: () {
-                                      // //print(listIdVisita);
                                       ConstsFuture.changeApi(
                                               'lista_visitantes/?fn=autorizarVisitante&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}&listavisita=${listIdVisita.join(',')}&autorizado=${filtrar == 1 ? 1 : 0}')
                                           .then((value) {
@@ -435,7 +434,6 @@ class MysVisitasScreenState extends State<MyVisitasScreen> {
                                                   ? listIdVisita.add(idvisita)
                                                   : listIdVisita
                                                       .remove(idvisita);
-                                              //       //print(listIdVisita);
                                             });
                                           },
                                           title: 'Selecionar Visita',

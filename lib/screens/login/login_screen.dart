@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final loginCtrl = TextEditingController();
   final passWordCtrl = TextEditingController();
   bool isLoading = false;
+
   _startLoading() async {
     setState(() {
       isLoading = true;

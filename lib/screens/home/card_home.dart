@@ -1,5 +1,6 @@
 import 'package:morador_app/screens/correspondencia/correspondencia_screen.dart';
 import 'package:morador_app/screens/quadro_avisos/quadro_avisos_screen.dart';
+import 'package:morador_app/screens/reserva_espaco/listar_reserva.dart';
 import 'package:morador_app/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,7 +58,9 @@ Widget buildCardHome(BuildContext context,
                 ? CorrespondenciaScreen.listaNovaCorresp4.length
                 : title == 'Cartas'
                     ? CorrespondenciaScreen.listaNovaCorresp3.length
-                    : QuadroAvisosScreen.qntAvisos.length,
+                    : title == 'Quadro de Avisos'
+                        ? QuadroAvisosScreen.qntAvisos.length
+                        : ListarReservas.listReservas.length,
             showBadge: title == 'Caixas' &&
                     CorrespondenciaScreen.listaNovaCorresp4.isNotEmpty
                 ? true
@@ -67,7 +70,10 @@ Widget buildCardHome(BuildContext context,
                     : title == "Quadro de Avisos" &&
                             QuadroAvisosScreen.qntAvisos.isNotEmpty
                         ? true
-                        : false,
+                        : title == 'Reservar Espaços' &&
+                                ListarReservas.listReservas.isNotEmpty
+                            ? true
+                            : false,
             child: ConstsWidget.buildCachedImage(context,
                 iconApi: iconApi,
                 height: meuheigth,

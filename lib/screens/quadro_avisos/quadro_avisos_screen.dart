@@ -25,7 +25,6 @@ class QuadroAvisosScreen extends StatefulWidget {
 }
 
 Future apiQuadroAvisos() async {
-  //print('listarAvisos');
   var url = Uri.parse(
       '${Consts.apiUnidade}/quadro_avisos/index.php?fn=listarAvisos&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}');
   var resposta = await get(url);
@@ -44,7 +43,6 @@ Future apiQuadroAvisos() async {
 }
 
 Future comparaAvisos(jsonResposta) async {
-  QuadroAvisosScreen.qntAvisos.clear();
   List apiAvisos = jsonResposta['avisos'];
 
   await LocalPreferences.getDateLogin().then((value) {

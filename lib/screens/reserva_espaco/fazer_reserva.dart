@@ -139,7 +139,6 @@ class _FazerReservaState extends State<FazerReserva> {
                 (element) => element['valueHora'] == listParaRemover[x]);
             x++;
             y--;
-            print('x = $x');
           });
         }
       }
@@ -232,7 +231,6 @@ class _FazerReservaState extends State<FazerReserva> {
                         }
                       }
                     }).toSet();
-                    print(dropValue);
                   });
                   // } else {
                   //   buildCustomSnackBar(context,
@@ -448,108 +446,6 @@ class _FazerReservaState extends State<FazerReserva> {
                         'Horário de Término',
                         textAlign: TextAlign.center,
                       ),
-                      // FutureBuilder(
-                      //     future: setDatasToList(),
-                      //     builder: (context, snapshot) {
-                      //       if (snapshot.connectionState ==
-                      //           ConnectionState.waiting) {
-                      //         return CircularProgressIndicator();
-                      //       } else if (snapshot.hasData) {
-                      //         List listHoraSnap = snapshot.data;
-                      //         Object? dropValueSnap;
-                      //         return StatefulBuilder(
-                      //             builder: (context, setState) {
-                      //           return ConstsWidget.buildPadding001(
-                      //             context,
-                      //             child: Container(
-                      //               width: size.width * 0.375,
-                      //               decoration: BoxDecoration(
-                      //                   color: Theme.of(context).canvasColor,
-                      //                   // border: Border.all(color: Colors.black26),
-
-                      //                   borderRadius: BorderRadius.all(
-                      //                       Radius.circular(16)),
-                      //                   border: Border.all(
-                      //                       color: Theme.of(context)
-                      //                           .colorScheme
-                      //                           .primary)),
-                      //               child: DropdownButtonHideUnderline(
-                      //                 child: DropdownButton(
-                      //                   isExpanded: true,
-                      //                   elevation: 24,
-                      //                   focusColor: Colors.red,
-                      //                   itemHeight: SplashScreen.isSmall
-                      //                       ? size.height * 0.09
-                      //                       : size.height * 0.07,
-                      //                   icon: Icon(
-                      //                     Icons.arrow_downward,
-                      //                     color:
-                      //                         Theme.of(context).iconTheme.color,
-                      //                   ),
-                      //                   borderRadius: BorderRadius.circular(16),
-                      //                   hint: Center(
-                      //                     child: ConstsWidget.buildTextSubTitle(
-                      //                       context,
-                      //                       'Hora',
-                      //                     ),
-                      //                   ),
-                      //                   // itemHeight: 70,
-
-                      //                   selectedItemBuilder: (context) {
-                      //                     return listHoraSnap.map((e) {
-                      //                       return Center(
-                      //                         child:
-                      //                             ConstsWidget.buildTextTitle(
-                      //                                 context, '${e['hora']}',
-                      //                                 size: 18),
-                      //                       );
-                      //                     }).toList();
-                      //                   },
-                      //                   value: dropValueSnap,
-                      //                   items: listHoraSnap.map((e) {
-                      //                     return DropdownMenuItem(
-                      //                       alignment: Alignment.center,
-                      //                       value: e['valueHora'],
-                      //                       child: Center(
-                      //                         child:
-                      //                             ConstsWidget.buildTextTitle(
-                      //                           context,
-                      //                           e['hora'],
-                      //                         ),
-                      //                       ),
-                      //                     );
-                      //                   }).toList(),
-                      //                   onChanged: (value) {
-                      //                     // if (MyDatePicker.dataSelected != '') {
-                      //                     setState(() {
-                      //                       dropValueSnap = value;
-                      //                       /*  listHoraSnap.map((e) {
-                      //       if (e['valueHora'] == value) {
-                      //         if (tipoHoraSelected == 0) {
-                      //           horaInicioSelected = e['hora'];
-                      //         } else {
-                      //           horaTermminoSelected = e['hora'];
-                      //         }
-                      //       }
-                      //     }).toSet();*/
-                      //                       print(horaInicioSelected);
-                      //                     });
-                      //                     // } else {
-                      //                     //   buildCustomSnackBar(context,
-                      //                     //       hasError: true,
-                      //                     //       titulo: 'Cuidado',
-                      //                     //       texto: 'Selecione Uma data');
-                      //                     // }
-                      //                   },
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           );
-                      //         });
-                      //       } else {
-                      //         return Text('Selecione uma data');
-                      //       }
-                      //     }),
                       buildDropHoras(listHorasTermino, dropHorasTermino, 1),
                     ],
                   ),
@@ -566,10 +462,7 @@ class _FazerReservaState extends State<FazerReserva> {
                       DateTime.parse('$dataInicioSelected $horaInicioSelected')
                           .difference(DateTime.now())
                           .inHours;
-                  print([
-                    'Data inicio: $dataInicioSelected - Hora inicio $horaInicioSelected',
-                    'Data termino $dataTermminoSelected - Hora termino $horaTermminoSelected'
-                  ]);
+
                   // var formValid =
                   //     keyReserva.currentState?.validate() ?? false;
                   if (dataInicioSelected != '' &&

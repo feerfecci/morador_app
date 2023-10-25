@@ -119,7 +119,6 @@ class _EsqueciSenhaScreenState extends State<EsqueciSenhaScreen> {
                     onPressed: () {
                       var validForm = formKey.currentState?.validate() ?? false;
                       if (validForm) {
-                        print('Recuperar');
                         ConstsFuture.changeApi(
                                 'recupera_senha/?fn=recuperaSenha&email=${_emailController.text}&login=${_loginController.text}')
                             .then((value) {

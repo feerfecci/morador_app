@@ -21,7 +21,6 @@ class ListarMorador extends StatefulWidget {
 }
 
 Future apiMoradores() async {
-  //print('listarMoradores');
   var url = Uri.parse(
       'https://a.portariaapp.com/unidade/api/moradores/?fn=listarMoradores&idunidade=${InfosMorador.idunidade}&idmorador=${InfosMorador.idmorador}&idcond=${InfosMorador.idcondominio}');
   var resposta = await get(url);

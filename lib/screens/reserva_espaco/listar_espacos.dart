@@ -9,7 +9,6 @@ import 'package:morador_app/widgets/page_erro.dart';
 import 'package:morador_app/widgets/page_vazia.dart';
 import 'package:morador_app/widgets/scaffold_all.dart';
 import 'package:flutter/material.dart';
-import '../../consts/consts_future.dart';
 import '../../consts/consts_widget.dart';
 import '../correspondencia/loading_corresp.dart';
 
@@ -26,7 +25,6 @@ class ListarEspacosState extends State<ListarEspacos> {
     var size = MediaQuery.of(context).size;
 
     Future apiListarEspacos() {
-      //print('listarEspacos');
       return ConstsFuture.changeApi(
           'reserva_espacos/?fn=listarEspacos&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}');
     }

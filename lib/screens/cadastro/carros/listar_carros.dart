@@ -20,7 +20,6 @@ class ListarCarros extends StatefulWidget {
 }
 
 Future apiCarros() async {
-  //print('listarVeiculosUnidade');
   var url = Uri.parse(
       '${Consts.apiUnidade}veiculos/index.php?fn=listarVeiculosUnidade&idcond=${InfosMorador.idcondominio}&idmorador=${InfosMorador.idmorador}&idunidade=${InfosMorador.idunidade}');
   var resposta = await get(url);

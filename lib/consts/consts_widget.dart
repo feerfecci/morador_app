@@ -325,29 +325,34 @@ class ConstsWidget {
       required bool showBadge,
       required Widget? child,
       BadgePosition? position}) {
+    BadgeShape shape = title >= 10 ? BadgeShape.square : BadgeShape.circle;
+    String titleString = title > 99
+        ? '+99'
+        : title == 0
+            ? ''
+            : title.toString();
+    double? fontSize = title >= 10
+        ? SplashScreen.isSmall
+            ? 12
+            : 14
+        : SplashScreen.isSmall
+            ? 14
+            : 16;
     return badges.Badge(
         showBadge: showBadge,
         badgeAnimation: badges.BadgeAnimation.fade(toAnimate: false),
         badgeContent: Text(
-          title > 99
-              ? '+99'
-              : title == 0
-                  ? ''
-                  : title.toString(),
+          titleString,
           style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: title < 99
-                  ? SplashScreen.isSmall
-                      ? 12
-                      : 16
-                  : SplashScreen.isSmall
-                      ? 10
-                      : 14),
+              fontSize: fontSize),
         ),
         position: position,
         badgeStyle: badges.BadgeStyle(
           badgeColor: Consts.kColorRed,
+          borderRadius: BorderRadius.circular(16),
+          shape: shape,
         ),
         child: child);
   }

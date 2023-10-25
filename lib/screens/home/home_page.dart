@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unused_local_variable, non_constant_identifier_names
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_app_version_checker/flutter_app_version_checker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:morador_app/consts/consts_widget.dart';
 import 'package:morador_app/screens/cadastro/listar_total.dart';
 import 'package:morador_app/screens/home/dropAptos.dart';
@@ -35,6 +37,7 @@ class HomePage extends StatefulWidget {
 int qntCorresp = 0;
 
 class _HomePageState extends State<HomePage> {
+  DateTime timeBackPressed = DateTime.now();
   List<String> teleforsList1 = [];
   List<String> teleforsList2 = [];
   List<String> teleforsList3 = [];
@@ -108,6 +111,19 @@ class _HomePageState extends State<HomePage> {
   int indexList = 0;
   String openedNotificationRote = '';
   bool hasButton = false;
+  final versionChecker = AppVersionChecker(
+      appId: 'com.portariapp.morador_app1',
+      androidStore: AndroidStore.googlePlayStore);
+
+  checkerVersion() {
+    versionChecker.checkUpdate().then((value) {
+      if (!value.canUpdate) {
+        print(value.currentVersion);
+        print(value.newVersion);
+      }
+    });
+  }
+
   Future initPlatFormState() async {
     OneSignal.shared.setAppId('4ab8b6f9-4715-4cae-83ca-d315015fdc06');
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
@@ -169,6 +185,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     config();
     // apiPubli(local: 0);
+    checkerVersion();
     initPlatFormState();
   }
 
@@ -232,8 +249,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    //print('Da Home tipo 3 ${CorrespondenciaScreen.listaNovaCorresp3.length}');
-    //print('Da Home tipo 4  ${CorrespondenciaScreen.listaNovaCorresp4.length}');
     Widget buildBanerPubli({required int local, required List usarList}) {
       return ConstsWidget.buildPadding001(context,
           child: FutureBuilder(
@@ -263,12 +278,10 @@ class _HomePageState extends State<HomePage> {
                     if (whatsapp != '') {
                       usarList.add(whatsapp);
                       hasWhats = true;
-                      //print('whatsapp $usarList');
                     }
                     if (telefone != '') {
                       if (telefone != whatsapp) {
                         usarList.add(telefone);
-                        //print('telefone $usarList');
                       } else {
                         hasWhats = true;
                       }
@@ -276,7 +289,6 @@ class _HomePageState extends State<HomePage> {
                     if (telefone2 != '') {
                       if (telefone2 != whatsapp && telefone2 != telefone) {
                         usarList.add(telefone2);
-                        //print('telefone2 $usarList');
                       } else {
                         hasWhats = true;
                       }
@@ -399,90 +411,94 @@ class _HomePageState extends State<HomePage> {
           ));
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        setState(() {
-          // apiPubli(local: 0);
-          // ConstsFuture.apiListarCorrespondencias(3).whenComplete(() {
-          //   ConstsFuture.apiListarCorrespondencias(4).whenComplete(() {
-          //     apiQuadroAvisos().whenComplete(() {});
-          //   });
-          // });
-        });
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        endDrawer: CustomDrawer(),
-        appBar: AppBar(
-          centerTitle: true,
-          title: ConstsWidget.buildTextTitle(
-              context, InfosMorador.nome_completo,
-              size: SplashScreen.isSmall ? 18 : 20,
-              color: Theme.of(context).textTheme.bodyLarge!.color,
-              textAlign: TextAlign.center),
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Theme.of(context).iconTheme.color),
-          leading: Padding(
-              padding: EdgeInsets.only(
-                  left: size.width * 0.025,
-                  top: SplashScreen.isSmall
-                      ? size.height * 0.02
-                      : size.height * 0.012,
-                  bottom: SplashScreen.isSmall
-                      ? size.height * 0.005
-                      : size.height * 0.01),
-              child: ConstsWidget.buildCachedImage(context,
-                  iconApi: 'https://a.portariaapp.com/img/logo_azul.png')
+    return WillPopScope(
+      onWillPop: () async {
+        final differenceBack = DateTime.now().difference(timeBackPressed);
+        final isExitWarning = differenceBack >= Duration(seconds: 1);
+        timeBackPressed = DateTime.now();
 
-              //  FutureBuilder(
-              //   future: ConstsFuture.apiImageIcon(
-              //       'https://a.portariaapp.com/img/logo_azul.png'),
-              //   builder: (context, snapshot) {
-              //     return SizedBox(child: snapshot.data);
-              //   },
-              // ),
-              ),
-          toolbarHeight:
-              SplashScreen.isSmall ? size.height * 0.09 : size.height * 0.07,
-          elevation: 0,
-          leadingWidth:
-              SplashScreen.isSmall ? size.height * 0.075 : size.height * 0.06,
-        ),
-        body: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.015),
-              child: Column(
-                children: [
-                  // if (InfosMorador.qntApto != 1)
-                  DropAptos(),
-                  // if (InfosMorador.qntApto == 1)
-                  //   ConstsWidget.buildPadding001(
-                  //     context,
-                  //     vertical: 0.02,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         ConstsWidget.buildTextTitle(context,
-                  //             '${InfosMorador.divisao} - ${InfosMorador.numero}',
-                  //             size: 20),
-                  //       ],
-                  //     ),
-                  //   ),
-                  buildDraggableGrid(qualModel: 1, models: models1),
-                  SizedBox(
-                    height: SplashScreen.isSmall
-                        ? size.height * 0.16
-                        : size.height * 0.148,
-                    width: double.infinity,
-                    child: buildCardHome(
-                      context,
-                      title: 'Ligar na Portaria',
-                      iconApi: '${Consts.iconApiPort}ligar.png',
-                      numberCall: InfosMorador.telefone_portaria,
-                    ),
-                  ),
-                  if (!InfosMorador.responsavel)
+        if (isExitWarning) {
+          Fluttertoast.showToast(
+              msg: 'Pressione novamente para sair',
+              fontSize: 18,
+              backgroundColor: Colors.black);
+          return false;
+        } else {
+          Fluttertoast.cancel();
+          return true;
+        }
+      },
+      child: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            // apiPubli(local: 0);
+            // ConstsFuture.apiListarCorrespondencias(3).whenComplete(() {
+            //   ConstsFuture.apiListarCorrespondencias(4).whenComplete(() {
+            //     apiQuadroAvisos().whenComplete(() {});
+            //   });
+            // });
+          });
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          endDrawer: CustomDrawer(),
+          appBar: AppBar(
+            centerTitle: true,
+            title: ConstsWidget.buildTextTitle(
+                context, InfosMorador.nome_completo,
+                size: SplashScreen.isSmall ? 18 : 20,
+                textAlign: TextAlign.center),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            iconTheme: IconThemeData(
+                color: Theme.of(context).textTheme.bodyLarge!.color),
+            toolbarHeight:
+                SplashScreen.isSmall ? size.height * 0.09 : size.height * 0.07,
+            elevation: 0,
+            leading: Padding(
+                padding: EdgeInsets.only(
+                    left: size.width * 0.025,
+                    top: SplashScreen.isSmall
+                        ? size.height * 0.02
+                        : size.height * 0.012,
+                    bottom: SplashScreen.isSmall
+                        ? size.height * 0.005
+                        : size.height * 0.01),
+                child: ConstsWidget.buildCachedImage(context,
+                    iconApi: 'https://a.portariaapp.com/img/logo_azul.png')
+
+                //  FutureBuilder(
+                //   future: ConstsFuture.apiImageIcon(
+                //       'https://a.portariaapp.com/img/logo_azul.png'),
+                //   builder: (context, snapshot) {
+                //     return SizedBox(child: snapshot.data);
+                //   },
+                // ),
+                ),
+            leadingWidth:
+                SplashScreen.isSmall ? size.height * 0.08 : size.height * 0.06,
+          ),
+          body: ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.015),
+                child: Column(
+                  children: [
+                    // if (InfosMorador.qntApto != 1)
+                    DropAptos(),
+                    // if (InfosMorador.qntApto == 1)
+                    //   ConstsWidget.buildPadding001(
+                    //     context,
+                    //     vertical: 0.02,
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         ConstsWidget.buildTextTitle(context,
+                    //             '${InfosMorador.divisao} - ${InfosMorador.numero}',
+                    //             size: 20),
+                    //       ],
+                    //     ),
+                    //   ),
+                    buildDraggableGrid(qualModel: 1, models: models1),
                     SizedBox(
                       height: SplashScreen.isSmall
                           ? size.height * 0.16
@@ -490,37 +506,51 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       child: buildCardHome(
                         context,
-                        indexOrder: 1,
-                        title: 'Cadastros',
-                        iconApi: '${Consts.iconApiPort}cadastros.png',
-                        pageRoute: ListaTotalUnidade(tipoAbrir: 1),
+                        title: 'Ligar na Portaria',
+                        iconApi: '${Consts.iconApiPort}ligar.png',
+                        numberCall: InfosMorador.telefone_portaria,
                       ),
                     ),
-                  if (InfosMorador.qtd_publicidade != 0)
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.01,
+                    if (!InfosMorador.responsavel)
+                      SizedBox(
+                        height: SplashScreen.isSmall
+                            ? size.height * 0.16
+                            : size.height * 0.148,
+                        width: double.infinity,
+                        child: buildCardHome(
+                          context,
+                          indexOrder: 1,
+                          title: 'Cadastros',
+                          iconApi: '${Consts.iconApiPort}cadastros.png',
+                          pageRoute: ListaTotalUnidade(tipoAbrir: 1),
                         ),
-                        buildBanerPubli(local: 1, usarList: teleforsList1),
-                      ],
-                    ),
-                  if (InfosMorador.qtd_publicidade != 0)
-                    GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5,
-                      childAspectRatio: 0.9,
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        buildBanerPubli(local: 2, usarList: teleforsList2),
-                        buildBanerPubli(local: 3, usarList: teleforsList3),
-                      ],
-                    ),
-                ],
-              ),
-            )
-          ],
+                      ),
+                    if (InfosMorador.qtd_publicidade != 0)
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          buildBanerPubli(local: 1, usarList: teleforsList1),
+                        ],
+                      ),
+                    if (InfosMorador.qtd_publicidade != 0)
+                      GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5,
+                        childAspectRatio: 0.9,
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          buildBanerPubli(local: 2, usarList: teleforsList2),
+                          buildBanerPubli(local: 3, usarList: teleforsList3),
+                        ],
+                      ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

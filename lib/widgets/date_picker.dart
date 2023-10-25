@@ -124,7 +124,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
         initialDate: DateTime.now(),
         dateMask: widget.type == DateTimePickerType.date
             ? 'dd/MM/yyyy'
-            : 'dd/MM/yyyy HH:mm:ss',
+            : 'dd/MM/yyyy HH:mm',
 
         firstDate: !widget.aniversario ? DateTime.now() : DateTime(1850),
         lastDate: !widget.aniversario ? DateTime(2100) : DateTime.now(),
