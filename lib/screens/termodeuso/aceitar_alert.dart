@@ -134,7 +134,7 @@ class _AceitarTermosScreenState extends State<AceitarTermosScreen> {
                       ConstsWidget.buildCustomButton(
                         context,
                         'Aceitar',
-                        rowSpacing: 0.13,
+                        rowSpacing: 0.12,
                         color: isChecked ? Consts.kColorRed : Colors.grey,
                         onPressed: isChecked
                             ? () {
